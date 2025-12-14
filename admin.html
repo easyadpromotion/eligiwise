@@ -19,23 +19,14 @@ button {
   background:#0A4EA3;
   color:#fff;
   border:none;
-  cursor:pointer;
   border-radius:5px;
+  cursor:pointer;
 }
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:20px;
-  font-size:13px;
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
-th, td {
-  border:1px solid #ddd;
-  padding:8px;
-  text-align:center;
-}
-th { background:#0A4EA3; color:#fff; }
-.red { background:#f8d7da; }
-.grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
 </style>
 </head>
 
@@ -44,7 +35,7 @@ th { background:#0A4EA3; color:#fff; }
 <div class="container">
 <h1>ELIGIWISE – Admin Panel</h1>
 
-<h3>Add / Edit Bank or NBFC Policy</h3>
+<h3>Add / Edit Bank / NBFC Policy</h3>
 
 <div class="grid">
   <div>
@@ -62,17 +53,23 @@ th { background:#0A4EA3; color:#fff; }
 
     <label>Min ABB</label>
     <input type="number" id="minAbb">
+
+    <label>Min Turnover (₹)</label>
+    <input type="number" id="minTurnover">
   </div>
 
   <div>
-    <label>Min Turnover (₹)</label>
-    <input type="number" id="minTurnover">
-
     <label>Max Active Loans</label>
-    <input type="number" id="maxActiveLoans">
+    <input type="number" id="maxActive">
 
     <label>Max Loans in Last 6 Months</label>
-    <input type="number" id="maxRecentLoans">
+    <input type="number" id="maxRecent">
+
+    <label>Own House Required</label>
+    <select id="ownHouse">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
 
     <label>GST Required</label>
     <select id="gst">
@@ -85,14 +82,6 @@ th { background:#0A4EA3; color:#fff; }
       <option value="false">No</option>
       <option value="true">Yes</option>
     </select>
-  </div>
-
-  <div>
-    <label>Own House Required</label>
-    <select id="ownHouse">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
 
     <label>Program Type</label>
     <select id="program">
@@ -101,40 +90,18 @@ th { background:#0A4EA3; color:#fff; }
       <option>ITR</option>
       <option>Income</option>
     </select>
-
-    <label>Geo Limit (KM)</label>
-    <input type="number" id="geo">
-
-    <label>Remarks</label>
-    <textarea id="remarks"></textarea>
   </div>
 </div>
 
-<button onclick="addBank()">Save Bank Policy</button>
-
-<table>
-<thead>
-<tr>
-<th>Bank</th>
-<th>Max Loan</th>
-<th>Vintage</th>
-<th>CIBIL</th>
-<th>ABB</th>
-<th>Turnover</th>
-<th>Own House</th>
-<th>GST</th>
-<th>ITR</th>
-<th>Program</th>
-<th>Geo</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody id="bankTable"></tbody>
-</table>
+<button onclick="savePolicy()">Save Bank Policy</button>
 
 </div>
 
 <script>
-let banks = [];
+function savePolicy() {
+  alert("Bank policy saved (MVP demo)");
+}
+</script>
 
-function addBa
+</body>
+</html>
