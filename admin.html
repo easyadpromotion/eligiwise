@@ -6,15 +6,36 @@
 
 <style>
 body { font-family: Arial; background:#f4f6f8; }
-.container { max-width:1000px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
+.container { max-width:1200px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
 h1 { color:#0A4EA3; text-align:center; }
 label { font-weight:bold; }
-input, select { width:100%; padding:8px; margin:6px 0 12px; }
-button { padding:10px 15px; background:#0A4EA3; color:#fff; border:none; cursor:pointer; border-radius:5px; }
-table { width:100%; border-collapse:collapse; margin-top:20px; }
-th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+input, select, textarea {
+  width:100%;
+  padding:8px;
+  margin:6px 0 12px;
+}
+button {
+  padding:10px 15px;
+  background:#0A4EA3;
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  border-radius:5px;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+  font-size:13px;
+}
+th, td {
+  border:1px solid #ddd;
+  padding:8px;
+  text-align:center;
+}
 th { background:#0A4EA3; color:#fff; }
 .red { background:#f8d7da; }
+.grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
 </style>
 </head>
 
@@ -23,34 +44,71 @@ th { background:#0A4EA3; color:#fff; }
 <div class="container">
 <h1>ELIGIWISE – Admin Panel</h1>
 
-<h3>Add / Edit Bank Policy</h3>
+<h3>Add / Edit Bank or NBFC Policy</h3>
 
-<label>Bank / NBFC Name</label>
-<input type="text" id="name">
+<div class="grid">
+  <div>
+    <label>Bank / NBFC Name</label>
+    <input id="name">
 
-<label>Max Loan (Ex: 20L, 50L)</label>
-<input type="text" id="maxLoan">
+    <label>Max Loan (Ex: 20L, 50L)</label>
+    <input id="maxLoan">
 
-<label>Min Business Vintage (Years)</label>
-<input type="number" id="minVintage">
+    <label>Min Business Vintage (Years)</label>
+    <input type="number" id="minVintage">
 
-<label>Min CIBIL</label>
-<input type="number" id="minCibil">
+    <label>Min CIBIL</label>
+    <input type="number" id="minCibil">
 
-<label>Min ABB</label>
-<input type="number" id="minAbb">
+    <label>Min ABB</label>
+    <input type="number" id="minAbb">
+  </div>
 
-<label>Own House Required</label>
-<select id="ownHouse">
-  <option value="false">No</option>
-  <option value="true">Yes</option>
-</select>
+  <div>
+    <label>Min Turnover (₹)</label>
+    <input type="number" id="minTurnover">
 
-<label>GST Required</label>
-<select id="gst">
-  <option value="false">No</option>
-  <option value="true">Yes</option>
-</select>
+    <label>Max Active Loans</label>
+    <input type="number" id="maxActiveLoans">
+
+    <label>Max Loans in Last 6 Months</label>
+    <input type="number" id="maxRecentLoans">
+
+    <label>GST Required</label>
+    <select id="gst">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
+
+    <label>ITR Required</label>
+    <select id="itr">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Own House Required</label>
+    <select id="ownHouse">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
+
+    <label>Program Type</label>
+    <select id="program">
+      <option>ABB</option>
+      <option>GST</option>
+      <option>ITR</option>
+      <option>Income</option>
+    </select>
+
+    <label>Geo Limit (KM)</label>
+    <input type="number" id="geo">
+
+    <label>Remarks</label>
+    <textarea id="remarks"></textarea>
+  </div>
+</div>
 
 <button onclick="addBank()">Save Bank Policy</button>
 
@@ -62,8 +120,12 @@ th { background:#0A4EA3; color:#fff; }
 <th>Vintage</th>
 <th>CIBIL</th>
 <th>ABB</th>
+<th>Turnover</th>
 <th>Own House</th>
 <th>GST</th>
+<th>ITR</th>
+<th>Program</th>
+<th>Geo</th>
 <th>Action</th>
 </tr>
 </thead>
@@ -75,53 +137,4 @@ th { background:#0A4EA3; color:#fff; }
 <script>
 let banks = [];
 
-function addBank() {
-  const bank = {
-    name: name.value,
-    maxLoan: maxLoan.value,
-    minVintage: Number(minVintage.value),
-    minCibil: Number(minCibil.value),
-    minAbb: Number(minAbb.value),
-    ownHouse: ownHouse.value === "true",
-    gst: gst.value === "true"
-  };
-
-  banks.push(bank);
-  renderTable();
-  clearForm();
-}
-
-function renderTable() {
-  bankTable.innerHTML = "";
-  banks.forEach((b, i) => {
-    bankTable.innerHTML += `
-      <tr>
-        <td>${b.name}</td>
-        <td>${b.maxLoan}</td>
-        <td>${b.minVintage}</td>
-        <td>${b.minCibil}</td>
-        <td>${b.minAbb}</td>
-        <td>${b.ownHouse ? "Yes" : "No"}</td>
-        <td>${b.gst ? "Yes" : "No"}</td>
-        <td><button class="red" onclick="removeBank(${i})">Delete</button></td>
-      </tr>
-    `;
-  });
-}
-
-function removeBank(index) {
-  banks.splice(index, 1);
-  renderTable();
-}
-
-function clearForm() {
-  name.value = "";
-  maxLoan.value = "";
-  minVintage.value = "";
-  minCibil.value = "";
-  minAbb.value = "";
-}
-</script>
-
-</body>
-</html>
+function addBa
