@@ -1,107 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>ELIGIWISE | Admin Panel</title>
-
-<style>
-body { font-family: Arial; background:#f4f6f8; }
-.container { max-width:1200px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
-h1 { color:#0A4EA3; text-align:center; }
-label { font-weight:bold; }
-input, select, textarea {
-  width:100%;
-  padding:8px;
-  margin:6px 0 12px;
-}
-button {
-  padding:10px 15px;
-  background:#0A4EA3;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-<h1>ELIGIWISE – Admin Panel</h1>
-
-<h3>Add / Edit Bank / NBFC Policy</h3>
-
-<div class="grid">
-  <div>
-    <label>Bank / NBFC Name</label>
-    <input id="name">
-
-    <label>Max Loan (Ex: 20L, 50L)</label>
-    <input id="maxLoan">
-
-    <label>Min Business Vintage (Years)</label>
-    <input type="number" id="minVintage">
-
-    <label>Min CIBIL</label>
-    <input type="number" id="minCibil">
-
-    <label>Min ABB</label>
-    <input type="number" id="minAbb">
-
-    <label>Min Turnover (₹)</label>
-    <input type="number" id="minTurnover">
-  </div>
-
-  <div>
-    <label>Max Active Loans</label>
-    <input type="number" id="maxActive">
-
-    <label>Max Loans in Last 6 Months</label>
-    <input type="number" id="maxRecent">
-
-    <label>Own House Required</label>
-    <select id="ownHouse">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
-
-    <label>GST Required</label>
-    <select id="gst">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
-
-    <label>ITR Required</label>
-    <select id="itr">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
-
-    <label>Program Type</label>
-    <select id="program">
-      <option>ABB</option>
-      <option>GST</option>
-      <option>ITR</option>
-      <option>Income</option>
-    </select>
-  </div>
-</div>
-
-<button onclick="savePolicy()">Save Bank Policy</button>
-
-</div>
-
 <script>
 function savePolicy() {
-  alert("Bank policy saved (MVP demo)");
+
+  let bank = {
+    name: document.getElementById("name").value,
+    maxLoan: document.getElementById("maxLoan").value,
+    minVintage: Number(document.getElementById("minVintage").value),
+    minCibil: Number(document.getElementById("minCibil").value),
+    minAbb: Number(document.getElementById("minAbb").value),
+    minTurnover: Number(document.getElementById("minTurnover").value),
+    maxActive: Number(document.getElementById("maxActive").value),
+    maxRecent: Number(document.getElementById("maxRecent").value),
+    ownHouse: document.getElementById("ownHouse").value,
+    gst: document.getElementById("gst").value,
+    itr: document.getElementById("itr").value,
+    program: document.getElementById("program").value
+  };
+
+  let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
+  banks.push(bank);
+  localStorage.setItem("eligiwiseBanks", JSON.stringify(banks));
+
+  alert("Bank Policy Saved Successfully");
 }
 </script>
-
-</body>
-</html>
