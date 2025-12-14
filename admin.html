@@ -1,21 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ELIGIWISE | Admin Panel</title>
+
+<style>
+body { font-family: Arial; background:#f4f6f8; }
+.container {
+  max-width: 1000px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+}
+h1 { text-align:center; color:#0A4EA3; }
+label { font-weight:bold; }
+input, select {
+  width:100%;
+  padding:8px;
+  margin:6px 0 12px;
+}
+button {
+  width:100%;
+  padding:12px;
+  background:#0A4EA3;
+  color:#fff;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>ELIGIWISE – Admin Panel</h1>
+
+<label>Bank / NBFC Name</label>
+<input id="name">
+
+<label>Max Loan (Ex: 20L, 50L)</label>
+<input id="maxLoan">
+
+<label>Min Business Vintage (Years)</label>
+<input type="number" id="minVintage">
+
+<label>Min CIBIL</label>
+<input type="number" id="minCibil">
+
+<label>Min ABB</label>
+<input type="number" id="minAbb">
+
+<label>Min Turnover</label>
+<input type="number" id="minTurnover">
+
+<label>Max Active Loans</label>
+<input type="number" id="maxActive">
+
+<label>Max Loans in Last 6 Months</label>
+<input type="number" id="maxRecent">
+
+<label>Own House Required</label>
+<select id="ownHouse">
+  <option value="false">No</option>
+  <option value="true">Yes</option>
+</select>
+
+<label>GST Required</label>
+<select id="gst">
+  <option value="false">No</option>
+  <option value="true">Yes</option>
+</select>
+
+<label>ITR Required</label>
+<select id="itr">
+  <option value="false">No</option>
+  <option value="true">Yes</option>
+</select>
+
+<button onclick="savePolicy()">Save Bank Policy</button>
+</div>
+
 <script>
-function savePolicy(){
-  let bank={
-    name:name.value,
-    maxLoan:maxLoan.value,
-    minVintage:+minVintage.value,
-    minCibil:+minCibil.value,
-    minAbb:+minAbb.value,
-    minTurnover:+minTurnover.value,
-    maxActive:+maxActive.value,
-    maxRecent:+maxRecent.value,
-    ownHouse:ownHouse.value,
-    gst:gst.value,
-    itr:itr.value
+function savePolicy() {
+  let bank = {
+    name: name.value,
+    maxLoan: maxLoan.value,
+    minVintage: +minVintage.value,
+    minCibil: +minCibil.value,
+    minAbb: +minAbb.value,
+    minTurnover: +minTurnover.value,
+    maxActive: +maxActive.value,
+    maxRecent: +maxRecent.value,
+    ownHouse: ownHouse.value,
+    gst: gst.value,
+    itr: itr.value
   };
-  let banks=JSON.parse(localStorage.getItem("eligiwiseBanks"))||[];
+
+  let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
   banks.push(bank);
-  localStorage.setItem("eligiwiseBanks",JSON.stringify(banks));
-  alert("Bank policy saved");
+  localStorage.setItem("eligiwiseBanks", JSON.stringify(banks));
+
+  alert("Bank policy saved successfully");
 }
 </script>
+
+</body>
+</html>
