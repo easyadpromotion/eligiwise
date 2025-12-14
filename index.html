@@ -1,106 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE | Eligibility Check</title>
+<title>ELIGIWISE – Eligibility Check</title>
 
 <style>
 body { font-family: Arial; background:#f4f6f8; }
-.container { max-width:1000px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
+.container { max-width:1000px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
 h1 { text-align:center; color:#0A4EA3; }
-label { font-weight:bold; }
-input, select { width:100%; padding:8px; margin:6px 0 12px; }
-button { width:100%; padding:12px; background:#0A4EA3; color:#fff; border:none; border-radius:5px; }
+label { font-weight:bold; display:block; margin-top:10px; }
+input, select { width:100%; padding:6px; margin-top:5px; }
+button { margin-top:15px; padding:8px 14px; background:#0A4EA3; color:#fff; border:none; border-radius:5px; cursor:pointer; }
 table { width:100%; border-collapse:collapse; margin-top:20px; }
-th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+th, td { border:1px solid #ccc; padding:8px; text-align:center; }
 th { background:#0A4EA3; color:#fff; }
-.green{background:#d4edda;} .red{background:#f8d7da;} .orange{background:#fff3cd;}
+.eligible { color:green; font-weight:bold; }
+.not { color:red; font-weight:bold; }
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>ELIGIWISE</h1>
+
+<h1>ELIGIWISE – Eligibility Check</h1>
 
 <label>Business Vintage (Years)</label>
-<input type="number" id="vintage">
+<input id="vintage">
 
-<label>Annual Turnover</label>
-<input type="number" id="turnover">
+<label>Turnover (Lakhs)</label>
+<input id="turnover">
+
+<label>Average Bank Balance – ABB (Lakhs)</label>
+<input id="abb">
 
 <label>CIBIL Score</label>
-<input type="number" id="cibil">
+<input id="cibil">
 
-<label>Average Bank Balance</label>
-<input type="number" id="abb">
+<label>Banking Type</label>
+<select id="bankingType">
+  <option>All Accounts Accepted</option>
+  <option>Only Current Account</option>
+  <option>Only OD/CC</option>
+  <option>Only Savings</option>
+  <option>CA + OD/CC</option>
+</select>
 
 <label>Own House</label>
 <select id="ownHouse">
-  <option value="yes">Yes</option>
-  <option value="no">No</option>
+  <option>No</option>
+  <option>Yes</option>
 </select>
 
 <label>GST Available</label>
 <select id="gst">
-  <option value="yes">Yes</option>
-  <option value="no">No</option>
+  <option>No</option>
+  <option>Yes</option>
 </select>
 
 <label>ITR Available</label>
 <select id="itr">
-  <option value="yes">Yes</option>
-  <option value="no">No</option>
+  <option>No</option>
+  <option>Yes</option>
 </select>
 
-<label>Active Loans</label>
-<input type="number" id="activeLoans">
+<button onclick="checkEligibility()">🔍 Check Eligibility</button>
 
-<label>Loans in Last 6 Months</label>
-<input type="number" id="recentLoans">
-
-<button onclick="checkEligibility()">Check Eligibility</button>
-
-<table id="resultTable" style="display:none;">
+<table id="resultTable" style="display:none">
 <thead>
-<tr><th>Bank</th><th>Status</th><th>Max Loan</th><th>Reason</th></tr>
+<tr>
+  <th>Bank / NBFC</th>
+  <th>Status</th>
+  <th>Remarks</th>
+</tr>
 </thead>
 <tbody></tbody>
 </table>
+
 </div>
 
 <script>
 function checkEligibility() {
-  let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
-  if (banks.length === 0) {
-    alert("No bank policies added. Please add from Admin Panel.");
+
+  const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  const tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+
+  if (policies.length === 0) {
+    alert("No Bank Policies Found");
     return;
   }
 
-  let v = +vintage.value, t = +turnover.value, c = +cibil.value;
-  let a = +abb.value, al = +activeLoans.value, rl = +recentLoans.value;
-  let oh = ownHouse.value, g = gst.value, i = itr.value;
+  const v = Number(vintage.value);
+  const t = Number(turnover.value);
+  const a = Number(abb.value);
+  const c = Number(cibil.value);
 
-  let tbody = document.querySelector("#resultTable tbody");
-  tbody.innerHTML = "";
-  resultTable.style.display = "table";
+  policies.forEach(p => {
 
-  banks.forEach(b=>{
-    let status="Eligible", reason="Meets policy", cls="green";
+    let status = "Eligible";
+    let reason = "All conditions matched";
 
-    if(b.minVintage && v<b.minVintage){status="Rejected";reason="Vintage issue";cls="red";}
-    else if(b.minTurnover && t<b.minTurnover){status="Rejected";reason="Turnover issue";cls="red";}
-    else if(b.minCibil && c<b.minCibil){status="Rejected";reason="Low CIBIL";cls="red";}
-    else if(b.minAbb && a<b.minAbb){status="Borderline";reason="Low ABB";cls="orange";}
-    else if(b.ownHouse==="true" && oh==="no"){status="Rejected";reason="House required";cls="red";}
-    else if(b.gst==="true" && g==="no"){status="Rejected";reason="GST required";cls="red";}
-    else if(b.itr==="true" && i==="no"){status="Rejected";reason="ITR required";cls="red";}
-    else if(b.maxActive && al>b.maxActive){status="Rejected";reason="Too many loans";cls="red";}
-    else if(b.maxRecent && rl>b.maxRecent){status="Rejected";reason="Recent loans";cls="red";}
+    if (p.businessVintage && v < Number(p.businessVintage)) {
+      status = "Not Eligible";
+      reason = "Insufficient Business Vintage";
+    }
+    else if (p.turnover && t < Number(p.turnover)) {
+      status = "Not Eligible";
+      reason = "Turnover below requirement";
+    }
+    else if (p.abb && a < Number(p.abb)) {
+      status = "Not Eligible";
+      reason = "ABB below requirement";
+    }
+    else if (p.cibil && c < Number(p.cibil.split("-")[0])) {
+      status = "Not Eligible";
+      reason = "CIBIL score too low";
+    }
+    else if (p.bankingType && p.bankingType !== bankingType.value && p.bankingType !== "All Accounts Accepted") {
+      status = "Not Eligible";
+      reason = "Banking type mismatch";
+    }
+    else if (p.ownHouse === "Yes" && ownHouse.value !== "Yes") {
+      status = "Not Eligible";
+      reason = "Own house mandatory";
+    }
+    else if (p.gstRequired === "Yes" && gst.value !== "Yes") {
+      status = "Not Eligible";
+      reason = "GST required";
+    }
+    else if (p.itrRequired === "Yes" && itr.value !== "Yes") {
+      status = "Not Eligible";
+      reason = "ITR required";
+    }
 
-    tbody.innerHTML+=`<tr class="${cls}">
-      <td>${b.name}</td><td>${status}</td><td>${b.maxLoan}</td><td>${reason}</td></tr>`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.bankName}</td>
+      <td class="${status === "Eligible" ? "eligible" : "not"}">${status}</td>
+      <td>${reason}</td>
+    `;
+    tbody.appendChild(tr);
   });
+
+  document.getElementById("resultTable").style.display = "table";
 }
 </script>
+
 </body>
 </html>
