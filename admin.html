@@ -164,9 +164,7 @@ button { padding:6px 10px; background:#0A4EA3; color:#fff; border:none; border-r
 <button class="add-btn" onclick="addCustom()">➕ Add Custom Field</butt
 <script>
 // ADD PROGRAM ROW (SECTION E)
-function addProgram(containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
+
 
   const row = document.createElement("div");
   row.style.display = "grid";
@@ -184,7 +182,7 @@ function addProgram(containerId) {
 }
 
 // ADD CUSTOM FIELD (SECTION F)
-function addCustom() {
+ {
   const container = document.getElementById("customFields");
   if (!container) return;
 
@@ -204,7 +202,7 @@ function addCustom() {
 }
 
 // SAVE POLICY (FINAL)
-function savePolicy() {
+ {
   const bankName = document.getElementById("bankName").value.trim();
   if (!bankName) {
     alert("Please enter Bank / NBFC Name");
@@ -239,7 +237,65 @@ function savePolicy() {
   alert("Bank / NBFC Policy Saved Successfully ✅");
 }
 </script>
+<script>
+/* SECTION E – ADD PROGRAM ROW */
+function addProgram(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const row = document.createElement("div");
+  row.style.display = "grid";
+  row.style.gridTemplateColumns = "1fr 1fr auto";
+  row.style.gap = "10px";
+  row.style.marginBottom = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Min">
+    <input placeholder="Max">
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
+
+  container.appendChild(row);
+}
+
+/* SECTION F – ADD CUSTOM FIELD */
+function addCustom() {
+  const container = document.getElementById("customFields");
+  if (!container) return;
+
+  const row = document.createElement("div");
+  row.style.display = "grid";
+  row.style.gridTemplateColumns = "1fr 1fr auto";
+  row.style.gap = "10px";
+  row.style.marginBottom = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value / Range">
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
+
+  container.appendChild(row);
+}
+
+/* SAVE POLICY */
+function savePolicy() {
+  const bankName = document.getElementById("bankName").value.trim();
+  if (!bankName) {
+    alert("Please enter Bank / NBFC Name");
+    return;
+  }
+
+  const policy = { bankName };
+  const list = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  list.push(policy);
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(list));
+
+  alert("Bank / NBFC Policy Saved Successfully ✅");
+}
+</script>
 
                                                                   
+
 
 
