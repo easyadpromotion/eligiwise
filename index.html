@@ -4,228 +4,236 @@
 <meta charset="UTF-8">
 <title>ELIGIWISE – Eligibility Check</title>
 
+<!-- PDF Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <style>
 body{
-  font-family: Arial, sans-serif;
-  background:#f4f6f8;
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
 }
 .container{
-  max-width:1100px;
-  margin:20px auto;
-  background:#fff;
-  padding:20px;
-  border-radius:10px;
+    max-width:1000px;
+    margin:20px auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
 }
 h1{
-  text-align:center;
-  color:#0A4EA3;
+    text-align:center;
+    color:#0A4EA3;
 }
 label{
-  font-weight:bold;
-  margin-top:10px;
-  display:block;
+    font-weight:bold;
+    display:block;
+    margin-top:12px;
 }
 input,select{
-  width:100%;
-  padding:8px;
-  margin-top:5px;
+    width:100%;
+    padding:8px;
+    margin-top:5px;
 }
 button{
-  background:#0A4EA3;
-  color:#fff;
-  border:none;
-  padding:10px 16px;
-  border-radius:6px;
-  cursor:pointer;
-  margin-top:15px;
+    margin-top:15px;
+    padding:10px 16px;
+    background:#0A4EA3;
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
 }
-button:hover{opacity:0.9;}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-th,td{
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-}
-th{
-  background:#0A4EA3;
-  color:#fff;
-}
-.status-yes{color:green;font-weight:bold;}
-.status-no{color:red;font-weight:bold;}
+button:hover{opacity:.9;}
 
 .summary{
-  margin-top:15px;
-  font-weight:bold;
+    margin-top:15px;
+    font-weight:bold;
+}
+.summary span{
+    margin-right:15px;
 }
 
+table{
+    width:100%;
+    margin-top:15px;
+    border-collapse:collapse;
+}
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+}
+th{
+    background:#0A4EA3;
+    color:#fff;
+}
+
+.eligible{color:green;font-weight:bold;}
+.noteligible{color:red;font-weight:bold;}
+
 .downloads{
-  margin-top:15px;
+    margin-top:15px;
 }
 .downloads button{
-  margin-right:10px;
+    margin-right:10px;
 }
 </style>
 </head>
 
 <body>
 <div class="container">
-
 <h1>ELIGIWISE – Eligibility Check</h1>
 
 <label>Business Vintage (Years)</label>
-<input id="vintage" type="number">
+<input type="number" id="vintage">
 
 <label>Turnover (Lakhs)</label>
-<input id="turnover" type="number">
+<input type="number" id="turnover">
 
 <label>Average Bank Balance – ABB (Lakhs)</label>
-<input id="abb" type="number" step="0.01">
+<input type="number" step="0.01" id="abb">
 
 <label>CIBIL Score</label>
-<input id="cibil" type="number">
+<input type="number" id="cibil">
 
 <label>Banking Type</label>
 <select id="bankingType">
-  <option>All Accounts Accepted</option>
-  <option>Only Current Account</option>
-  <option>Only OD/CC Accounts</option>
-  <option>Only Saving Accounts</option>
-  <option>CA+OD/CC</option>
+    <option>All Accounts Accepted</option>
+    <option>Only Current Account</option>
+    <option>Only OD/CC Accounts</option>
+    <option>Only Saving Accounts</option>
+    <option>CA+OD/CC</option>
 </select>
 
 <label>Own House</label>
 <select id="ownHouse">
-  <option>Yes</option>
-  <option>No</option>
+    <option>Yes</option>
+    <option>No</option>
 </select>
 
 <label>GST Available</label>
 <select id="gst">
-  <option>Yes</option>
-  <option>No</option>
+    <option>Yes</option>
+    <option>No</option>
 </select>
 
 <label>ITR Available</label>
 <select id="itr">
-  <option>Yes</option>
-  <option>No</option>
+    <option>Yes</option>
+    <option>No</option>
 </select>
 
 <button onclick="checkEligibility()">🔍 Check Eligibility</button>
 
-<div id="summary" class="summary"></div>
+<div class="summary" id="summary"></div>
 
 <table id="resultTable" style="display:none;">
 <thead>
 <tr>
-  <th>Bank / NBFC</th>
-  <th>Eligible Loan (₹ Lakhs)</th>
-  <th>Status</th>
-  <th>Remarks</th>
+<th>Bank / NBFC</th>
+<th>Status</th>
+<th>Remarks</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 
 <div class="downloads" id="downloads" style="display:none;">
-  <button onclick="downloadExcel()">📥 Download Excel</button>
-  <button onclick="downloadPDF()">📄 Download PDF</button>
+<button onclick="downloadExcel()">📥 Download Excel</button>
+<button onclick="downloadPDF()">📄 Download PDF</button>
 </div>
 
 </div>
 
 <script>
 function checkEligibility(){
-  const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-  if(policies.length===0){
-    alert("No Bank Policies Found. Please add from Admin Panel.");
-    return;
-  }
-
-  const vintage = +document.getElementById("vintage").value;
-  const turnover = +document.getElementById("turnover").value;
-  const abb = +document.getElementById("abb").value;
-  const cibil = +document.getElementById("cibil").value;
-  const bankingType = document.getElementById("bankingType").value;
-  const ownHouse = document.getElementById("ownHouse").value;
-  const gst = document.getElementById("gst").value;
-  const itr = document.getElementById("itr").value;
-
-  let eligibleCount=0, notEligibleCount=0;
-  const tbody=document.querySelector("#resultTable tbody");
-  tbody.innerHTML="";
-
-  policies.forEach(p=>{
-    let isEligible=true;
-    let remark="All conditions matched";
-
-    if(vintage < (p.vintage||0)) isEligible=false;
-    if(turnover < (p.turnover||0)) isEligible=false;
-    if(abb < (p.abb||0)) isEligible=false;
-    if(cibil < (p.cibil||0)) isEligible=false;
-    if(p.bankingType && p.bankingType!==bankingType) isEligible=false;
-    if(p.ownHouse && p.ownHouse!==ownHouse) isEligible=false;
-    if(p.gst==="Yes" && gst!=="Yes") isEligible=false;
-    if(p.itr==="Yes" && itr!=="Yes") isEligible=false;
-
-    let loan="-";
-    if(isEligible){
-      eligibleCount++;
-      loan=(turnover*0.3).toFixed(2);
-    }else{
-      notEligibleCount++;
-      remark="Criteria mismatch";
+    const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+    if(policies.length===0){
+        alert("No Bank Policies Found");
+        return;
     }
 
-    const row=document.createElement("tr");
-    row.innerHTML=`
-      <td>${p.bankName}</td>
-      <td>${loan}</td>
-      <td class="${isEligible?'status-yes':'status-no'}">
-        ${isEligible?'Eligible':'Not Eligible'}
-      </td>
-      <td>${remark}</td>
-    `;
-    tbody.appendChild(row);
-  });
+    const vintage = Number(document.getElementById("vintage").value);
+    const turnover = Number(document.getElementById("turnover").value);
+    const abb = Number(document.getElementById("abb").value);
+    const cibil = Number(document.getElementById("cibil").value);
+    const bankingType = document.getElementById("bankingType").value;
+    const ownHouse = document.getElementById("ownHouse").value;
+    const gst = document.getElementById("gst").value;
+    const itr = document.getElementById("itr").value;
 
-  document.getElementById("resultTable").style.display="table";
-  document.getElementById("downloads").style.display="block";
-  document.getElementById("summary").innerHTML=
-    `✅ Eligible: ${eligibleCount} &nbsp;&nbsp; ❌ Not Eligible: ${notEligibleCount}`;
+    let eligibleCount=0, notEligibleCount=0;
+    const tbody = document.querySelector("#resultTable tbody");
+    tbody.innerHTML="";
+
+    policies.forEach(p=>{
+        let eligible=true;
+        let remarks=[];
+
+        if(p.vintage && vintage < p.vintage){eligible=false;remarks.push("Low Vintage");}
+        if(p.turnover && turnover < p.turnover){eligible=false;remarks.push("Low Turnover");}
+        if(p.abb && abb < p.abb){eligible=false;remarks.push("Low ABB");}
+        if(p.cibil && cibil < p.cibil){eligible=false;remarks.push("Low CIBIL");}
+        if(p.bankingType && p.bankingType!=="All Accounts Accepted" && bankingType!==p.bankingType){
+            eligible=false;remarks.push("Banking Type Mismatch");
+        }
+        if(p.ownHouse && ownHouse!==p.ownHouse){eligible=false;remarks.push("Own House Required");}
+        if(p.gst && gst!==p.gst){eligible=false;remarks.push("GST Required");}
+        if(p.itr && itr!==p.itr){eligible=false;remarks.push("ITR Required");}
+
+        const tr=document.createElement("tr");
+        tr.innerHTML=`
+            <td>${p.bankName}</td>
+            <td class="${eligible?'eligible':'noteligible'}">${eligible?'Eligible':'Not Eligible'}</td>
+            <td>${eligible?'All conditions matched':remarks.join(", ")}</td>
+        `;
+        tbody.appendChild(tr);
+
+        eligible?eligibleCount++:notEligibleCount++;
+    });
+
+    document.getElementById("summary").innerHTML =
+        `<span class="eligible">✅ Eligible: ${eligibleCount}</span>
+         <span class="noteligible">❌ Not Eligible: ${notEligibleCount}</span>`;
+
+    document.getElementById("resultTable").style.display="table";
+    document.getElementById("downloads").style.display="block";
 }
 
 function downloadExcel(){
-  let csv="Bank / NBFC,Eligible Loan (Lakhs),Status,Remarks\n";
-  document.querySelectorAll("#resultTable tbody tr").forEach(r=>{
-    const c=r.querySelectorAll("td");
-    csv+=`${c[0].innerText},${c[1].innerText},${c[2].innerText},${c[3].innerText}\n`;
-  });
-  const blob=new Blob([csv],{type:"text/csv"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="Eligibility_Result.csv";
-  a.click();
+    let csv="Bank / NBFC,Status,Remarks\n";
+    document.querySelectorAll("#resultTable tbody tr").forEach(r=>{
+        csv+=Array.from(r.children).map(td=>td.innerText).join(",")+"\n";
+    });
+    const blob=new Blob([csv],{type:"text/csv"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="Eligwise_Eligibility.csv";
+    a.click();
 }
 
 function downloadPDF(){
-  let text="ELIGIWISE ELIGIBILITY RESULT\n\n";
-  document.querySelectorAll("#resultTable tbody tr").forEach(r=>{
-    const c=r.querySelectorAll("td");
-    text+=`${c[0].innerText} | Loan:${c[1].innerText} | ${c[2].innerText}\n`;
-  });
-  const blob=new Blob([text],{type:"application/pdf"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download="Eligibility_Result.pdf";
-  a.click();
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF();
+    doc.setFontSize(14);
+    doc.text("ELIGIWISE – Eligibility Result",14,15);
+
+    let y=30;
+    doc.setFontSize(10);
+    doc.text("Bank / NBFC",14,y);
+    doc.text("Status",80,y);
+    doc.text("Remarks",120,y);
+    y+=8;
+
+    document.querySelectorAll("#resultTable tbody tr").forEach(r=>{
+        const tds=r.children;
+        doc.text(tds[0].innerText,14,y);
+        doc.text(tds[1].innerText,80,y);
+        doc.text(tds[2].innerText,120,y);
+        y+=8;
+    });
+
+    doc.save("Eligwise_Eligibility.pdf");
 }
 </script>
-
 </body>
 </html>
