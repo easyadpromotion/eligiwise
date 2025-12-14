@@ -10,11 +10,7 @@ body { font-family: Arial, sans-serif; background:#f4f6f8; }
 h1 { text-align:center; color:#0A4EA3; }
 h3 { background:#0A4EA3; color:#fff; padding:8px; margin-top:25px; }
 label { font-weight:bold; display:block; margin-top:10px; }
-input, select {
-  width:100%;
-  padding:6px;
-  margin-top:5px;
-}
+input, select { width:100%; padding:6px; margin-top:5px; }
 .row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
 button {
   margin-top:10px;
@@ -31,9 +27,7 @@ button {
   gap:10px;
   margin-bottom:8px;
 }
-.remove-btn {
-  background:#c0392b;
-}
+.remove-btn { background:#c0392b; }
 </style>
 </head>
 
@@ -42,123 +36,9 @@ button {
 
 <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
 
-<h3>Bank / NBFC Details</h3>
 <label>Bank / NBFC Name</label>
-<input id="bankName" placeholder="Ex: HDFC, Tata Capital, Piramal">
+<input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
-<!-- SECTION A -->
-<h3>SECTION A – BASIC PRODUCT DETAILS</h3>
-<div class="row">
-  <div>
-    <label>Product Type</label>
-    <select id="productType">
-      <option>STBL</option>
-      <option>HTBL</option>
-      <option>BOTH</option>
-    </select>
-  </div>
-  <div>
-    <label>Loan Amount (Min–Max Lakhs)</label>
-    <input id="loanAmount">
-  </div>
-  <div>
-    <label>Tenure (Min–Max Months)</label>
-    <input id="tenure">
-  </div>
-</div>
-
-<div class="row">
-  <div>
-    <label>ROI (Min–Max)</label>
-    <input id="roi">
-  </div>
-  <div>
-    <label>PF (Min–Max)</label>
-    <input id="pf">
-  </div>
-</div>
-
-<!-- SECTION B -->
-<h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
-<div class="row">
-  <div>
-    <label>Applicant Age (Min–Max)</label>
-    <input id="applicantAge">
-  </div>
-  <div>
-    <label>Co-Applicant Mandatory</label>
-    <select id="coApplicantMandatory">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Co-Applicant Age (Min–Max)</label>
-    <input id="coApplicantAge">
-  </div>
-</div>
-
-<div class="row">
-  <div>
-    <label>Own House</label>
-    <select id="ownHouse">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Own House Geo</label>
-    <select id="ownHouseGeo">
-      <option>Anywhere India</option>
-      <option>Geo Limit</option>
-    </select>
-  </div>
-</div>
-
-<!-- SECTION C -->
-<h3>SECTION C – BUSINESS & BANKING</h3>
-<div class="row">
-  <div><label>Business Vintage (Years)</label><input id="vintage"></div>
-  <div><label>Turnover Min (Lakhs)</label><input id="turnover"></div>
-  <div><label>ABB Min</label><input id="abb"></div>
-</div>
-
-<div class="row">
-  <div>
-    <label>ITR Required</label>
-    <select id="itr"><option>No</option><option>Yes</option></select>
-  </div>
-  <div>
-    <label>GST Required</label>
-    <select id="gst"><option>No</option><option>Yes</option></select>
-  </div>
-  <div>
-    <label>Banking Type</label>
-    <select id="bankingType">
-      <option>All Accounts Accepted</option>
-      <option>Only Current Account</option>
-      <option>Only OD/CC Accounts</option>
-      <option>Only Saving Accounts</option>
-      <option>CA + OD/CC</option>
-    </select>
-  </div>
-</div>
-
-<!-- SECTION D -->
-<h3>SECTION D – CREDIT & OBLIGATIONS</h3>
-<div class="row">
-  <div><label>CIBIL (Min–Max)</label><input id="cibil"></div>
-  <div><label>Active Loans Max</label><input id="activeLoans"></div>
-  <div><label>Loans in Last 6 Months</label><input id="recentLoans"></div>
-</div>
-
-<div class="row">
-  <div><label>Enquiries (3 / 6 Months)</label><input id="enquiries"></div>
-  <div><label>POS of Unsecured Loans</label><input id="pos"></div>
-  <div><label>Obligations Reject (Min–Max)</label><input id="obligations"></div>
-</div>
-
-<!-- SECTION E -->
 <h3>SECTION E – PROGRAMS (➕ Multiple Allowed)</h3>
 
 <label>ABB Programs</label>
@@ -177,7 +57,6 @@ button {
 <div id="incomePrograms"></div>
 <button type="button" onclick="addProgram('incomePrograms')">➕ Add Income / DSCR Program</button>
 
-<!-- SECTION F -->
 <h3>SECTION F – ADDITIONAL / FUTURE PARAMETERS</h3>
 <div id="customFields"></div>
 <button type="button" onclick="addCustom()">➕ Add Custom Field</button>
@@ -195,7 +74,7 @@ function addProgram(containerId) {
   row.innerHTML = `
     <input placeholder="Min">
     <input placeholder="Max">
-    <button class="remove-btn" type="button" onclick="this.parentNode.remove()">❌</button>
+    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">❌</button>
   `;
   container.appendChild(row);
 }
@@ -207,104 +86,20 @@ function addCustom() {
   row.innerHTML = `
     <input placeholder="Field Name">
     <input placeholder="Value / Range">
-    <button class="remove-btn" type="button" onclick="this.parentNode.remove()">❌</button>
+    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">❌</button>
   `;
   container.appendChild(row);
 }
 
-<script>
-function getPrograms(containerId) {
-  const rows = document.querySelectorAll(`#${containerId} .program-row`);
-  const list = [];
-  rows.forEach(r => {
-    const inputs = r.querySelectorAll("input");
-    if (inputs[0].value && inputs[1].value) {
-      list.push({
-        min: inputs[0].value,
-        max: inputs[1].value
-      });
-    }
-  });
-  return list;
-}
-
-function getCustomFields() {
-  const rows = document.querySelectorAll("#customFields .program-row");
-  const list = [];
-  rows.forEach(r => {
-    const inputs = r.querySelectorAll("input");
-    if (inputs[0].value && inputs[1].value) {
-      list.push({
-        field: inputs[0].value,
-        value: inputs[1].value
-      });
-    }
-  });
-  return list;
-}
-
 function savePolicy() {
-
   const bankName = document.getElementById("bankName").value.trim();
   if (!bankName) {
     alert("Please enter Bank / NBFC Name");
     return;
   }
-
-  const policy = {
-    bankName,
-
-    // SECTION A
-    productType: productType.value,
-    loanAmount: loanAmount.value,
-    tenure: tenure.value,
-    roi: roi.value,
-    pf: pf.value,
-
-    // SECTION B
-    applicantAge: applicantAge.value,
-    coApplicantMandatory: coApplicantMandatory.value,
-    coApplicantAge: coApplicantAge.value,
-    ownHouse: ownHouse.value,
-    ownHouseGeo: ownHouseGeo.value,
-
-    // SECTION C
-    businessVintage: vintage.value,
-    turnover: turnover.value,
-    abb: abb.value,
-    itrRequired: itr.value,
-    gstRequired: gst.value,
-    bankingType: bankingType.value,
-
-    // SECTION D
-    cibil: cibil.value,
-    activeLoans: activeLoans.value,
-    recentLoans: recentLoans.value,
-    enquiries: enquiries.value,
-    pos: pos.value,
-    obligations: obligations.value,
-
-    // SECTION E
-    programs: {
-      abb: getPrograms("abbPrograms"),
-      itr: getPrograms("itrPrograms"),
-      gst: getPrograms("gstPrograms"),
-      income: getPrograms("incomePrograms")
-    },
-
-    // SECTION F
-    customFields: getCustomFields(),
-
-    createdAt: new Date().toISOString()
-  };
-
-  const allPolicies =
-    JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-
-  allPolicies.push(policy);
-  localStorage.setItem("eligiwisePolicies", JSON.stringify(allPolicies));
-
   alert("✅ Bank / NBFC Policy Saved Successfully");
 }
 </script>
 
+</body>
+</html>
