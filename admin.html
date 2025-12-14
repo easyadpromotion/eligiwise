@@ -108,6 +108,7 @@ button { padding:6px 10px; background:#0A4EA3; color:#fff; border:none; border-r
       <option>Only OD/CC Accounts</option>
       <option>Only Saving Accounts</option>
       <option>CA + OD/CC</option>
+      <option>CA + SA</option>
     </select>
   </div>
 </div>
@@ -161,4 +162,84 @@ button { padding:6px 10px; background:#0A4EA3; color:#fff; border:none; border-r
 <h3>SECTION F – ADDITIONAL / FUTURE PARAMETERS</h3>
 <div id="customFields"></div>
 <button class="add-btn" onclick="addCustom()">➕ Add Custom Field</butt
+<script>
+// ADD PROGRAM ROW (SECTION E)
+function addProgram(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const row = document.createElement("div");
+  row.style.display = "grid";
+  row.style.gridTemplateColumns = "1fr 1fr auto";
+  row.style.gap = "10px";
+  row.style.marginBottom = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Min">
+    <input placeholder="Max">
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
+
+  container.appendChild(row);
+}
+
+// ADD CUSTOM FIELD (SECTION F)
+function addCustom() {
+  const container = document.getElementById("customFields");
+  if (!container) return;
+
+  const row = document.createElement("div");
+  row.style.display = "grid";
+  row.style.gridTemplateColumns = "1fr 1fr auto";
+  row.style.gap = "10px";
+  row.style.marginBottom = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value / Range">
+    <button type="button" onclick="this.parentNode.remove()">❌</button>
+  `;
+
+  container.appendChild(row);
+}
+
+// SAVE POLICY (FINAL)
+function savePolicy() {
+  const bankName = document.getElementById("bankName").value.trim();
+  if (!bankName) {
+    alert("Please enter Bank / NBFC Name");
+    return;
+  }
+
+  const policy = {
+    bankName,
+    productType: document.getElementById("productType").value,
+    loanAmount: document.getElementById("loanAmount").value,
+    tenure: document.getElementById("tenure").value,
+    roi: document.getElementById("roi").value,
+    pf: document.getElementById("pf").value,
+    applicantAge: document.getElementById("applicantAge").value,
+    coApplicantMandatory: document.getElementById("coApplicantMandatory").value,
+    ownHouse: document.getElementById("ownHouse").value,
+    ownHouseGeo: document.getElementById("ownHouseGeo").value,
+    vintage: document.getElementById("vintage").value,
+    turnover: document.getElementById("turnover").value,
+    abb: document.getElementById("abb").value,
+    itr: document.getElementById("itr").value,
+    gst: document.getElementById("gst").value,
+    bankingType: document.getElementById("bankingType").value,
+    cibil: document.getElementById("cibil").value,
+    activeLoans: document.getElementById("activeLoans").value
+  };
+
+  const allPolicies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  allPolicies.push(policy);
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(allPolicies));
+
+  alert("Bank / NBFC Policy Saved Successfully ✅");
+}
+</script>
+
+                                                                  
+
 
