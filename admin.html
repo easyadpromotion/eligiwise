@@ -1,25 +1,21 @@
 <script>
-function savePolicy() {
-
-  let bank = {
-    name: document.getElementById("name").value,
-    maxLoan: document.getElementById("maxLoan").value,
-    minVintage: Number(document.getElementById("minVintage").value),
-    minCibil: Number(document.getElementById("minCibil").value),
-    minAbb: Number(document.getElementById("minAbb").value),
-    minTurnover: Number(document.getElementById("minTurnover").value),
-    maxActive: Number(document.getElementById("maxActive").value),
-    maxRecent: Number(document.getElementById("maxRecent").value),
-    ownHouse: document.getElementById("ownHouse").value,
-    gst: document.getElementById("gst").value,
-    itr: document.getElementById("itr").value,
-    program: document.getElementById("program").value
+function savePolicy(){
+  let bank={
+    name:name.value,
+    maxLoan:maxLoan.value,
+    minVintage:+minVintage.value,
+    minCibil:+minCibil.value,
+    minAbb:+minAbb.value,
+    minTurnover:+minTurnover.value,
+    maxActive:+maxActive.value,
+    maxRecent:+maxRecent.value,
+    ownHouse:ownHouse.value,
+    gst:gst.value,
+    itr:itr.value
   };
-
-  let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
+  let banks=JSON.parse(localStorage.getItem("eligiwiseBanks"))||[];
   banks.push(bank);
-  localStorage.setItem("eligiwiseBanks", JSON.stringify(banks));
-
-  alert("Bank Policy Saved Successfully");
+  localStorage.setItem("eligiwiseBanks",JSON.stringify(banks));
+  alert("Bank policy saved");
 }
 </script>
