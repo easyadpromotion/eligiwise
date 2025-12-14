@@ -1,69 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ELIGIWISE | Eligibility Check</title>
+
+<style>
+body { font-family: Arial; background:#f4f6f8; }
+.container { max-width:1000px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
+h1 { text-align:center; color:#0A4EA3; }
+label { font-weight:bold; }
+input, select { width:100%; padding:8px; margin:6px 0 12px; }
+button { width:100%; padding:12px; background:#0A4EA3; color:#fff; border:none; border-radius:5px; }
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+th { background:#0A4EA3; color:#fff; }
+.green{background:#d4edda;} .red{background:#f8d7da;} .orange{background:#fff3cd;}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>ELIGIWISE</h1>
+
+<label>Business Vintage (Years)</label>
+<input type="number" id="vintage">
+
+<label>Annual Turnover</label>
+<input type="number" id="turnover">
+
+<label>CIBIL Score</label>
+<input type="number" id="cibil">
+
+<label>Average Bank Balance</label>
+<input type="number" id="abb">
+
+<label>Own House</label>
+<select id="ownHouse">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
+
+<label>GST Available</label>
+<select id="gst">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
+
+<label>ITR Available</label>
+<select id="itr">
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
+
+<label>Active Loans</label>
+<input type="number" id="activeLoans">
+
+<label>Loans in Last 6 Months</label>
+<input type="number" id="recentLoans">
+
+<button onclick="checkEligibility()">Check Eligibility</button>
+
+<table id="resultTable" style="display:none;">
+<thead>
+<tr><th>Bank</th><th>Status</th><th>Max Loan</th><th>Reason</th></tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
 <script>
 function checkEligibility() {
-
-  let vintage = Number(document.getElementById("vintage").value);
-  let turnover = Number(document.getElementById("turnover").value);
-  let cibil = Number(document.getElementById("cibil").value);
-  let abb = Number(document.getElementById("abb").value);
-  let ownHouse = document.getElementById("ownHouse").value;
-  let gst = document.getElementById("gst").value;
-  let itr = document.getElementById("itr").value;
-  let activeLoans = Number(document.getElementById("activeLoans").value);
-  let recentLoans = Number(document.getElementById("recentLoans").value);
-
   let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
-
-  let table = document.getElementById("resultTable");
-  let tbody = table.querySelector("tbody");
-  tbody.innerHTML = "";
-  table.style.display = "table";
-
   if (banks.length === 0) {
     alert("No bank policies added. Please add from Admin Panel.");
     return;
   }
 
-  banks.forEach(b => {
-    let status = "Eligible";
-    let reason = "Meets policy";
-    let cls = "green";
+  let v = +vintage.value, t = +turnover.value, c = +cibil.value;
+  let a = +abb.value, al = +activeLoans.value, rl = +recentLoans.value;
+  let oh = ownHouse.value, g = gst.value, i = itr.value;
 
-    if (b.minVintage && vintage < b.minVintage) {
-      status="Rejected"; reason="Business vintage not met"; cls="red";
-    }
-    else if (b.minTurnover && turnover < b.minTurnover) {
-      status="Rejected"; reason="Turnover below policy"; cls="red";
-    }
-    else if (b.minCibil && cibil < b.minCibil) {
-      status="Rejected"; reason="Low CIBIL score"; cls="red";
-    }
-    else if (b.minAbb && abb < b.minAbb) {
-      status="Borderline"; reason="Low ABB"; cls="orange";
-    }
-    else if (b.ownHouse==="true" && ownHouse==="no") {
-      status="Rejected"; reason="Own house required"; cls="red";
-    }
-    else if (b.gst==="true" && gst==="no") {
-      status="Rejected"; reason="GST mandatory"; cls="red";
-    }
-    else if (b.itr==="true" && itr==="no") {
-      status="Rejected"; reason="ITR mandatory"; cls="red";
-    }
-    else if (b.maxActive && activeLoans > b.maxActive) {
-      status="Rejected"; reason="Too many active loans"; cls="red";
-    }
-    else if (b.maxRecent && recentLoans > b.maxRecent) {
-      status="Rejected"; reason="Too many recent loans"; cls="red";
-    }
+  let tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+  resultTable.style.display = "table";
 
-    tbody.innerHTML += `
-      <tr class="${cls}">
-        <td>${b.name}</td>
-        <td>${status}</td>
-        <td>${b.maxLoan}</td>
-        <td>${reason}</td>
-      </tr>
-    `;
+  banks.forEach(b=>{
+    let status="Eligible", reason="Meets policy", cls="green";
+
+    if(b.minVintage && v<b.minVintage){status="Rejected";reason="Vintage issue";cls="red";}
+    else if(b.minTurnover && t<b.minTurnover){status="Rejected";reason="Turnover issue";cls="red";}
+    else if(b.minCibil && c<b.minCibil){status="Rejected";reason="Low CIBIL";cls="red";}
+    else if(b.minAbb && a<b.minAbb){status="Borderline";reason="Low ABB";cls="orange";}
+    else if(b.ownHouse==="true" && oh==="no"){status="Rejected";reason="House required";cls="red";}
+    else if(b.gst==="true" && g==="no"){status="Rejected";reason="GST required";cls="red";}
+    else if(b.itr==="true" && i==="no"){status="Rejected";reason="ITR required";cls="red";}
+    else if(b.maxActive && al>b.maxActive){status="Rejected";reason="Too many loans";cls="red";}
+    else if(b.maxRecent && rl>b.maxRecent){status="Rejected";reason="Recent loans";cls="red";}
+
+    tbody.innerHTML+=`<tr class="${cls}">
+      <td>${b.name}</td><td>${status}</td><td>${b.maxLoan}</td><td>${reason}</td></tr>`;
   });
 }
 </script>
+</body>
+</html>
