@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ELIGIWISE | Loan Eligibility Platform</title>
+
+<style>
+body { font-family: Arial, sans-serif; background:#f4f6f8; }
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+}
+h1 { text-align:center; color:#0A4EA3; margin-bottom:5px; }
+.subtitle { text-align:center; color:#555; margin-bottom:25px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+label { font-weight: bold; }
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 14px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #0A4EA3;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+th {
+  background: #0A4EA3;
+  color: white;
+}
+.green { background:#d4edda; }
+.orange { background:#fff3cd; }
+.red { background:#f8d7da; }
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>ELIGIWISE</h1>
+  <div class="subtitle">Smart Loan Eligibility – MVP Platform</div>
+
+  <div class="grid">
+    <div>
+      <label>Business Vintage (Years)</label>
+      <input type="number" id="vintage">
+
+      <label>Annual Turnover (₹)</label>
+      <input type="number" id="turnover">
+
+      <label>CIBIL Score</label>
+      <input type="number" id="cibil">
+
+      <label>Average Bank Balance (₹)</label>
+      <input type="number" id="abb">
+
+      <label>Own House</label>
+      <select id="ownHouse">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <label>GST Available</label>
+      <select id="gst">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+
+      <label>IT Returns Available</label>
+      <select id="itr">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+
+    <div>
+      <label>No. of Active Loans</label>
+      <input type="number" id="activeLoans">
+
+      <label>Loans Taken in Last 6 Months</label>
+      <input type="number" id="recentLoans">
+
+      <label>No. of Saving Accounts</label>
+      <input type="number" id="sa">
+
+      <label>No. of Current Accounts</label>
+      <input type="number" id="ca">
+
+      <label>No. of OD / CC Accounts</label>
+      <input type="number" id="odcc">
+    </div>
+  </div>
+
+  <button onclick="checkEligibility()">Check Eligibility</button>
+
+  <table id="resultTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Bank / NBFC</th>
+        <th>Status</th>
+        <th>Max Loan</th>
+        <th>Reason</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="footer">
+    © 2025 ELIGIWISE | MVP Eligibility Intelligence Platform
+  </div>
+</div>
+
+<script>
+const lenders = [
+  {name:"Tata Capital", maxLoan:"20L", minVintage:2, minCibil:675, maxRecent:6},
+  {name:"Aditya Birla Capital", maxLoan:"100L", minVintage:3, ownHouse:true, gst:true},
+  {name:"Muthoot Finance", maxLoan:"20L", minVintage:3, ownHouse:true},
+  {name:"FlexiLoans", maxLoan:"25L", minVintage:1, minCibil:700, minAbb:35000},
+  {name:"Krazybee", maxLoan:"30L", minVintage:1.5, minCibil:701},
+  {name:"Utkarsh SFB", maxLoan:"30L", minVintage:3, minCibil:700, maxActive:6}
+];
+
+function checkEligibility() {
+  const vintage = +document.getElementById("vintage").value;
+  const cibil = +document.getElementById("cibil").value;
+  const abb = +document.getElementById("abb").value;
+  const ownHouse = document.getElementById("ownHouse").value;
+  const gst = document.getElementById("gst").value;
+  const activeLoans = +document.getElementById("activeLoans").value;
+  const recentLoans = +document.getElementById("recentLoans").value;
+
+  const table = document.getElementById("resultTable");
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+  table.style.display = "table";
+
+  lenders.forEach(l => {
+    let status = "Eligible";
+    let reason = "Meets policy";
+    let cls = "green";
+
+    if (l.minVintage && vintage < l.minVintage) {
+      status="Rejected"; reason="Business vintage not met"; cls="red";
+    } else if (l.minCibil && cibil < l.minCibil) {
+      status="Rejected"; reason="Low CIBIL score"; cls="red";
+    } else if (l.minAbb && abb < l.minAbb) {
+      status="Borderline"; reason="Low ABB"; cls="orange";
+    } else if (l.ownHouse && ownHouse==="no") {
+      status="Rejected"; reason="Own house mandatory"; cls="red";
+    } else if (l.gst && gst==="no") {
+      status="Rejected"; reason="GST required"; cls="red";
+    } else if (l.maxActive && activeLoans > l.maxActive) {
+      status="Rejected"; reason="Too many active loans"; cls="red";
+    } else if (l.maxRecent && recentLoans > l.maxRecent) {
+      status="Rejected"; reason="Too many recent loans"; cls="red";
+    }
+
+    tbody.innerHTML += `
+      <tr class="${cls}">
+        <td>${l.name}</td>
+        <td>${status}</td>
+        <td>${l.maxLoan}</td>
+        <td>${reason}</td>
+      </tr>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>
