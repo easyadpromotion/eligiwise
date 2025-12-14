@@ -5,18 +5,47 @@
 <title>ELIGIWISE – Bank / NBFC Policy Admin</title>
 
 <style>
-body { font-family: Arial, sans-serif; background:#f4f6f8; }
-.container { max-width:1200px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
-h1 { text-align:center; color:#0A4EA3; }
-h3 { background:#0A4EA3; color:#fff; padding:8px; margin-top:25px; }
-label { font-weight:bold; display:block; margin-top:10px; }
-input, select { width:100%; padding:6px; margin-top:5px; }
-.row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
+}
+.container {
+  max-width:1200px;
+  margin:20px auto;
+  background:#ffffff;
+  padding:20px;
+  border-radius:10px;
+}
+h1 {
+  text-align:center;
+  color:#0A4EA3;
+}
+h3 {
+  background:#0A4EA3;
+  color:#ffffff;
+  padding:8px;
+  margin-top:25px;
+}
+label {
+  font-weight:bold;
+  display:block;
+  margin-top:10px;
+}
+input, select {
+  width:100%;
+  padding:6px;
+  margin-top:5px;
+}
+.row {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:15px;
+}
 button {
   margin-top:10px;
   padding:6px 12px;
   background:#0A4EA3;
-  color:#fff;
+  color:#ffffff;
   border:none;
   border-radius:4px;
   cursor:pointer;
@@ -27,7 +56,9 @@ button {
   gap:10px;
   margin-bottom:8px;
 }
-.remove-btn { background:#c0392b; }
+.remove-btn {
+  background:#c0392b;
+}
 </style>
 </head>
 
@@ -39,6 +70,152 @@ button {
 <label>Bank / NBFC Name</label>
 <input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
+<!-- SECTION A -->
+<h3>SECTION A – BASIC PRODUCT DETAILS</h3>
+
+<label>Product Type</label>
+<select id="productType">
+  <option>STBL</option>
+  <option>HTBL</option>
+  <option>BOTH</option>
+</select>
+
+<div class="row">
+  <div>
+    <label>Loan Amount Min–Max (Lakhs)</label>
+    <input id="loanAmount" placeholder="Ex: 10-50">
+  </div>
+  <div>
+    <label>Tenure Min–Max (Months)</label>
+    <input id="tenure" placeholder="Ex: 12-48">
+  </div>
+  <div>
+    <label>ROI Min–Max (%)</label>
+    <input id="roi" placeholder="Ex: 14-22">
+  </div>
+</div>
+
+<label>PF Min–Max (%)</label>
+<input id="pf" placeholder="Ex: 2-3">
+
+<!-- SECTION B -->
+<h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
+
+<div class="row">
+  <div>
+    <label>Applicant Age Min–Max</label>
+    <input id="applicantAge" placeholder="25-55">
+  </div>
+  <div>
+    <label>Co-Applicant Mandatory</label>
+    <select id="coApplicantMandatory">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Co-Applicant Age Min–Max</label>
+    <input id="coApplicantAge" placeholder="21-60">
+  </div>
+</div>
+
+<div class="row">
+  <div>
+    <label>Own House</label>
+    <select id="ownHouse">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Own House Geo</label>
+    <select id="ownHouseGeo">
+      <option>Anywhere India</option>
+      <option>Same City</option>
+      <option>Within KM Radius</option>
+    </select>
+  </div>
+</div>
+
+<!-- SECTION C -->
+<h3>SECTION C – BUSINESS & BANKING</h3>
+
+<div class="row">
+  <div>
+    <label>Business Vintage (Years)</label>
+    <input id="vintage">
+  </div>
+  <div>
+    <label>Turnover Min (Lakhs)</label>
+    <input id="turnover">
+  </div>
+  <div>
+    <label>ABB Min (Lakhs)</label>
+    <input id="abb">
+  </div>
+</div>
+
+<div class="row">
+  <div>
+    <label>ITR Required</label>
+    <select id="itr">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>GST Required</label>
+    <select id="gst">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Banking Type</label>
+    <select id="bankingType">
+      <option>All Accounts Accepted</option>
+      <option>Only Current Account</option>
+      <option>Only OD/CC</option>
+      <option>Only Savings</option>
+      <option>CA + OD/CC</option>
+    </select>
+  </div>
+</div>
+
+<!-- SECTION D -->
+<h3>SECTION D – CREDIT & OBLIGATIONS</h3>
+
+<div class="row">
+  <div>
+    <label>CIBIL Min–Max</label>
+    <input id="cibil" placeholder="700-900">
+  </div>
+  <div>
+    <label>Max Active Loans</label>
+    <input id="activeLoans">
+  </div>
+  <div>
+    <label>Loans in Last 6 Months</label>
+    <input id="recentLoans">
+  </div>
+</div>
+
+<div class="row">
+  <div>
+    <label>Enquiries (3/6 Months)</label>
+    <input id="enquiries">
+  </div>
+  <div>
+    <label>POS of Unsecured Loans</label>
+    <input id="pos">
+  </div>
+  <div>
+    <label>Obligations % (Min–Max)</label>
+    <input id="obligations">
+  </div>
+</div>
+
+<!-- SECTION E -->
 <h3>SECTION E – PROGRAMS (➕ Multiple Allowed)</h3>
 
 <label>ABB Programs</label>
@@ -57,7 +234,9 @@ button {
 <div id="incomePrograms"></div>
 <button type="button" onclick="addProgram('incomePrograms')">➕ Add Income / DSCR Program</button>
 
+<!-- SECTION F -->
 <h3>SECTION F – ADDITIONAL / FUTURE PARAMETERS</h3>
+
 <div id="customFields"></div>
 <button type="button" onclick="addCustom()">➕ Add Custom Field</button>
 
