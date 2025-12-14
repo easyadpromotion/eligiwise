@@ -64,6 +64,20 @@ th { background:#0A4EA3; color:#fff; }
 </select>
 
 <button onclick="checkEligibility()">🔍 Check Eligibility</button>
+<!-- RESULT SUMMARY -->
+<div id="summary" style="margin-top:20px;font-weight:bold;"></div>
+
+<!-- RESULT TABLE -->
+<table id="resultTable" border="1" width="100%" style="margin-top:15px;border-collapse:collapse;display:none;">
+  <thead style="background:#0a4ea3;color:#fff;">
+    <tr>
+      <th>Bank / NBFC</th>
+      <th>Status</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody id="resultBody"></tbody>
+</table>
 
 <table id="resultTable" style="display:none">
 <thead>
@@ -148,3 +162,4 @@ function checkEligibility() {
 
 </body>
 </html>
+
