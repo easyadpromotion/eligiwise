@@ -183,10 +183,33 @@ function checkEligibility() {
   function checkEligibility() {
    ...
 }
+  
 
 </script>
 
 </body>
 </html>
+<!-- ===== RESULT SUMMARY ===== -->
+<div id="summary" style="margin-top:20px;font-weight:bold;"></div>
+
+<!-- ===== RESULT TABLE ===== -->
+<table id="resultTable" border="1" width="100%"
+       style="margin-top:15px;border-collapse:collapse;display:none;">
+  <thead style="background:#0a4ea3;color:#fff;">
+    <tr>
+      <th>Bank / NBFC</th>
+      <th>Status</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody id="resultBody"></tbody>
+</table>
+
+<!-- ===== DOWNLOAD BUTTONS (THIS WAS MISSING) ===== -->
+<div id="downloadBtns" style="margin-top:15px;display:none;">
+  <button onclick="downloadExcel()">⬇ Download Excel</button>
+  <button onclick="downloadPDF()">⬇ Download PDF</button>
+</div>
+
 
 
