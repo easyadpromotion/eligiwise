@@ -1,1 +1,127 @@
-admin.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ELIGIWISE | Admin Panel</title>
+
+<style>
+body { font-family: Arial; background:#f4f6f8; }
+.container { max-width:1000px; margin:30px auto; background:#fff; padding:25px; border-radius:10px; }
+h1 { color:#0A4EA3; text-align:center; }
+label { font-weight:bold; }
+input, select { width:100%; padding:8px; margin:6px 0 12px; }
+button { padding:10px 15px; background:#0A4EA3; color:#fff; border:none; cursor:pointer; border-radius:5px; }
+table { width:100%; border-collapse:collapse; margin-top:20px; }
+th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+th { background:#0A4EA3; color:#fff; }
+.red { background:#f8d7da; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>ELIGIWISE – Admin Panel</h1>
+
+<h3>Add / Edit Bank Policy</h3>
+
+<label>Bank / NBFC Name</label>
+<input type="text" id="name">
+
+<label>Max Loan (Ex: 20L, 50L)</label>
+<input type="text" id="maxLoan">
+
+<label>Min Business Vintage (Years)</label>
+<input type="number" id="minVintage">
+
+<label>Min CIBIL</label>
+<input type="number" id="minCibil">
+
+<label>Min ABB</label>
+<input type="number" id="minAbb">
+
+<label>Own House Required</label>
+<select id="ownHouse">
+  <option value="false">No</option>
+  <option value="true">Yes</option>
+</select>
+
+<label>GST Required</label>
+<select id="gst">
+  <option value="false">No</option>
+  <option value="true">Yes</option>
+</select>
+
+<button onclick="addBank()">Save Bank Policy</button>
+
+<table>
+<thead>
+<tr>
+<th>Bank</th>
+<th>Max Loan</th>
+<th>Vintage</th>
+<th>CIBIL</th>
+<th>ABB</th>
+<th>Own House</th>
+<th>GST</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="bankTable"></tbody>
+</table>
+
+</div>
+
+<script>
+let banks = [];
+
+function addBank() {
+  const bank = {
+    name: name.value,
+    maxLoan: maxLoan.value,
+    minVintage: Number(minVintage.value),
+    minCibil: Number(minCibil.value),
+    minAbb: Number(minAbb.value),
+    ownHouse: ownHouse.value === "true",
+    gst: gst.value === "true"
+  };
+
+  banks.push(bank);
+  renderTable();
+  clearForm();
+}
+
+function renderTable() {
+  bankTable.innerHTML = "";
+  banks.forEach((b, i) => {
+    bankTable.innerHTML += `
+      <tr>
+        <td>${b.name}</td>
+        <td>${b.maxLoan}</td>
+        <td>${b.minVintage}</td>
+        <td>${b.minCibil}</td>
+        <td>${b.minAbb}</td>
+        <td>${b.ownHouse ? "Yes" : "No"}</td>
+        <td>${b.gst ? "Yes" : "No"}</td>
+        <td><button class="red" onclick="removeBank(${i})">Delete</button></td>
+      </tr>
+    `;
+  });
+}
+
+function removeBank(index) {
+  banks.splice(index, 1);
+  renderTable();
+}
+
+function clearForm() {
+  name.value = "";
+  maxLoan.value = "";
+  minVintage.value = "";
+  minCibil.value = "";
+  minAbb.value = "";
+}
+</script>
+
+</body>
+</html>
