@@ -87,7 +87,19 @@ input {
         <th>ITR</th>
         <th>Actions</th>
       </tr>
-    </thead>
+    <table id="resultTable" border="1" width="100%"
+ style="margin-top:15px;border-collapse:collapse;display:none;">
+  <thead style="background:#0a4ea3;color:#fff;">
+    <tr>
+      <th>Bank / NBFC</th>
+      <th>Eligible Loan (₹ Lakhs)</th>
+      <th>Status</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
     <tbody id="policyTable"></tbody>
   </table>
 </div>
@@ -173,3 +185,4 @@ renderPolicies();
 
 </body>
 </html>
+
