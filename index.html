@@ -5,212 +5,215 @@
 <title>ELIGIWISE – Eligibility Check</title>
 
 <style>
-body { font-family: Arial; background:#f4f6f8; }
-.container { max-width:1000px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
-h1 { text-align:center; color:#0A4EA3; }
-label { font-weight:bold; display:block; margin-top:10px; }
-input, select { width:100%; padding:6px; margin-top:5px; }
-button { margin-top:15px; padding:8px 14px; background:#0A4EA3; color:#fff; border:none; border-radius:5px; cursor:pointer; }
-table { width:100%; border-collapse:collapse; margin-top:20px; }
-th, td { border:1px solid #ccc; padding:8px; text-align:center; }
-th { background:#0A4EA3; color:#fff; }
-.eligible { color:green; font-weight:bold; }
-.not { color:red; font-weight:bold; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  h1 {
+    text-align: center;
+    color: #0a4ea3;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+  }
+  input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+  button {
+    margin-top: 15px;
+    padding: 10px 18px;
+    background: #0a4ea3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background: #0a4ea3;
+    color: #fff;
+  }
 </style>
 </head>
 
 <body>
+
 <div class="container">
+  <h1>ELIGIWISE – Eligibility Check</h1>
 
-<h1>ELIGIWISE – Eligibility Check</h1>
+  <!-- USER INPUTS -->
+  <label>Business Vintage (Years)</label>
+  <input type="number" id="vintage" placeholder="Ex: 3">
 
-<label>Business Vintage (Years)</label>
-<input id="vintage">
+  <label>Turnover (Lakhs)</label>
+  <input type="number" id="turnover" placeholder="Ex: 120">
 
-<label>Turnover (Lakhs)</label>
-<input id="turnover">
+  <label>Average Bank Balance – ABB (Lakhs)</label>
+  <input type="number" step="0.01" id="abb" placeholder="Ex: 0.75">
 
-<label>Average Bank Balance – ABB (Lakhs)</label>
-<input id="abb">
+  <label>CIBIL Score</label>
+  <input type="number" id="cibil" placeholder="Ex: 720">
 
-<label>CIBIL Score</label>
-<input id="cibil">
+  <label>Banking Type</label>
+  <select id="bankingType">
+    <option value="All">All Accounts Accepted</option>
+    <option value="Current">Current Account</option>
+    <option value="Savings">Savings Account</option>
+  </select>
 
-<label>Banking Type</label>
-<select id="bankingType">
-  <option>All Accounts Accepted</option>
-  <option>Only Current Account</option>
-  <option>Only OD/CC</option>
-  <option>Only Savings</option>
-  <option>CA + OD/CC</option>
-</select>
+  <label>Own House</label>
+  <select id="ownHouse">
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
 
-<label>Own House</label>
-<select id="ownHouse">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+  <label>GST Available</label>
+  <select id="gst">
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
 
-<label>GST Available</label>
-<select id="gst">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+  <label>ITR Available</label>
+  <select id="itr">
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+  </select>
 
-<label>ITR Available</label>
-<select id="itr">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+  <button type="button" onclick="checkEligibility()">🔍 Check Eligibility</button>
 
-<button onclick="checkEligibility()">🔍 Check Eligibility</button>
-  <!-- ===== RESULT SUMMARY ===== -->
-<div id="summary" style="margin-top:20px;font-weight:bold;"></div>
+  <!-- SUMMARY -->
+  <div id="summary" style="margin-top:20px;font-weight:bold;"></div>
 
-<!-- ===== RESULT TABLE ===== -->
-<table id="resultTable" border="1" width="100%"
-       style="margin-top:15px;border-collapse:collapse;display:none;">
-  <thead style="background:#0a4ea3;color:#fff;">
-    <tr>
-      <th>Bank / NBFC</th>
-      <th>Status</th>
-      <th>Remarks</th>
-    </tr>
-  </thead>
-  <tbody id="resultBody"></tbody>
-</table>
+  <!-- RESULT TABLE -->
+  <table id="resultTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Bank / NBFC</th>
+        <th>Status</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody id="resultBody"></tbody>
+  </table>
 
-<!-- ===== DOWNLOAD BUTTONS ===== -->
-<div id="downloadBtns" style="margin-top:15px;display:none;">
-  <button onclick="downloadExcel()">⬇ Download Excel</button>
-  <button onclick="downloadPDF()">⬇ Download PDF</button>
-</div>
-
-<!-- RESULT SUMMARY -->
-<div id="summary" style="margin-top:20px;font-weight:bold;"></div>
-
-<!-- RESULT TABLE -->
-<table id="resultTable" border="1" width="100%" style="margin-top:15px;border-collapse:collapse;display:none;">
-  <thead style="background:#0a4ea3;color:#fff;">
-    <tr>
-      <th>Bank / NBFC</th>
-      <th>Status</th>
-      <th>Remarks</th>
-    </tr>
-  </thead>
-  <tbody id="resultBody"></tbody>
-</table>
-
-<table id="resultTable" style="display:none">
-<thead>
-<tr>
-  <th>Bank / NBFC</th>
-  <th>Status</th>
-  <th>Remarks</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-
+  <!-- DOWNLOAD -->
+  <div id="downloadBtns" style="margin-top:15px;display:none;">
+    <button type="button" onclick="downloadExcel()">⬇ Download Excel</button>
+    <button type="button" onclick="downloadPDF()">⬇ Download PDF</button>
+  </div>
 </div>
 
 <script>
 function checkEligibility() {
+  console.log("Eligibility check started");
 
   const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-  const tbody = document.querySelector("#resultTable tbody");
-  tbody.innerHTML = "";
 
   if (policies.length === 0) {
-    alert("No Bank Policies Found");
+    alert("No Bank Policies Found. Please add from Admin Panel.");
     return;
   }
 
-  const v = Number(vintage.value);
-  const t = Number(turnover.value);
-  const a = Number(abb.value);
-  const c = Number(cibil.value);
+  const vintage = Number(document.getElementById("vintage").value || 0);
+  const turnover = Number(document.getElementById("turnover").value || 0);
+  const abb = Number(document.getElementById("abb").value || 0);
+  const cibil = Number(document.getElementById("cibil").value || 0);
+
+  const resultBody = document.getElementById("resultBody");
+  const resultTable = document.getElementById("resultTable");
+  const summary = document.getElementById("summary");
+  const downloadBtns = document.getElementById("downloadBtns");
+
+  resultBody.innerHTML = "";
+
+  let eligibleCount = 0;
+  let notEligibleCount = 0;
 
   policies.forEach(p => {
+    let eligible = true;
+    let remarks = [];
 
-    let status = "Eligible";
-    let reason = "All conditions matched";
-
-    if (p.businessVintage && v < Number(p.businessVintage)) {
-      status = "Not Eligible";
-      reason = "Insufficient Business Vintage";
+    if (p.vintage && vintage < p.vintage) {
+      eligible = false;
+      remarks.push("Low Vintage");
     }
-    else if (p.turnover && t < Number(p.turnover)) {
-      status = "Not Eligible";
-      reason = "Turnover below requirement";
+    if (p.turnover && turnover < p.turnover) {
+      eligible = false;
+      remarks.push("Low Turnover");
     }
-    else if (p.abb && a < Number(p.abb)) {
-      status = "Not Eligible";
-      reason = "ABB below requirement";
+    if (p.abb && abb < p.abb) {
+      eligible = false;
+      remarks.push("Low ABB");
     }
-    else if (p.cibil && c < Number(p.cibil.split("-")[0])) {
-      status = "Not Eligible";
-      reason = "CIBIL score too low";
-    }
-    else if (p.bankingType && p.bankingType !== bankingType.value && p.bankingType !== "All Accounts Accepted") {
-      status = "Not Eligible";
-      reason = "Banking type mismatch";
-    }
-    else if (p.ownHouse === "Yes" && ownHouse.value !== "Yes") {
-      status = "Not Eligible";
-      reason = "Own house mandatory";
-    }
-    else if (p.gstRequired === "Yes" && gst.value !== "Yes") {
-      status = "Not Eligible";
-      reason = "GST required";
-    }
-    else if (p.itrRequired === "Yes" && itr.value !== "Yes") {
-      status = "Not Eligible";
-      reason = "ITR required";
+    if (p.cibil && cibil < p.cibil) {
+      eligible = false;
+      remarks.push("Low CIBIL");
     }
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${p.bankName}</td>
-      <td class="${status === "Eligible" ? "eligible" : "not"}">${status}</td>
-      <td>${reason}</td>
+    if (eligible) eligibleCount++;
+    else notEligibleCount++;
+
+    resultBody.innerHTML += `
+      <tr>
+        <td>${p.bankName}</td>
+        <td style="color:${eligible ? 'green' : 'red'};font-weight:bold;">
+          ${eligible ? 'Eligible' : 'Not Eligible'}
+        </td>
+        <td>${remarks.join(", ") || "All conditions matched"}</td>
+      </tr>
     `;
-    tbody.appendChild(tr);
   });
 
-  document.getElementById("resultTable").style.display = "table";
+  summary.innerHTML = `
+    ✅ Eligible Banks: <span style="color:green">${eligibleCount}</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    ❌ Not Eligible Banks: <span style="color:red">${notEligibleCount}</span>
+  `;
+
+  resultTable.style.display = "table";
+  downloadBtns.style.display = "block";
 }
-  function checkEligibility() {
-   ...
+
+function downloadExcel() {
+  const table = document.getElementById("resultTable").outerHTML;
+  const blob = new Blob([table], { type: "application/vnd.ms-excel" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Eligiwise_Eligibility.xls";
+  a.click();
 }
- <!-- ===== RESULT SUMMARY ===== -->
-<div id="summary" style="margin-top:20px;font-weight:bold;"></div>
 
-<!-- ===== RESULT TABLE ===== -->
-<table id="resultTable" border="1" width="100%"
-       style="margin-top:15px;border-collapse:collapse;display:none;">
-  <thead style="background:#0a4ea3;color:#fff;">
-    <tr>
-      <th>Bank / NBFC</th>
-      <th>Status</th>
-      <th>Remarks</th>
-    </tr>
-  </thead>
-  <tbody id="resultBody"></tbody>
-</table>
-
-<!-- ===== DOWNLOAD BUTTONS (THIS WAS MISSING) ===== -->
-<div id="downloadBtns" style="margin-top:15px;display:none;">
-  <button onclick="downloadExcel()">⬇ Download Excel</button>
-  <button onclick="downloadPDF()">⬇ Download PDF</button>
-</div>
- 
-
+function downloadPDF() {
+  const table = document.getElementById("resultTable").outerHTML;
+  const win = window.open("", "", "width=900,height=700");
+  win.document.write("<html><head><title>Eligibility Result</title></head><body>");
+  win.document.write(table);
+  win.document.write("</body></html>");
+  win.document.close();
+  win.print();
+}
 </script>
 
 </body>
 </html>
-
-
-
-
