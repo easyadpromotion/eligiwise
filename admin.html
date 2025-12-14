@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE | Policy Admin Panel</title>
+<title>ELIGIWISE | Bank / NBFC Policy Admin</title>
 
 <style>
 body { font-family: Arial; background:#f4f6f8; }
@@ -16,9 +16,17 @@ input, select {
   margin-bottom:10px;
 }
 .row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
-button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-radius:4px; cursor:pointer; }
-.add-btn { font-size:12px; margin-bottom:10px; }
-.program-box { border:1px dashed #aaa; padding:10px; margin-bottom:10px; }
+button { padding:6px 10px; background:#0A4EA3; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+.add-btn { font-size:12px; margin:5px 0; }
+.program-row {
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:10px;
+  margin-bottom:8px;
+}
+.remove-btn {
+  background:#c0392b;
+}
 </style>
 </head>
 
@@ -26,6 +34,11 @@ button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-r
 <div class="container">
 
 <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
+
+<!-- BANK NAME -->
+<h3>Bank / NBFC Details</h3>
+<label>Bank / NBFC Name</label>
+<input id="bankName" placeholder="Ex: HDFC Bank, Tata Capital, Piramal">
 
 <!-- SECTION A -->
 <h3>SECTION A – BASIC PRODUCT DETAILS</h3>
@@ -39,22 +52,22 @@ button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-r
     </select>
   </div>
   <div>
-    <label>Loan Amount Min–Max (Lakhs)</label>
+    <label>Loan Amount (Min–Max Lakhs)</label>
     <input id="loanAmount">
   </div>
   <div>
-    <label>Tenure Min–Max (Months)</label>
+    <label>Tenure (Min–Max Months)</label>
     <input id="tenure">
   </div>
 </div>
 
 <div class="row">
   <div>
-    <label>ROI Min–Max</label>
+    <label>ROI (Min–Max)</label>
     <input id="roi">
   </div>
   <div>
-    <label>PF Min–Max</label>
+    <label>PF (Min–Max)</label>
     <input id="pf">
   </div>
 </div>
@@ -62,72 +75,31 @@ button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-r
 <!-- SECTION B -->
 <h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
 <div class="row">
-  <div>
-    <label>Applicant Age Min–Max</label>
-    <input id="applicantAge">
+  <div><label>Applicant Age (Min–Max)</label><input id="applicantAge"></div>
+  <div><label>Co-Applicant Mandatory</label>
+    <select id="coApplicantMandatory"><option>No</option><option>Yes</option></select>
   </div>
-  <div>
-    <label>Co-Applicant Mandatory</label>
-    <select id="coApplicantMandatory">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Co-Applicant Age Min–Max</label>
-    <input id="coApplicantAge">
-  </div>
+  <div><label>Co-Applicant Age (Min–Max)</label><input id="coApplicantAge"></div>
 </div>
 
 <div class="row">
-  <div>
-    <label>Own House</label>
-    <select id="ownHouse">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Own House Geo</label>
-    <select id="ownHouseGeo">
-      <option>Anywhere India</option>
-      <option>Geo Limit</option>
-    </select>
+  <div><label>Own House</label><select id="ownHouse"><option>No</option><option>Yes</option></select></div>
+  <div><label>Own House Geo</label>
+    <select id="ownHouseGeo"><option>Anywhere India</option><option>Geo Limit</option></select>
   </div>
 </div>
 
 <!-- SECTION C -->
 <h3>SECTION C – BUSINESS & BANKING</h3>
 <div class="row">
-  <div>
-    <label>Business Vintage (Years)</label>
-    <input id="vintage">
-  </div>
-  <div>
-    <label>Turnover Min (Lakhs)</label>
-    <input id="turnover">
-  </div>
-  <div>
-    <label>ABB Min</label>
-    <input id="abb">
-  </div>
+  <div><label>Business Vintage (Years)</label><input id="vintage"></div>
+  <div><label>Turnover Min (Lakhs)</label><input id="turnover"></div>
+  <div><label>ABB Min</label><input id="abb"></div>
 </div>
 
 <div class="row">
-  <div>
-    <label>ITR Required</label>
-    <select id="itr">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>GST Required</label>
-    <select id="gst">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
+  <div><label>ITR Required</label><select id="itr"><option>No</option><option>Yes</option></select></div>
+  <div><label>GST Required</label><select id="gst"><option>No</option><option>Yes</option></select></div>
   <div>
     <label>Banking Type</label>
     <select id="bankingType">
@@ -143,71 +115,37 @@ button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-r
 <!-- SECTION D -->
 <h3>SECTION D – CREDIT & OBLIGATIONS</h3>
 <div class="row">
-  <div>
-    <label>CIBIL Min–Max</label>
-    <input id="cibil">
-  </div>
-  <div>
-    <label>Active Loans Max</label>
-    <input id="activeLoans">
-  </div>
-  <div>
-    <label>Loans Taken in Last 6 Months</label>
-    <input id="recentLoans">
-  </div>
+  <div><label>CIBIL (Min–Max)</label><input id="cibil"></div>
+  <div><label>Active Loans Max</label><input id="activeLoans"></div>
+  <div><label>Loans in Last 6 Months</label><input id="recentLoans"></div>
 </div>
 
 <div class="row">
-  <div>
-    <label>Enquiries (3 / 6 Months)</label>
-    <input id="enquiries">
-  </div>
-  <div>
-    <label>POS of Unsecured Loans</label>
-    <input id="pos">
-  </div>
-  <div>
-    <label>Obligations Reject Rule (Min–Max)</label>
-    <input id="obligations">
-  </div>
+  <div><label>Enquiries (3 / 6 Months)</label><input id="enquiries"></div>
+  <div><label>POS of Unsecured Loans</label><input id="pos"></div>
+  <div><label>Obligations Reject (Min–Max)</label><input id="obligations"></div>
 </div>
 
 <!-- SECTION E -->
 <h3>SECTION E – PROGRAMS (➕ Multiple Allowed)</h3>
 
-<label>ABB Programs (Min–Max)</label>
+<label>ABB Programs</label>
 <div id="abbPrograms"></div>
 <button class="add-btn" onclick="addProgram('abbPrograms')">➕ Add ABB Program</button>
 
-<label>ITR Programs (Min–Max)</label>
+<label>ITR Programs</label>
 <div id="itrPrograms"></div>
 <button class="add-btn" onclick="addProgram('itrPrograms')">➕ Add ITR Program</button>
 
-<label>GST Programs (Min–Max)</label>
+<label>GST Programs</label>
 <div id="gstPrograms"></div>
 <button class="add-btn" onclick="addProgram('gstPrograms')">➕ Add GST Program</button>
 
-<label>Income / DSCR Programs (Min–Max)</label>
+<label>Income / DSCR Programs</label>
 <div id="incomePrograms"></div>
 <button class="add-btn" onclick="addProgram('incomePrograms')">➕ Add Income / DSCR Program</button>
 
-<br><br>
-<button onclick="savePolicy()">Save Bank / NBFC Policy</button>
-
-</div>
-
-<script>
-function addProgram(id) {
-  let div = document.createElement("div");
-  div.className = "program-box";
-  div.innerHTML = '<input placeholder="Min – Max">';
-  document.getElementById(id).appendChild(div);
-}
-
-function savePolicy() {
-  alert("Policy saved successfully (Advanced Admin MVP)");
-}
-</script>
-
-</body>
-</html>
+<!-- SECTION F -->
+<h3>SECTION F – ADDITIONAL / FUTURE PARAMETERS</h3>
+<div id="customFields"></div>
+<button class="add-btn" onclick="addCustom()">➕ Add Custom Field</butt
