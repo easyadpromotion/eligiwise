@@ -2,110 +2,212 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE | Admin Panel</title>
+<title>ELIGIWISE | Policy Admin Panel</title>
 
 <style>
 body { font-family: Arial; background:#f4f6f8; }
-.container {
-  max-width: 1000px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-}
+.container { max-width:1300px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
 h1 { text-align:center; color:#0A4EA3; }
+h3 { background:#0A4EA3; color:#fff; padding:8px; margin-top:25px; }
 label { font-weight:bold; }
 input, select {
   width:100%;
-  padding:8px;
-  margin:6px 0 12px;
+  padding:6px;
+  margin-bottom:10px;
 }
-button {
-  width:100%;
-  padding:12px;
-  background:#0A4EA3;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
+.row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px; }
+button { padding:8px 12px; background:#0A4EA3; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+.add-btn { font-size:12px; margin-bottom:10px; }
+.program-box { border:1px dashed #aaa; padding:10px; margin-bottom:10px; }
 </style>
 </head>
 
 <body>
-
 <div class="container">
-<h1>ELIGIWISE – Admin Panel</h1>
 
-<label>Bank / NBFC Name</label>
-<input id="name">
+<h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
 
-<label>Max Loan (Ex: 20L, 50L)</label>
-<input id="maxLoan">
+<!-- SECTION A -->
+<h3>SECTION A – BASIC PRODUCT DETAILS</h3>
+<div class="row">
+  <div>
+    <label>Product Type</label>
+    <select id="productType">
+      <option>STBL</option>
+      <option>HTBL</option>
+      <option>BOTH</option>
+    </select>
+  </div>
+  <div>
+    <label>Loan Amount Min–Max (Lakhs)</label>
+    <input id="loanAmount">
+  </div>
+  <div>
+    <label>Tenure Min–Max (Months)</label>
+    <input id="tenure">
+  </div>
+</div>
 
-<label>Min Business Vintage (Years)</label>
-<input type="number" id="minVintage">
+<div class="row">
+  <div>
+    <label>ROI Min–Max</label>
+    <input id="roi">
+  </div>
+  <div>
+    <label>PF Min–Max</label>
+    <input id="pf">
+  </div>
+</div>
 
-<label>Min CIBIL</label>
-<input type="number" id="minCibil">
+<!-- SECTION B -->
+<h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
+<div class="row">
+  <div>
+    <label>Applicant Age Min–Max</label>
+    <input id="applicantAge">
+  </div>
+  <div>
+    <label>Co-Applicant Mandatory</label>
+    <select id="coApplicantMandatory">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Co-Applicant Age Min–Max</label>
+    <input id="coApplicantAge">
+  </div>
+</div>
 
-<label>Min ABB</label>
-<input type="number" id="minAbb">
+<div class="row">
+  <div>
+    <label>Own House</label>
+    <select id="ownHouse">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Own House Geo</label>
+    <select id="ownHouseGeo">
+      <option>Anywhere India</option>
+      <option>Geo Limit</option>
+    </select>
+  </div>
+</div>
 
-<label>Min Turnover</label>
-<input type="number" id="minTurnover">
+<!-- SECTION C -->
+<h3>SECTION C – BUSINESS & BANKING</h3>
+<div class="row">
+  <div>
+    <label>Business Vintage (Years)</label>
+    <input id="vintage">
+  </div>
+  <div>
+    <label>Turnover Min (Lakhs)</label>
+    <input id="turnover">
+  </div>
+  <div>
+    <label>ABB Min</label>
+    <input id="abb">
+  </div>
+</div>
 
-<label>Max Active Loans</label>
-<input type="number" id="maxActive">
+<div class="row">
+  <div>
+    <label>ITR Required</label>
+    <select id="itr">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>GST Required</label>
+    <select id="gst">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>Banking Type</label>
+    <select id="bankingType">
+      <option>All Accounts Accepted</option>
+      <option>Only Current Account</option>
+      <option>Only OD/CC Accounts</option>
+      <option>Only Saving Accounts</option>
+      <option>CA + OD/CC</option>
+    </select>
+  </div>
+</div>
 
-<label>Max Loans in Last 6 Months</label>
-<input type="number" id="maxRecent">
+<!-- SECTION D -->
+<h3>SECTION D – CREDIT & OBLIGATIONS</h3>
+<div class="row">
+  <div>
+    <label>CIBIL Min–Max</label>
+    <input id="cibil">
+  </div>
+  <div>
+    <label>Active Loans Max</label>
+    <input id="activeLoans">
+  </div>
+  <div>
+    <label>Loans Taken in Last 6 Months</label>
+    <input id="recentLoans">
+  </div>
+</div>
 
-<label>Own House Required</label>
-<select id="ownHouse">
-  <option value="false">No</option>
-  <option value="true">Yes</option>
-</select>
+<div class="row">
+  <div>
+    <label>Enquiries (3 / 6 Months)</label>
+    <input id="enquiries">
+  </div>
+  <div>
+    <label>POS of Unsecured Loans</label>
+    <input id="pos">
+  </div>
+  <div>
+    <label>Obligations Reject Rule (Min–Max)</label>
+    <input id="obligations">
+  </div>
+</div>
 
-<label>GST Required</label>
-<select id="gst">
-  <option value="false">No</option>
-  <option value="true">Yes</option>
-</select>
+<!-- SECTION E -->
+<h3>SECTION E – PROGRAMS (➕ Multiple Allowed)</h3>
 
-<label>ITR Required</label>
-<select id="itr">
-  <option value="false">No</option>
-  <option value="true">Yes</option>
-</select>
+<label>ABB Programs (Min–Max)</label>
+<div id="abbPrograms"></div>
+<button class="add-btn" onclick="addProgram('abbPrograms')">➕ Add ABB Program</button>
 
-<button onclick="savePolicy()">Save Bank Policy</button>
+<label>ITR Programs (Min–Max)</label>
+<div id="itrPrograms"></div>
+<button class="add-btn" onclick="addProgram('itrPrograms')">➕ Add ITR Program</button>
+
+<label>GST Programs (Min–Max)</label>
+<div id="gstPrograms"></div>
+<button class="add-btn" onclick="addProgram('gstPrograms')">➕ Add GST Program</button>
+
+<label>Income / DSCR Programs (Min–Max)</label>
+<div id="incomePrograms"></div>
+<button class="add-btn" onclick="addProgram('incomePrograms')">➕ Add Income / DSCR Program</button>
+
+<br><br>
+<button onclick="savePolicy()">Save Bank / NBFC Policy</button>
+
 </div>
 
 <script>
+function addProgram(id) {
+  let div = document.createElement("div");
+  div.className = "program-box";
+  div.innerHTML = '<input placeholder="Min – Max">';
+  document.getElementById(id).appendChild(div);
+}
+
 function savePolicy() {
-  let bank = {
-    name: name.value,
-    maxLoan: maxLoan.value,
-    minVintage: +minVintage.value,
-    minCibil: +minCibil.value,
-    minAbb: +minAbb.value,
-    minTurnover: +minTurnover.value,
-    maxActive: +maxActive.value,
-    maxRecent: +maxRecent.value,
-    ownHouse: ownHouse.value,
-    gst: gst.value,
-    itr: itr.value
-  };
-
-  let banks = JSON.parse(localStorage.getItem("eligiwiseBanks")) || [];
-  banks.push(bank);
-  localStorage.setItem("eligiwiseBanks", JSON.stringify(banks));
-
-  alert("Bank policy saved successfully");
+  alert("Policy saved successfully (Advanced Admin MVP)");
 }
 </script>
 
 </body>
 </html>
-
