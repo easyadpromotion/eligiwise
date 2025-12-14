@@ -270,15 +270,49 @@ function addCustom() {
   container.appendChild(row);
 }
 
+<script>
 function savePolicy() {
+
   const bankName = document.getElementById("bankName").value.trim();
   if (!bankName) {
     alert("Please enter Bank / NBFC Name");
     return;
   }
+
+  // Build policy object
+  const policy = {
+    bankName: bankName,
+
+    productType: document.getElementById("productType")?.value || "",
+    loanAmount: document.getElementById("loanAmount")?.value || "",
+    tenure: document.getElementById("tenure")?.value || "",
+    roi: document.getElementById("roi")?.value || "",
+    pf: document.getElementById("pf")?.value || "",
+
+    applicantAge: document.getElementById("applicantAge")?.value || "",
+    coApplicantMandatory: document.getElementById("coApplicantMandatory")?.value || "",
+    coApplicantAge: document.getElementById("coApplicantAge")?.value || "",
+
+    ownHouse: document.getElementById("ownHouse")?.value || "",
+    gst: document.getElementById("gst")?.value || "",
+    itr: document.getElementById("itr")?.value || "",
+    cibil: document.getElementById("cibil")?.value || "",
+    abb: document.getElementById("abb")?.value || "",
+
+    createdAt: new Date().toISOString()
+  };
+
+  // Read existing policies
+  let policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+
+  // Add new policy
+  policies.push(policy);
+
+  // Save to localStorage
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(policies));
+
   alert("✅ Bank / NBFC Policy Saved Successfully");
+  console.log("Saved Policies:", policies);
 }
 </script>
 
-</body>
-</html>
