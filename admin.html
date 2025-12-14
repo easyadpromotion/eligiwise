@@ -3,61 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <title>ELIGIWISE – Bank / NBFC Policy Admin</title>
-
 <style>
 body {
   font-family: Arial, sans-serif;
-  background:#f4f6f8;
+  background: #f4f6f8;
 }
 .container {
-  max-width:1200px;
-  margin:20px auto;
-  background:#ffffff;
-  padding:20px;
-  border-radius:10px;
+  max-width: 1200px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
 }
 h1 {
-  text-align:center;
-  color:#0A4EA3;
+  text-align: center;
+  color: #0a4ea3;
 }
-h3 {
-  background:#0A4EA3;
-  color:#ffffff;
-  padding:8px;
-  margin-top:25px;
+.section-title {
+  background: #0a4ea3;
+  color: #fff;
+  padding: 10px;
+  margin-top: 20px;
+  font-weight: bold;
 }
 label {
-  font-weight:bold;
-  display:block;
-  margin-top:10px;
+  font-weight: bold;
 }
 input, select {
-  width:100%;
-  padding:6px;
-  margin-top:5px;
+  width: 100%;
+  padding: 8px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.btn {
+  background: #0a4ea3;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-danger {
+  background: #d9534f;
 }
 .row {
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:15px;
-}
-button {
-  margin-top:10px;
-  padding:6px 12px;
-  background:#0A4EA3;
-  color:#ffffff;
-  border:none;
-  border-radius:4px;
-  cursor:pointer;
-}
-.program-row {
-  display:grid;
-  grid-template-columns:1fr 1fr auto;
-  gap:10px;
-  margin-bottom:8px;
-}
-.remove-btn {
-  background:#c0392b;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 </style>
 </head>
@@ -70,8 +66,7 @@ button {
 <label>Bank / NBFC Name</label>
 <input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
-<!-- SECTION A -->
-<h3>SECTION A – BASIC PRODUCT DETAILS</h3>
+<div class="section-title">SECTION A – BASIC PRODUCT DETAILS</div>
 
 <label>Product Type</label>
 <select id="productType">
@@ -80,30 +75,29 @@ button {
   <option>BOTH</option>
 </select>
 
-<div class="row">
+<div class="grid-3">
   <div>
-    <label>Loan Amount Min–Max (Lakhs)</label>
-    <input id="loanAmount" placeholder="Ex: 10-50">
+    <label>Loan Amount (Min–Max Lakhs)</label>
+    <input id="loanAmount" placeholder="5-50">
   </div>
   <div>
-    <label>Tenure Min–Max (Months)</label>
-    <input id="tenure" placeholder="Ex: 12-48">
+    <label>Tenure (Months)</label>
+    <input id="tenure" placeholder="12-48">
   </div>
   <div>
-    <label>ROI Min–Max (%)</label>
-    <input id="roi" placeholder="Ex: 14-22">
+    <label>ROI (%)</label>
+    <input id="roi" placeholder="14-22">
   </div>
 </div>
 
-<label>PF Min–Max (%)</label>
-<input id="pf" placeholder="Ex: 2-3">
+<label>PF (%)</label>
+<input id="pf" placeholder="2-3">
 
-<!-- SECTION B -->
-<h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
+<div class="section-title">SECTION B – APPLICANT & CO-APPLICANT</div>
 
-<div class="row">
+<div class="grid-3">
   <div>
-    <label>Applicant Age Min–Max</label>
+    <label>Applicant Age</label>
     <input id="applicantAge" placeholder="25-55">
   </div>
   <div>
@@ -114,134 +108,36 @@ button {
     </select>
   </div>
   <div>
-    <label>Co-Applicant Age Min–Max</label>
+    <label>Co-Applicant Age</label>
     <input id="coApplicantAge" placeholder="21-60">
   </div>
 </div>
 
-<div class="row">
-  <div>
-    <label>Own House</label>
-    <select id="ownHouse">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Own House Geo</label>
-    <select id="ownHouseGeo">
-      <option>Anywhere India</option>
-      <option>Same City</option>
-      <option>Within KM Radius</option>
-    </select>
-  </div>
-</div>
-
-<!-- SECTION C -->
-<h3>SECTION C – BUSINESS & BANKING</h3>
-
-<div class="row">
-  <div>
-    <label>Business Vintage (Years)</label>
-    <input id="vintage">
-  </div>
-  <div>
-    <label>Turnover Min (Lakhs)</label>
-    <input id="turnover">
-  </div>
-  <div>
-    <label>ABB Min (Lakhs)</label>
-    <input id="abb">
-  </div>
-</div>
-
-<div class="row">
-  <div>
-    <label>ITR Required</label>
-    <select id="itr">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>GST Required</label>
-    <select id="gst">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Banking Type</label>
-    <select id="bankingType">
-      <option>All Accounts Accepted</option>
-      <option>Only Current Account</option>
-      <option>Only OD/CC</option>
-      <option>Only Savings</option>
-      <option>CA + OD/CC</option>
-    </select>
-  </div>
-</div>
-
-<!-- SECTION D -->
-<h3>SECTION D – CREDIT & OBLIGATIONS</h3>
-
-<div class="row">
-  <div>
-    <label>CIBIL Min–Max</label>
-    <input id="cibil" placeholder="700-900">
-  </div>
-  <div>
-    <label>Max Active Loans</label>
-    <input id="activeLoans">
-  </div>
-  <div>
-    <label>Loans in Last 6 Months</label>
-    <input id="recentLoans">
-  </div>
-</div>
-
-<div class="row">
-  <div>
-    <label>Enquiries (3/6 Months)</label>
-    <input id="enquiries">
-  </div>
-  <div>
-    <label>POS of Unsecured Loans</label>
-    <input id="pos">
-  </div>
-  <div>
-    <label>Obligations % (Min–Max)</label>
-    <input id="obligations">
-  </div>
-</div>
-
-<!-- SECTION E -->
-<h3>SECTION E – PROGRAMS (➕ Multiple Allowed)</h3>
+<div class="section-title">SECTION E – PROGRAMS (+ Multiple Allowed)</div>
 
 <label>ABB Programs</label>
+<button class="btn" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
 <div id="abbPrograms"></div>
-<button type="button" onclick="addProgram('abbPrograms')">➕ Add ABB Program</button>
 
 <label>ITR Programs</label>
+<button class="btn" onclick="addProgram('itrPrograms')">+ Add ITR Program</button>
 <div id="itrPrograms"></div>
-<button type="button" onclick="addProgram('itrPrograms')">➕ Add ITR Program</button>
 
 <label>GST Programs</label>
+<button class="btn" onclick="addProgram('gstPrograms')">+ Add GST Program</button>
 <div id="gstPrograms"></div>
-<button type="button" onclick="addProgram('gstPrograms')">➕ Add GST Program</button>
 
 <label>Income / DSCR Programs</label>
+<button class="btn" onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
 <div id="incomePrograms"></div>
-<button type="button" onclick="addProgram('incomePrograms')">➕ Add Income / DSCR Program</button>
 
-<!-- SECTION F -->
-<h3>SECTION F – ADDITIONAL / FUTURE PARAMETERS</h3>
+<div class="section-title">SECTION F – ADDITIONAL / FUTURE PARAMETERS</div>
 
+<button class="btn" onclick="addCustomField()">+ Add Custom Field</button>
 <div id="customFields"></div>
-<button type="button" onclick="addCustom()">➕ Add Custom Field</button>
 
-<br><br>
-<button type="button" onclick="savePolicy()">💾 Save Bank / NBFC Policy</button>
+<br>
+<button class="btn" onclick="savePolicy()">💾 Save Bank / NBFC Policy</button>
 
 </div>
 
@@ -249,70 +145,70 @@ button {
 function addProgram(containerId) {
   const container = document.getElementById(containerId);
   const row = document.createElement("div");
-  row.className = "program-row";
+  row.className = "row";
   row.innerHTML = `
     <input placeholder="Min">
     <input placeholder="Max">
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">❌</button>
+    <button class="btn btn-danger" onclick="this.parentElement.remove()">✖</button>
   `;
   container.appendChild(row);
 }
 
-function addCustom() {
+function addCustomField() {
   const container = document.getElementById("customFields");
   const row = document.createElement("div");
-  row.className = "program-row";
+  row.className = "row";
   row.innerHTML = `
     <input placeholder="Field Name">
     <input placeholder="Value / Range">
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">❌</button>
+    <button class="btn btn-danger" onclick="this.parentElement.remove()">✖</button>
   `;
   container.appendChild(row);
 }
 
-<script>
-function savePolicy() {
+function collectPrograms(id) {
+  return Array.from(document.getElementById(id).children).map(r => ({
+    min: r.children[0].value,
+    max: r.children[1].value
+  }));
+}
 
+function savePolicy() {
   const bankName = document.getElementById("bankName").value.trim();
   if (!bankName) {
     alert("Please enter Bank / NBFC Name");
     return;
   }
 
-  // Build policy object
   const policy = {
-    bankName: bankName,
-
-    productType: document.getElementById("productType")?.value || "",
-    loanAmount: document.getElementById("loanAmount")?.value || "",
-    tenure: document.getElementById("tenure")?.value || "",
-    roi: document.getElementById("roi")?.value || "",
-    pf: document.getElementById("pf")?.value || "",
-
-    applicantAge: document.getElementById("applicantAge")?.value || "",
-    coApplicantMandatory: document.getElementById("coApplicantMandatory")?.value || "",
-    coApplicantAge: document.getElementById("coApplicantAge")?.value || "",
-
-    ownHouse: document.getElementById("ownHouse")?.value || "",
-    gst: document.getElementById("gst")?.value || "",
-    itr: document.getElementById("itr")?.value || "",
-    cibil: document.getElementById("cibil")?.value || "",
-    abb: document.getElementById("abb")?.value || "",
-
+    bankName,
+    productType: document.getElementById("productType").value,
+    loanAmount: document.getElementById("loanAmount").value,
+    tenure: document.getElementById("tenure").value,
+    roi: document.getElementById("roi").value,
+    pf: document.getElementById("pf").value,
+    applicantAge: document.getElementById("applicantAge").value,
+    coApplicantMandatory: document.getElementById("coApplicantMandatory").value,
+    coApplicantAge: document.getElementById("coApplicantAge").value,
+    abbPrograms: collectPrograms("abbPrograms"),
+    itrPrograms: collectPrograms("itrPrograms"),
+    gstPrograms: collectPrograms("gstPrograms"),
+    incomePrograms: collectPrograms("incomePrograms"),
+    customFields: Array.from(document.getElementById("customFields").children).map(r => ({
+      name: r.children[0].value,
+      value: r.children[1].value
+    })),
     createdAt: new Date().toISOString()
   };
 
-  // Read existing policies
-  let policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-
-  // Add new policy
-  policies.push(policy);
-
-  // Save to localStorage
-  localStorage.setItem("eligiwisePolicies", JSON.stringify(policies));
+  const all = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  all.push(policy);
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(all));
 
   alert("✅ Bank / NBFC Policy Saved Successfully");
-  console.log("Saved Policies:", policies);
+  console.log(all);
 }
 </script>
 
+</body>
+</html>
