@@ -1,4 +1,13 @@
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (localStorage.getItem("loggedInRole") !== "admin") {
+    alert("Admin login required");
+    window.location.href = "login.html";
+  }
+});
+</script>
+
+<script>
 let editIndex = null;
 
 function el(id) {
@@ -134,3 +143,4 @@ function deletePolicy(i) {
 
 loadPolicies();
 </script>
+
