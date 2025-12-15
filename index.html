@@ -202,9 +202,27 @@ function downloadPDF() {
   doc.autoTable({ html:"#resultTable", startY:20 });
   doc.save("ELIGIWISE_Eligibility.pdf");
 }
+  if (localStorage.getItem("loggedInRole") !== "dsa") {
+  alert("Please login as DSA");
+  location.href = "login.html";
+}
+<div style="text-align:right;font-weight:bold;">
+  Welcome, <span id="dsaName"></span>
+</div>
+
+<script>
+document.getElementById("dsaName").innerText =
+  localStorage.getItem("dsaName") || "";
+</script>
+if (localStorage.getItem("loggedInRole") !== "admin") {
+  alert("Admin login required");
+  location.href = "login.html";
+}
+
 </script>
 
 </body>
 </html>
+
 
 
