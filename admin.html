@@ -5,13 +5,6 @@
 <title>ELIGIWISE – Bank / NBFC Policy Admin</title>
 
 <style>
-  <script>
-if (localStorage.getItem("loggedInRole") !== "admin") {
-  alert("Admin login required");
-  location.href = "login.html";
-}
-</script>
-
 body { font-family: Arial, sans-serif; background:#f4f6f8; }
 .container { max-width:1300px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
 
@@ -374,23 +367,7 @@ function deletePolicy(i) {
 }
 
 loadPolicies();
-  if (localStorage.getItem("eligiwiseRole") !== "admin") {
-  alert("Admin login required");
-  location.href = "login.html";
-}
-
 </script>
 
 </body>
 </html>
-<button onclick="logout()">Logout</button>
-
-<script>
-function logout() {
-  localStorage.clear();
-  location.href = "login.html";
-}
-</script>
-
-
-
