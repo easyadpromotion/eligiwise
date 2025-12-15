@@ -221,8 +221,14 @@ function downloadPDF() {
   doc.autoTable({ html: "#resultTable", startY: 20 });
   doc.save("Eligiwise_Eligibility.pdf");
 }
+  if (localStorage.getItem("eligiwiseRole") !== "dsa") {
+  alert("Please login as DSA");
+  location.href = "login.html";
+}
+
 </script>
 
 </body>
 </html>
+
 
