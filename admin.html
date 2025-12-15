@@ -6,7 +6,7 @@
 
 <style>
 body { font-family: Arial, sans-serif; background:#f4f6f8; }
-.container { max-width:1200px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
+.container { max-width:1300px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; }
 
 h1 { text-align:center; color:#0A4EA3; }
 
@@ -18,16 +18,22 @@ h1 { text-align:center; color:#0A4EA3; }
   font-weight:bold;
 }
 
-label { font-weight:bold; margin-top:12px; display:block; }
+label { font-weight:bold; display:block; margin-top:10px; }
 input, select {
   width:100%;
   padding:8px;
   margin-top:5px;
 }
 
-.row {
+.grid {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
+  gap:15px;
+}
+
+.grid-2 {
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
   gap:15px;
 }
 
@@ -43,6 +49,17 @@ button {
 
 button.red { background:#c0392b; }
 button.green { background:#27ae60; }
+
+.program-row {
+  display:grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap:10px;
+  margin-top:8px;
+}
+
+.program-row button {
+  background:#c0392b;
+}
 
 table {
   width:100%;
@@ -64,7 +81,6 @@ th {
 </head>
 
 <body>
-
 <div class="container">
 
 <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
@@ -72,103 +88,161 @@ th {
 <label>Bank / NBFC Name</label>
 <input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
+<!-- ================= SECTION A ================= -->
 <div class="section">SECTION A – BASIC PRODUCT DETAILS</div>
 
-<label>Product Type</label>
-<select id="productType">
-  <option>STBL</option>
-  <option>OD</option>
-  <option>Term Loan</option>
-</select>
-
-<div class="row">
+<div class="grid">
   <div>
-    <label>Loan Amount Min–Max (Lakhs)</label>
-    <input id="loanAmount" placeholder="5-50">
+    <label>Product Type</label>
+    <select id="productType">
+      <option>Small Ticket</option>
+      <option>Big Ticket</option>
+    </select>
   </div>
   <div>
-    <label>Tenure (Months)</label>
-    <input id="tenure" placeholder="12-48">
-  </div>
-  <div>
-    <label>ROI (%)</label>
-    <input id="roi" placeholder="14-22">
+    <label>Loan Type</label>
+    <select id="loanType">
+      <option>Term Loan</option>
+      <option>OD</option>
+    </select>
   </div>
 </div>
 
-<label>PF (%)</label>
-<input id="pf" placeholder="2-3">
-
-<div class="section">SECTION B – APPLICANT</div>
-
-<div class="row">
-  <div>
-    <label>Applicant Age</label>
-    <input id="age" placeholder="25-55">
-  </div>
-  <div>
-    <label>CIBIL Score</label>
-    <input id="cibil" placeholder="700+">
-  </div>
-  <div>
-    <label>Business Vintage (Years)</label>
-    <input id="vintage" placeholder="2+">
-  </div>
+<div class="grid">
+  <div><label>Loan Amount Min (Lakhs)</label><input type="number" id="loanMin"></div>
+  <div><label>Loan Amount Max (Lakhs)</label><input type="number" id="loanMax"></div>
+  <div><label>Tenure Min</label><input type="number" id="tenureMin"></div>
+  <div><label>Tenure Max</label><input type="number" id="tenureMax"></div>
+  <div><label>ROI Min (%)</label><input type="number" step="0.01" id="roiMin"></div>
+  <div><label>ROI Max (%)</label><input type="number" step="0.01" id="roiMax"></div>
+  <div><label>PF Min (%)</label><input type="number" step="0.01" id="pfMin"></div>
+  <div><label>PF Max (%)</label><input type="number" step="0.01" id="pfMax"></div>
 </div>
 
-<div class="section">SECTION C – BUSINESS PARAMETERS</div>
+<!-- ================= SECTION B ================= -->
+<div class="section">SECTION B – APPLICANT & CO-APPLICANT</div>
 
-<div class="row">
+<div class="grid">
+  <div><label>Applicant Age Min</label><input type="number" id="appAgeMin"></div>
+  <div><label>Applicant Age Max</label><input type="number" id="appAgeMax"></div>
   <div>
-    <label>Turnover (Lakhs)</label>
-    <input id="turnover" placeholder="50+">
+    <label>Co-Applicant Mandatory</label>
+    <select id="coApplicantMandatory">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
   </div>
-  <div>
-    <label>ABB (Lakhs)</label>
-    <input id="abb" placeholder="0.5+">
-  </div>
-  <div>
-    <label>Required Loan Amount (Lakhs)</label>
-    <input id="requiredLoan" placeholder="25">
-  </div>
+  <div><label>Co-Applicant Age Min</label><input type="number" id="coAgeMin"></div>
+  <div><label>Co-Applicant Age Max</label><input type="number" id="coAgeMax"></div>
 </div>
 
-<div class="section">SECTION D – DOCUMENTS</div>
-
-<div class="row">
-  <div>
-    <label>GST</label>
-    <select id="gst"><option>Yes</option><option>No</option></select>
-  </div>
-  <div>
-    <label>ITR</label>
-    <select id="itr"><option>Yes</option><option>No</option></select>
-  </div>
+<div class="grid-2">
   <div>
     <label>Own House</label>
-    <select id="ownHouse"><option>Yes</option><option>No</option></select>
+    <select id="ownHouse">
+      <option>Yes</option>
+      <option>No</option>
+    </select>
+  </div>
+  <div>
+    <label>Own House Geo Limit</label>
+    <select id="ownHouseGeo">
+      <option>Local</option>
+      <option>Anywhere India</option>
+    </select>
   </div>
 </div>
 
-<div class="section">SECTION E – PROGRAMS</div>
-<input id="programs" placeholder="ABB / GST / ITR / Income / DSCR">
+<!-- ================= SECTION C ================= -->
+<div class="section">SECTION C – BUSINESS & BANKING</div>
 
-<div class="section">SECTION F – ADDITIONAL NOTES</div>
-<input id="notes" placeholder="Any special condition">
+<label>Banking Type</label>
+<select id="bankingType">
+  <option>All</option>
+  <option>CA</option>
+  <option>SA</option>
+  <option>OD</option>
+  <option>CA+OD</option>
+  <option>SA+CA</option>
+</select>
+
+<div class="grid-2">
+  <div>
+    <label>ITR Required</label>
+    <select id="itrRequired">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+  <div>
+    <label>GST Required</label>
+    <select id="gstRequired">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+</div>
+
+<label>Bank / NBFC Geo Limit (KM)</label>
+<input type="number" id="geoLimit">
+
+<!-- ================= SECTION D ================= -->
+<div class="section">SECTION D – CREDIT & OBLIGATIONS</div>
+
+<div class="grid">
+  <div><label>CIBIL Min</label><input type="number" id="cibilMin"></div>
+  <div><label>CIBIL Max</label><input type="number" id="cibilMax"></div>
+  <div><label>Active Loans Min</label><input type="number" id="activeLoansMin"></div>
+  <div><label>Active Loans Max</label><input type="number" id="activeLoansMax"></div>
+</div>
+
+<div class="grid">
+  <div><label>Loans in Last 6 Months (Count)</label><input type="number" id="loan6Count"></div>
+  <div><label>Loan Amount Last 6 Months</label><input type="number" id="loan6Amount"></div>
+  <div><label>Loans in Last 3 Months (Count)</label><input type="number" id="loan3Count"></div>
+  <div><label>Loan Amount Last 3 Months</label><input type="number" id="loan3Amount"></div>
+</div>
+
+<div class="grid-2">
+  <div><label>Enquiries Last 6 Months</label><input type="number" id="enq6"></div>
+  <div><label>Enquiries Last 3 Months</label><input type="number" id="enq3"></div>
+</div>
+
+<!-- ================= SECTION E ================= -->
+<div class="section">SECTION E – PROGRAMS</div>
+
+<label>ABB Programs (Min–Max)</label>
+<div id="abbPrograms"></div>
+<button onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
+
+<label>ITR Programs (Min–Max)</label>
+<div id="itrPrograms"></div>
+<button onclick="addProgram('itrPrograms')">+ Add ITR Program</button>
+
+<label>GST Programs (Min–Max)</label>
+<div id="gstPrograms"></div>
+<button onclick="addProgram('gstPrograms')">+ Add GST Program</button>
+
+<label>Income / DSCR Programs (Min–Max)</label>
+<div id="incomePrograms"></div>
+<button onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
+
+<!-- ================= SECTION F ================= -->
+<div class="section">SECTION F – CUSTOM / FUTURE PARAMETERS</div>
+<div id="customFields"></div>
+<button onclick="addCustom()">+ Add Custom Field</button>
 
 <button class="green" onclick="savePolicy()">💾 Save / Update Policy</button>
 
 <hr>
 
 <h3>Saved Bank / NBFC Policies</h3>
-
 <table id="policyTable">
 <thead>
 <tr>
   <th>Bank</th>
   <th>Product</th>
-  <th>Loan</th>
-  <th>ROI</th>
+  <th>Loan Min–Max</th>
   <th>Action</th>
 </tr>
 </thead>
@@ -180,51 +254,96 @@ th {
 <script>
 let editIndex = null;
 
-function savePolicy() {
-  const bank = bankName.value.trim();
-  if (!bank) { alert("Enter Bank Name"); return; }
+function addProgram(id) {
+  const div = document.createElement("div");
+  div.className = "program-row";
+  div.innerHTML = `
+    <input placeholder="Min">
+    <input placeholder="Max">
+    <button onclick="this.parentNode.remove()">X</button>`;
+  document.getElementById(id).appendChild(div);
+}
 
+function addCustom() {
+  const div = document.createElement("div");
+  div.className = "program-row";
+  div.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value">
+    <button onclick="this.parentNode.remove()">X</button>`;
+  document.getElementById("customFields").appendChild(div);
+}
+
+function collectPrograms(id) {
+  return [...document.getElementById(id).children].map(r => ({
+    min: Number(r.children[0].value),
+    max: Number(r.children[1].value)
+  }));
+}
+
+function savePolicy() {
   const policy = {
-    bank, productType:productType.value,
-    loanAmount:loanAmount.value, tenure:tenure.value,
-    roi:roi.value, pf:pf.value, age:age.value,
-    cibil:cibil.value, vintage:vintage.value,
-    turnover:turnover.value, abb:abb.value,
-    requiredLoan:requiredLoan.value,
-    gst:gst.value, itr:itr.value, ownHouse:ownHouse.value,
-    programs:programs.value, notes:notes.value
+    bankName: bankName.value,
+    productType: productType.value,
+    loanType: loanType.value,
+    loanMin: loanMin.value,
+    loanMax: loanMax.value,
+    tenureMin: tenureMin.value,
+    tenureMax: tenureMax.value,
+    roiMin: roiMin.value,
+    roiMax: roiMax.value,
+    pfMin: pfMin.value,
+    pfMax: pfMax.value,
+    appAgeMin: appAgeMin.value,
+    appAgeMax: appAgeMax.value,
+    coApplicantMandatory: coApplicantMandatory.value,
+    coAgeMin: coAgeMin.value,
+    coAgeMax: coAgeMax.value,
+    ownHouse: ownHouse.value,
+    ownHouseGeo: ownHouseGeo.value,
+    bankingType: bankingType.value,
+    itrRequired: itrRequired.value,
+    gstRequired: gstRequired.value,
+    geoLimit: geoLimit.value,
+    cibilMin: cibilMin.value,
+    cibilMax: cibilMax.value,
+    activeLoansMin: activeLoansMin.value,
+    activeLoansMax: activeLoansMax.value,
+    loan6Count: loan6Count.value,
+    loan6Amount: loan6Amount.value,
+    loan3Count: loan3Count.value,
+    loan3Amount: loan3Amount.value,
+    enq6: enq6.value,
+    enq3: enq3.value,
+    abbPrograms: collectPrograms("abbPrograms"),
+    itrPrograms: collectPrograms("itrPrograms"),
+    gstPrograms: collectPrograms("gstPrograms"),
+    incomePrograms: collectPrograms("incomePrograms"),
+    custom: [...customFields.children].map(r => ({ field:r.children[0].value, value:r.children[1].value }))
   };
 
-  let policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  let data = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  if (editIndex !== null) data[editIndex] = policy;
+  else data.push(policy);
 
-  if (editIndex !== null) {
-    policies[editIndex] = policy;
-    editIndex = null;
-  } else {
-    policies.push(policy);
-  }
-
-  localStorage.setItem("eligiwisePolicies", JSON.stringify(policies));
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(data));
   alert("Policy saved successfully");
   loadPolicies();
-  document.querySelectorAll("input").forEach(i => i.value="");
 }
 
 function loadPolicies() {
-  const tbody = document.querySelector("#policyTable tbody");
+  const tbody = policyTable.querySelector("tbody");
   tbody.innerHTML = "";
-  const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-
-  policies.forEach((p, i) => {
+  const data = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  data.forEach((p, i) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.bank}</td>
+      <td>${p.bankName}</td>
       <td>${p.productType}</td>
-      <td>${p.loanAmount}</td>
-      <td>${p.roi}</td>
+      <td>${p.loanMin}-${p.loanMax}</td>
       <td>
-        <button onclick="editPolicy(${i})">✏️ Edit</button>
-        <button class="red" onclick="deletePolicy(${i})">❌</button>
+        <button onclick="editPolicy(${i})">Edit</button>
+        <button class="red" onclick="deletePolicy(${i})">Delete</button>
       </td>`;
     tbody.appendChild(tr);
   });
@@ -236,14 +355,14 @@ function editPolicy(i) {
   Object.keys(p).forEach(k => {
     if (document.getElementById(k)) document.getElementById(k).value = p[k];
   });
-  alert("Edit mode enabled. Update & Save.");
+  alert("Edit mode enabled. Update and Save.");
 }
 
 function deletePolicy(i) {
   if (!confirm("Delete this policy?")) return;
-  let policies = JSON.parse(localStorage.getItem("eligiwisePolicies"));
-  policies.splice(i,1);
-  localStorage.setItem("eligiwisePolicies", JSON.stringify(policies));
+  let data = JSON.parse(localStorage.getItem("eligiwisePolicies"));
+  data.splice(i,1);
+  localStorage.setItem("eligiwisePolicies", JSON.stringify(data));
   loadPolicies();
 }
 
