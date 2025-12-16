@@ -2,79 +2,157 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE – Dashboard</title>
+<title>ELIGIWISE – DSA Dashboard</title>
 
 <style>
-body{
+body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  background:#f4f6f8;
-  margin:0;
+  background: #f4f6f8;
 }
-.header{
-  background:#0A4EA3;
-  color:#fff;
-  padding:15px;
-  text-align:center;
+
+.header {
+  background: #0A4EA3;
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.container{
-  padding:30px;
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
 }
-.card{
-  background:#fff;
-  padding:20px;
-  border-radius:8px;
-  max-width:600px;
-  margin:auto;
-  text-align:center;
+
+.logout {
+  background: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
 }
-button{
-  padding:10px 20px;
-  background:#0A4EA3;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
+
+.container {
+  padding: 30px;
 }
-.logout{
-  background:#c0392b;
-  margin-top:20px;
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #0A4EA3;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+}
+
+button.primary {
+  background: #0A4EA3;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
+<!-- 🔐 DSA LOGIN CHECK (DO NOT REMOVE) -->
+<script>
+  const role = localStorage.getItem("eligiwise_role");
+
+  if (role !== "DSA") {
+    alert("Please login as DSA");
+    window.location.href = "login.html";
+  }
+</script>
+
+<!-- HEADER -->
 <div class="header">
-  <h2>ELIGIWISE – DSA Dashboard</h2>
+  <h1>ELIGIWISE – DSA Dashboard</h1>
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
+<!-- CONTENT -->
 <div class="container">
-  <div class="card">
-    <h3>Welcome DSA</h3>
-    <p>This is the DSA dashboard (Phase 2)</p>
 
-    <button onclick="goAdmin()">Go to Admin Panel</button>
-    <br><br>
-    <button class="logout" onclick="logout()">Logout</button>
+  <div class="card">
+    <h2>Quick Eligibility Check</h2>
+
+    <div class="grid">
+      <div>
+        <label>Required Loan Amount (Lakhs)</label>
+        <input type="number" placeholder="Ex: 25">
+      </div>
+
+      <div>
+        <label>Average Bank Balance (ABB)</label>
+        <input type="number" placeholder="Ex: 5">
+      </div>
+
+      <div>
+        <label>CIBIL Score</label>
+        <input type="number" placeholder="Ex: 750">
+      </div>
+
+      <div>
+        <label>Banking Type</label>
+        <select>
+          <option>All</option>
+          <option>CA</option>
+          <option>SA</option>
+          <option>OD</option>
+        </select>
+      </div>
+
+      <div>
+        <label>GST Available</label>
+        <select>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+
+      <div>
+        <label>ITR Available</label>
+        <select>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+    </div>
+
+    <br>
+    <button class="primary">Check Eligibility</button>
   </div>
+
 </div>
 
 <script>
-const role = localStorage.getItem("eligiwise_role");
-
-if(!role){
-  window.location.href = "login.html";
-}
-
-function goAdmin(){
-  if(role === "Admin"){
-    window.location.href = "admin.html";
-  }else{
-    alert("Admin access only");
-  }
-}
-
-function logout(){
+function logout() {
   localStorage.clear();
   window.location.href = "login.html";
 }
