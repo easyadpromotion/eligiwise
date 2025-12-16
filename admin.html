@@ -266,31 +266,14 @@ th {
   </div>
 </div>
 
-<!-- ================= SECTION E ================= -->
-<div class="section-title">SECTION E – PROGRAMS</div>
-
-<label>ABB Programs (Min – Max)</label>
-<div id="abbPrograms"></div>
+<!-- SECTION E -->
 <button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
-
-<label>ITR Programs (Min – Max)</label>
-<div id="itrPrograms"></div>
 <button class="add" onclick="addProgram('itrPrograms')">+ Add ITR Program</button>
-
-<label>GST Programs (Min – Max)</label>
-<div id="gstPrograms"></div>
 <button class="add" onclick="addProgram('gstPrograms')">+ Add GST Program</button>
-
-<label>Income / DSCR Programs (Min – Max)</label>
-<div id="incomePrograms"></div>
 <button class="add" onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
 
-<!-- ================= SECTION F ================= -->
-<div class="section-title">SECTION F – CUSTOM / FUTURE PARAMETERS</div>
-
-<div id="customFields"></div>
+<!-- SECTION F -->
 <button class="add" onclick="addCustom()">+ Add Custom Field</button>
-
 <br><br>
 <button onclick="savePolicy()">💾 Save Policy</button>
 >
@@ -361,9 +344,85 @@ function savePolicy() {
 </script>
 
 </script>
+<script>
+/* ===== ADD PROGRAM ROW ===== */
+function addProgram(containerId) {
+  const row = document.createElement("div");
+  row.className = "program-row";
+  row.innerHTML = `
+    <input type="number" placeholder="Min">
+    <input type="number" placeholder="Max">
+    <button class="del" onclick="this.parentNode.remove()">X</button>
+  `;
+  document.getElementById(containerId).appendChild(row);
+}
+
+/* ===== ADD CUSTOM FIELD ===== */
+function addCustom() {
+  const row = document.createElement("div");
+  row.className = "program-row";
+  row.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value">
+    <button class="del" onclick="this.parentNode.remove()">X</button>
+  `;
+  document.getElementById("customFields").appendChild(row);
+}
+
+/* ===== COLLECT PROGRAM DATA ===== */
+function collectPrograms(id) {
+  return [...document.getElementById(id).children].map(row => ({
+    min: Number(row.children[0].value),
+    max: Number(row.children[1].value)
+  }));
+}
+
+/* ===== SAVE POLICY ===== */
+function savePolicy() {
+
+  const policy = {
+    bankName: document.getElementById("bankName").value,
+
+    productType: productType.value,
+    loanType: loanType.value,
+
+    loanMin: Number(loanMin.value),
+    loanMax: Number(loanMax.value),
+
+    tenureMin: Number(tenureMin.value),
+    tenureMax: Number(tenureMax.value),
+
+    roiMin: Number(roiMin.value),
+    roiMax: Number(roiMax.value),
+
+    pfMin: Number(pfMin.value),
+    pfMax: Number(pfMax.value),
+
+    abbPrograms: collectPrograms("abbPrograms"),
+    itrPrograms: collectPrograms("itrPrograms"),
+    gstPrograms: collectPrograms("gstPrograms"),
+    incomePrograms: collectPrograms("incomePrograms"),
+
+    customFields: [...customFields.children].map(r => ({
+      name: r.children[0].value,
+      value: r.children[1].value
+    })),
+
+    createdAt: new Date().toISOString()
+  };
+
+  let data = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+  data.push(policy);
+
+  localStorage.setItem("eligiwise_policies", JSON.stringify(data));
+
+  alert("✅ Policy saved successfully");
+}
+</script>
 
 </body>
 </html>
+
 
 
 
