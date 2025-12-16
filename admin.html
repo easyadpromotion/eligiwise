@@ -292,7 +292,8 @@ th {
 <button class="add" onclick="addCustom()">+ Add Custom Field</button>
 
 <br><br>
-<button>💾 Save Policy (UI Phase)</button>
+<button onclick="savePolicy()">💾 Save Policy</button>
+>
 
 </div>
 
@@ -321,11 +322,49 @@ function addCustom(){
   // ELIGIWISE - Bank / NBFC Policy Admin
 // /eligiwise/admin.html (NEW CODE ONLY)
 
+<script>
+function savePolicy() {
+
+  const policy = {
+    bankName: document.getElementById("bankName").value,
+
+    productType: document.getElementById("productType").value,
+    loanType: document.getElementById("loanType").value,
+
+    loanMin: Number(document.getElementById("loanMin").value),
+    loanMax: Number(document.getElementById("loanMax").value),
+
+    tenureMin: Number(document.getElementById("tenureMin").value),
+    tenureMax: Number(document.getElementById("tenureMax").value),
+
+    roiMin: Number(document.getElementById("roiMin").value),
+    roiMax: Number(document.getElementById("roiMax").value),
+
+    pfMin: Number(document.getElementById("pfMin").value),
+    pfMax: Number(document.getElementById("pfMax").value),
+
+    abbPrograms: collectPrograms("abbPrograms"),
+    itrPrograms: collectPrograms("itrPrograms"),
+    gstPrograms: collectPrograms("gstPrograms"),
+    incomePrograms: collectPrograms("incomePrograms"),
+
+    createdAt: new Date().toISOString()
+  };
+
+  let policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+  policies.push(policy);
+
+  localStorage.setItem("eligiwise_policies", JSON.stringify(policies));
+
+  alert("✅ Bank / NBFC Policy Saved Successfully");
+}
+</script>
 
 </script>
 
 </body>
 </html>
+
 
 
 
