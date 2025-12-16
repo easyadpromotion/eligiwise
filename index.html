@@ -1,243 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<!-- Excel Export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<!-- PDF Export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
-  <head>
-  <meta charset="UTF-8" />
-  <title>ELIGIWISE – Eligibility Check</title>
-
-  <!-- Excel & PDF libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-    }
-    .container {
-      max-width: 1000px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    h1 {
-      text-align: center;
-      color: #0a4ea3;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 12px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px 16px;
-      background: #0a4ea3;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background: #0a4ea3;
-      color: #fff;
-      font-weight: bold;
-    }
-    .eligible {
-      color: green;
-      font-weight: bold;
-    }
-    .not-eligible {
-      color: red;
-      font-weight: bold;
-    }
-    .summary {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    .download-btns button {
-      margin-right: 10px;
-    }
-  </style>
+<html>
+<head>
+  <title>ELIGIWISE</title>
 </head>
-
 <body>
-<div class="container">
-
-  <h1>ELIGIWISE – Eligibility Check</h1>
-
-  <!-- INPUTS -->
-  <label>Business Vintage (Years)</label>
-  <input type="number" id="vintage" placeholder="Ex: 3">
-
-  <label>Required Loan Amount (Lakhs)</label>
-  <input type="number" id="requiredLoan" placeholder="Ex: 10">
-
-  <label>Turnover (Lakhs)</label>
-  <input type="number" id="turnover" placeholder="Ex: 120">
-
-  <label>Average Bank Balance – ABB (Lakhs)</label>
-  <input type="number" step="0.01" id="abb" placeholder="Ex: 0.75">
-
-  <label>CIBIL Score</label>
-  <input type="number" id="cibil" placeholder="Ex: 720">
-
-  <label>Banking Type</label>
-  <select id="bankingType">
-    <option>All Accounts Accepted</option>
-    <option>Only Current Account</option>
-    <option>Only OD/CC Accounts</option>
-    <option>Only Saving Accounts</option>
-    <option>CA+CC/OD</option>
-  </select>
-
-  <label>Own House</label>
-  <select id="ownHouse">
-    <option>Yes</option>
-    <option>No</option>
-  </select>
-
-  <label>GST Available</label>
-  <select id="gst">
-    <option>Yes</option>
-    <option>No</option>
-  </select>
-
-  <label>ITR Available</label>
-  <select id="itr">
-    <option>Yes</option>
-    <option>No</option>
-  </select>
-
-  <button onclick="checkEligibility()">🔍 Check Eligibility</button>
-
-  <!-- SUMMARY -->
-  <div id="summary" class="summary"></div>
-
-  <!-- RESULT TABLE -->
-  <table id="resultTable" style="display:none;">
-    <thead>
-      <tr>
-        <th>Bank / NBFC</th>
-        <th>Status</th>
-        <th>Remarks</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <!-- DOWNLOAD -->
-  <div class="download-btns" style="display:none;" id="downloadBtns">
-    <button onclick="downloadExcel()">📥 Download Excel</button>
-    <button onclick="downloadPDF()">📄 Download PDF</button>
-  </div>
-
-</div>
 
 <script>
-function checkEligibility() {
-  const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+  const role = localStorage.getItem("eligiwise_role");
 
-  if (policies.length === 0) {
-    alert("No Bank Policies Found. Please add from Admin Panel.");
-    return;
+  if (!role) {
+    window.location.href = "login.html";
+  } 
+  else if (role === "ADMIN") {
+    window.location.href = "admin.html";
+  } 
+  else if (role === "DSA") {
+    alert("DSA dashboard coming soon");
+    localStorage.clear();
+    window.location.href = "login.html";
   }
-
-  const vintage = Number(document.getElementById("vintage").value);
-  const loan = Number(document.getElementById("requiredLoan").value);
-  const turnover = Number(document.getElementById("turnover").value);
-  const abb = Number(document.getElementById("abb").value);
-  const cibil = Number(document.getElementById("cibil").value);
-
-  let eligibleCount = 0;
-  let notEligibleCount = 0;
-
-  const tbody = document.querySelector("#resultTable tbody");
-  tbody.innerHTML = "";
-
-  policies.forEach(p => {
-    let eligible = true;
-    let remarks = [];
-
-    if (vintage < p.vintage) { eligible = false; remarks.push("Low Vintage"); }
-    if (loan < p.loanMin || loan > p.loanMax) { eligible = false; remarks.push("Loan Amount Mismatch"); }
-    if (turnover < p.turnover) { eligible = false; remarks.push("Low Turnover"); }
-    if (abb < p.abb) { eligible = false; remarks.push("Low ABB"); }
-    if (cibil < p.cibil) { eligible = false; remarks.push("Low CIBIL"); }
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${p.bankName}</td>
-      <td class="${eligible ? 'eligible' : 'not-eligible'}">
-        ${eligible ? 'Eligible' : 'Not Eligible'}
-      </td>
-      <td>${eligible ? 'All conditions matched' : remarks.join(", ")}</td>
-    `;
-    tbody.appendChild(tr);
-
-    eligible ? eligibleCount++ : notEligibleCount++;
-  });
-
-  document.getElementById("summary").innerHTML =
-    `✅ Eligible: ${eligibleCount} &nbsp;&nbsp; ❌ Not Eligible: ${notEligibleCount}`;
-
-  document.getElementById("resultTable").style.display = "table";
-  document.getElementById("downloadBtns").style.display = "block";
-}
-
-function downloadExcel() {
-  const table = document.getElementById("resultTable");
-  const wb = XLSX.utils.table_to_book(table, { sheet: "Eligibility" });
-  XLSX.writeFile(wb, "Eligiwise_Eligibility.xlsx");
-}
-
-function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.text("ELIGIWISE – Eligibility Result", 14, 15);
-  doc.autoTable({ html: "#resultTable", startY: 20 });
-  doc.save("Eligiwise_Eligibility.pdf");
-}
-  if (localStorage.getItem("eligiwiseRole") !== "dsa") {
-  alert("Please login as DSA");
-  location.href = "login.html";
-}
-
+  else {
+    localStorage.clear();
+    window.location.href = "login.html";
+  }
 </script>
 
 </body>
 </html>
-<button onclick="logout()">Logout</button>
-
-<script>
-function logout() {
-  localStorage.clear();
-  location.href = "login.html";
-}
-</script>
-
-
-
