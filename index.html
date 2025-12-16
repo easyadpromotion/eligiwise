@@ -255,40 +255,70 @@ function checkEligibility(){
     return;
   }
 
-  let eligibleBanks = [];
+  let results = [];
 
   policies.forEach(p => {
-    if(
-      loanAmount >= Number(p.loanMin) &&
-      loanAmount <= Number(p.loanMax) &&
-      abb >= Number(p.abbMin || 0) &&
-      cibil >= Number(p.cibilMin || 0) &&
-      (p.gstRequired === "No" || p.gstRequired === gst) &&
-      (p.itrRequired === "No" || p.itrRequired === itr) &&
-      (p.bankingType === "All" || p.bankingType === bankingType)
-    ){
-      eligibleBanks.push(p.bankName);
-    }
+
+    let reasons = [];
+
+    if(loanAmount < Number(p.loanMin))
+      reasons.push("Loan amount below minimum requirement");
+
+    if(loanAmount > Number(p.loanMax))
+      reasons.push("Loan amount exceeds maximum limit");
+
+    if(abb < Number(p.abbMin || 0))
+      reasons.push("ABB is less than required");
+
+    if(cibil < Number(p.cibilMin || 0))
+      reasons.push("CIBIL score is less than required");
+
+    if(p.gstRequired === "Yes" && gst === "No")
+      reasons.push("GST is mandatory");
+
+    if(p.itrRequired === "Yes" && itr === "No")
+      reasons.push("ITR is mandatory");
+
+    if(p.bankingType !== "All" && p.bankingType !== bankingType)
+      reasons.push("Banking type not supported");
+
+    results.push({
+      bank: p.bankName,
+      eligible: reasons.length === 0,
+      reasons: reasons
+    });
   });
 
-  showResult(eligibleBanks);
+  showResult(results);
 }
 
-function showResult(banks){
+function showResult(results){
+
   const div = document.getElementById("result");
   div.innerHTML = "";
 
-  if(banks.length === 0){
-    div.innerHTML =
-      "<h3 style='color:red'>❌ Not Eligible for any Bank</h3>";
-    return;
-  }
+  results.forEach(r => {
 
-  let html = "<h3 style='color:green'>✅ Eligible Banks</h3><ul>";
-  banks.forEach(b => html += `<li>${b}</li>`);
-  html += "</ul>";
+    if(r.eligible){
+      div.innerHTML += `
+        <div style="border:1px solid green;padding:10px;margin:10px">
+          <b>${r.bank}</b><br>
+          <span style="color:green">✅ Eligible</span>
+        </div>
+      `;
+    } else {
+      div.innerHTML += `
+        <div style="border:1px solid red;padding:10px;margin:10px">
+          <b>${r.bank}</b><br>
+          <span style="color:red">❌ Not Eligible</span>
+          <ul>
+            ${r.reasons.map(x => `<li>${x}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
 
-  div.innerHTML = html;
+  });
 }
 </script>
 
@@ -296,4 +326,5 @@ function showResult(banks){
 
 </body>
 </html>
+
 
