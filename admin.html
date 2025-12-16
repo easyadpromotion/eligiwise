@@ -75,23 +75,6 @@ button {
 
 button.add { background:#27ae60; }
 button.del { background:#c0392b; }
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:30px;
-}
-
-th, td {
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-}
-
-th {
-  background:#0A4EA3;
-  color:#fff;
-}
 </style>
 </head>
 
@@ -100,7 +83,6 @@ th {
 
 <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
 
-<!-- BANK NAME -->
 <label>Bank / NBFC Name</label>
 <input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
@@ -126,44 +108,42 @@ th {
 </div>
 
 <div class="grid-3">
-  <div><label>Loan Amount Min (Lakhs)</label><input type="number" id="loanMin"></div>
-  <div><label>Loan Amount Max (Lakhs)</label><input type="number" id="loanMax"></div>
-  <div><label>Tenure Min</label><input type="number" id="tenureMin"></div>
-  <div><label>Tenure Max</label><input type="number" id="tenureMax"></div>
-  <div><label>ROI Min (%)</label><input type="number" step="0.01" id="roiMin"></div>
-  <div><label>ROI Max (%)</label><input type="number" step="0.01" id="roiMax"></div>
-  <div><label>PF Min (%)</label><input type="number" step="0.01" id="pfMin"></div>
-  <div><label>PF Max (%)</label><input type="number" step="0.01" id="pfMax"></div>
+  <div><label>Loan Amount Min (Lakhs)</label><input type="number"></div>
+  <div><label>Loan Amount Max (Lakhs)</label><input type="number"></div>
+  <div><label>Tenure Min</label><input type="number"></div>
+  <div><label>Tenure Max</label><input type="number"></div>
+  <div><label>ROI Min (%)</label><input type="number"></div>
+  <div><label>ROI Max (%)</label><input type="number"></div>
+  <div><label>PF Min (%)</label><input type="number"></div>
+  <div><label>PF Max (%)</label><input type="number"></div>
 </div>
 
 <!-- ================= SECTION B ================= -->
 <div class="section-title">SECTION B – APPLICANT & CO-APPLICANT</div>
 
 <div class="grid-3">
-  <div><label>Applicant Age Min</label><input type="number" id="appAgeMin"></div>
-  <div><label>Applicant Age Max</label><input type="number" id="appAgeMax"></div>
+  <div><label>Applicant Age Min</label><input type="number"></div>
+  <div><label>Applicant Age Max</label><input type="number"></div>
   <div>
     <label>Co-Applicant Mandatory</label>
-    <select id="coMandatory">
+    <select>
       <option>No</option>
       <option>Yes</option>
     </select>
   </div>
-  <div><label>Co-Applicant Age Min</label><input type="number" id="coAgeMin"></div>
-  <div><label>Co-Applicant Age Max</label><input type="number" id="coAgeMax"></div>
 </div>
 
 <div class="grid-2">
   <div>
     <label>Own House</label>
-    <select id="ownHouse">
+    <select>
       <option>Yes</option>
       <option>No</option>
     </select>
   </div>
   <div>
     <label>Own House Geo Limit</label>
-    <select id="ownHouseGeo">
+    <select>
       <option>Local</option>
       <option>Anywhere India</option>
     </select>
@@ -174,7 +154,7 @@ th {
 <div class="section-title">SECTION C – BUSINESS & BANKING</div>
 
 <label>Banking Type</label>
-<select id="bankingType">
+<select>
   <option>All</option>
   <option>CA</option>
   <option>SA</option>
@@ -186,14 +166,14 @@ th {
 <div class="grid-2">
   <div>
     <label>ITR Required</label>
-    <select id="itrRequired">
+    <select>
       <option>No</option>
       <option>Yes</option>
     </select>
   </div>
   <div>
     <label>GST Required</label>
-    <select id="gstRequired">
+    <select>
       <option>No</option>
       <option>Yes</option>
     </select>
@@ -201,87 +181,69 @@ th {
 </div>
 
 <label>Bank / NBFC Geo Limit (KM)</label>
-<input type="number" id="geoLimit">
+<input type="number">
 
 <!-- ================= SECTION D ================= -->
 <div class="section-title">SECTION D – CREDIT & OBLIGATIONS</div>
 
-<!-- Row 1 : CIBIL -->
 <div class="grid-2">
-  <div>
-    <label>CIBIL Min</label>
-    <input type="number" id="cibilMin">
-  </div>
-  <div>
-    <label>CIBIL Max</label>
-    <input type="number" id="cibilMax">
-  </div>
+  <div><label>CIBIL Min</label><input type="number"></div>
+  <div><label>CIBIL Max</label><input type="number"></div>
 </div>
 
-<!-- Row 2 : Active Loans -->
 <div class="grid-2">
-  <div>
-    <label>Active Loans Min</label>
-    <input type="number" id="activeLoansMin">
-  </div>
-  <div>
-    <label>Active Loans Max</label>
-    <input type="number" id="activeLoansMax">
-  </div>
+  <div><label>Active Loans Min</label><input type="number"></div>
+  <div><label>Active Loans Max</label><input type="number"></div>
 </div>
 
-<!-- Row 3 : Last 6 Months -->
 <div class="grid-2">
-  <div>
-    <label>Loans in Last 6 Months (Count)</label>
-    <input type="number" id="loan6Count">
-  </div>
-  <div>
-    <label>Loan Amount Last 6 Months</label>
-    <input type="number" id="loan6Amount">
-  </div>
+  <div><label>Loans in Last 6 Months (Count)</label><input type="number"></div>
+  <div><label>Loan Amount Last 6 Months</label><input type="number"></div>
 </div>
 
-<!-- Row 4 : Last 3 Months -->
 <div class="grid-2">
-  <div>
-    <label>Loans in Last 3 Months (Count)</label>
-    <input type="number" id="loan3Count">
-  </div>
-  <div>
-    <label>Loan Amount Last 3 Months</label>
-    <input type="number" id="loan3Amount">
-  </div>
+  <div><label>Loans in Last 3 Months (Count)</label><input type="number"></div>
+  <div><label>Loan Amount Last 3 Months</label><input type="number"></div>
 </div>
 
-<!-- Row 5 : Enquiries -->
 <div class="grid-2">
-  <div>
-    <label>Enquiries Last 6 Months</label>
-    <input type="number" id="enq6">
-  </div>
-  <div>
-    <label>Enquiries Last 3 Months</label>
-    <input type="number" id="enq3">
-  </div>
+  <div><label>Enquiries Last 6 Months</label><input type="number"></div>
+  <div><label>Enquiries Last 3 Months</label><input type="number"></div>
 </div>
 
-<!-- SECTION E -->
+<!-- ================= SECTION E ================= -->
+<div class="section-title">SECTION E – PROGRAMS</div>
+
+<label>ABB Programs (Min – Max)</label>
+<div id="abbPrograms"></div>
 <button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
+
+<label>ITR Programs (Min – Max)</label>
+<div id="itrPrograms"></div>
 <button class="add" onclick="addProgram('itrPrograms')">+ Add ITR Program</button>
+
+<label>GST Programs (Min – Max)</label>
+<div id="gstPrograms"></div>
 <button class="add" onclick="addProgram('gstPrograms')">+ Add GST Program</button>
+
+<label>Income / DSCR Programs (Min – Max)</label>
+<div id="incomePrograms"></div>
 <button class="add" onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
 
-<!-- SECTION F -->
-<button class="add" onclick="addCustom()">+ Add Custom Field</button>
-<button onclick="savePolicy()">💾 Save Policy</button>
+<!-- ================= SECTION F ================= -->
+<div class="section-title">SECTION F – CUSTOM / FUTURE PARAMETERS</div>
 
->
+<div id="customFields"></div>
+<button class="add" onclick="addCustom()">+ Add Custom Field</button>
+
+<br><br>
+<button onclick="savePolicy()">💾 Save Policy</button>
 
 </div>
 
 <script>
-function addProgram(id){
+function addProgram(id) {
+  const container = document.getElementById(id);
   const row = document.createElement("div");
   row.className = "program-row";
   row.innerHTML = `
@@ -289,76 +251,11 @@ function addProgram(id){
     <input placeholder="Max">
     <button class="del" onclick="this.parentNode.remove()">X</button>
   `;
-  document.getElementById(id).appendChild(row);
+  container.appendChild(row);
 }
 
-function addCustom(){
-  const row = document.createElement("div");
-  row.className = "program-row";
-  row.innerHTML = `
-    <input placeholder="Field Name">
-    <input placeholder="Value">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
-  `;
-  document.getElementById("customFields").appendChild(row);
-}
-  // ELIGIWISE - Bank / NBFC Policy Admin
-// /eligiwise/admin.html (NEW CODE ONLY)
-
-<script>
-function savePolicy() {
-
-  const policy = {
-    bankName: document.getElementById("bankName").value,
-
-    productType: document.getElementById("productType").value,
-    loanType: document.getElementById("loanType").value,
-
-    loanMin: Number(document.getElementById("loanMin").value),
-    loanMax: Number(document.getElementById("loanMax").value),
-
-    tenureMin: Number(document.getElementById("tenureMin").value),
-    tenureMax: Number(document.getElementById("tenureMax").value),
-
-    roiMin: Number(document.getElementById("roiMin").value),
-    roiMax: Number(document.getElementById("roiMax").value),
-
-    pfMin: Number(document.getElementById("pfMin").value),
-    pfMax: Number(document.getElementById("pfMax").value),
-
-    abbPrograms: collectPrograms("abbPrograms"),
-    itrPrograms: collectPrograms("itrPrograms"),
-    gstPrograms: collectPrograms("gstPrograms"),
-    incomePrograms: collectPrograms("incomePrograms"),
-
-    createdAt: new Date().toISOString()
-  };
-
-  let policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-  policies.push(policy);
-
-  localStorage.setItem("eligiwise_policies", JSON.stringify(policies));
-
-  alert("✅ Bank / NBFC Policy Saved Successfully");
-}
-</script>
-
-</script>
-<script>
-/* ===== ADD PROGRAM ROW ===== */
-function addProgram(containerId) {
-  const row = document.createElement("div");
-  row.className = "program-row";
-  row.innerHTML = `
-    <input type="number" placeholder="Min">
-    <input type="number" placeholder="Max">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
-  `;
-  document.getElementById(containerId).appendChild(row);
-}
-
-/* ===== ADD CUSTOM FIELD ===== */
 function addCustom() {
+  const container = document.getElementById("customFields");
   const row = document.createElement("div");
   row.className = "program-row";
   row.innerHTML = `
@@ -366,66 +263,42 @@ function addCustom() {
     <input placeholder="Value">
     <button class="del" onclick="this.parentNode.remove()">X</button>
   `;
-  document.getElementById("customFields").appendChild(row);
+  container.appendChild(row);
 }
 
-/* ===== COLLECT PROGRAM DATA ===== */
-function collectPrograms(id) {
-  return [...document.getElementById(id).children].map(row => ({
-    min: Number(row.children[0].value),
-    max: Number(row.children[1].value)
-  }));
-}
-
-/* ===== SAVE POLICY ===== */
 function savePolicy() {
-
   const policy = {
     bankName: document.getElementById("bankName").value,
-
-    productType: productType.value,
-    loanType: loanType.value,
-
-    loanMin: Number(loanMin.value),
-    loanMax: Number(loanMax.value),
-
-    tenureMin: Number(tenureMin.value),
-    tenureMax: Number(tenureMax.value),
-
-    roiMin: Number(roiMin.value),
-    roiMax: Number(roiMax.value),
-
-    pfMin: Number(pfMin.value),
-    pfMax: Number(pfMax.value),
-
-    abbPrograms: collectPrograms("abbPrograms"),
-    itrPrograms: collectPrograms("itrPrograms"),
-    gstPrograms: collectPrograms("gstPrograms"),
-    incomePrograms: collectPrograms("incomePrograms"),
-
-    customFields: [...customFields.children].map(r => ({
-      name: r.children[0].value,
-      value: r.children[1].value
-    })),
-
-    createdAt: new Date().toISOString()
+    abb: readPrograms("abbPrograms"),
+    itr: readPrograms("itrPrograms"),
+    gst: readPrograms("gstPrograms"),
+    income: readPrograms("incomePrograms"),
+    custom: readCustomFields()
   };
 
   let data = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
   data.push(policy);
-
   localStorage.setItem("eligiwise_policies", JSON.stringify(data));
 
-  alert("✅ Policy saved successfully");
+  alert("✅ Policy Saved Successfully");
+}
+
+function readPrograms(id) {
+  const container = document.getElementById(id);
+  return [...container.children].map(r => ({
+    min: r.children[0].value,
+    max: r.children[1].value
+  }));
+}
+
+function readCustomFields() {
+  const container = document.getElementById("customFields");
+  return [...container.children].map(r => ({
+    name: r.children[0].value,
+    value: r.children[1].value
+  }));
 }
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
