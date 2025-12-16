@@ -237,7 +237,63 @@ function toggleField(sel,id){
   document.getElementById(id).style.display =
     sel.value==="Yes" ? "block" : "none";
 }
+  <script>
+function checkEligibility(){
+
+  const loanAmount = Number(document.getElementById("loanAmount").value);
+  const abb = Number(document.getElementById("abb").value);
+  const cibil = Number(document.getElementById("cibil").value);
+  const gst = document.getElementById("gst").value;
+  const itr = document.getElementById("itr").value;
+  const bankingType = document.getElementById("bankingType").value;
+
+  const policies =
+    JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+
+  if(policies.length === 0){
+    alert("No Bank Policies Found. Please add from Admin Panel.");
+    return;
+  }
+
+  let eligibleBanks = [];
+
+  policies.forEach(p => {
+    if(
+      loanAmount >= Number(p.loanMin) &&
+      loanAmount <= Number(p.loanMax) &&
+      abb >= Number(p.abbMin || 0) &&
+      cibil >= Number(p.cibilMin || 0) &&
+      (p.gstRequired === "No" || p.gstRequired === gst) &&
+      (p.itrRequired === "No" || p.itrRequired === itr) &&
+      (p.bankingType === "All" || p.bankingType === bankingType)
+    ){
+      eligibleBanks.push(p.bankName);
+    }
+  });
+
+  showResult(eligibleBanks);
+}
+
+function showResult(banks){
+  const div = document.getElementById("result");
+  div.innerHTML = "";
+
+  if(banks.length === 0){
+    div.innerHTML =
+      "<h3 style='color:red'>❌ Not Eligible for any Bank</h3>";
+    return;
+  }
+
+  let html = "<h3 style='color:green'>✅ Eligible Banks</h3><ul>";
+  banks.forEach(b => html += `<li>${b}</li>`);
+  html += "</ul>";
+
+  div.innerHTML = html;
+}
+</script>
+
 </script>
 
 </body>
 </html>
+
