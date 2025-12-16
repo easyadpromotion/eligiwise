@@ -1,72 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>ELIGIWISE – Login</title>
+  <meta charset="UTF-8">
+  <title>ELIGIWISE – Login</title>
 
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f4f6f8;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
 
-.login-box {
-  width: 380px;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.15);
-}
+    .login-box{
+      background:#fff;
+      padding:30px;
+      width:350px;
+      border-radius:10px;
+      box-shadow:0 0 10px rgba(0,0,0,0.1);
+    }
 
-h2 {
-  text-align: center;
-  color: #0A4EA3;
-  margin-bottom: 25px;
-}
+    h2{
+      text-align:center;
+      color:#0A4EA3;
+      margin-bottom:20px;
+    }
 
-label {
-  font-weight: bold;
-  margin-top: 15px;
-  display: block;
-}
+    label{
+      font-weight:bold;
+      display:block;
+      margin-top:15px;
+    }
 
-select, input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+    input, select{
+      width:100%;
+      padding:8px;
+      margin-top:5px;
+    }
 
-button {
-  width: 100%;
-  margin-top: 25px;
-  padding: 12px;
-  background: #0A4EA3;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #083c7a;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 12px;
-  color: #777;
-}
-</style>
+    button{
+      margin-top:20px;
+      width:100%;
+      padding:10px;
+      background:#0A4EA3;
+      color:#fff;
+      border:none;
+      border-radius:5px;
+      cursor:pointer;
+      font-size:16px;
+    }
+  </style>
 </head>
 
 <body>
@@ -75,40 +60,47 @@ button:hover {
   <h2>ELIGIWISE Login</h2>
 
   <label>Login As</label>
-  <select id="loginType">
-    <option value="admin">Admin</option>
-    <option value="dsa">DSA</option>
+  <select id="role">
+    <option value="">Select</option>
+    <option value="Admin">Admin</option>
+    <option value="DSA">DSA</option>
   </select>
 
   <label>User ID</label>
-  <input type="text" id="userId" placeholder="Enter User ID">
+  <input type="text" id="user" placeholder="Enter User ID">
 
   <label>Password</label>
-  <input type="password" id="password" placeholder="Enter Password">
+  <input type="password" id="pass" placeholder="Enter Password">
 
+  <!-- ✅ BUTTON ONLY CALLS login() -->
   <button onclick="login()">Login</button>
-
-  <div class="footer">
-    © ELIGIWISE
-  </div>
 </div>
 
 <script>
-function login() {
-  const type = document.getElementById("loginType").value;
-  const user = document.getElementById("userId").value.trim();
-  const pass = document.getElementById("password").value.trim();
+function login(){
 
-  if (user === "" || pass === "") {
-    alert("Please enter User ID and Password");
+  const role = document.getElementById("role").value;
+  const user = document.getElementById("user").value;
+  const pass = document.getElementById("pass").value;
+
+  if(role === "" || user === "" || pass === ""){
+    alert("Please fill all fields");
     return;
   }
 
-  // PHASE 2 – UI ONLY (no backend auth yet)
-  if (type === "admin") {
+  /* ===== SIMPLE DEMO CREDENTIALS ===== */
+  if(role === "Admin" && user === "admin" && pass === "admin123"){
+    // ✅ KEY LINE – CORRECT PLACE
+    localStorage.setItem("eligiwise_role", "Admin");
     window.location.href = "admin.html";
-  } else {
-    window.location.href = "index.html"; // DSA dashboard / landing
+  }
+  else if(role === "DSA" && user === "dsa" && pass === "dsa123"){
+    // ✅ KEY LINE – CORRECT PLACE
+    localStorage.setItem("eligiwise_role", "DSA");
+    window.location.href = "index.html";
+  }
+  else{
+    alert("Invalid login credentials");
   }
 }
 </script>
