@@ -1,28 +1,54 @@
-<script>
-function login(){
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ELIGIWISE Login</title>
+</head>
 
-  const role = document.getElementById("role").value;
-  const pass = document.getElementById("pass").value;
+<body style="font-family:Arial;background:#f4f6f8;">
 
-  if(!role || !pass){
-    alert("Enter role & password");
-    return;
-  }
+  <div style="width:350px;margin:100px auto;background:#fff;padding:20px;border-radius:8px;">
+    <h2 style="text-align:center;color:#0A4EA3;">ELIGIWISE Login</h2>
 
-  // TEMP PASSWORD (can change later)
-  if(pass !== "1234"){
-    alert("Wrong password");
-    return;
-  }
+    <label>Login As</label><br>
+    <select id="role" style="width:100%;padding:8px;">
+      <option value="">Select</option>
+      <option value="ADMIN">ADMIN</option>
+      <option value="DSA">DSA</option>
+    </select><br><br>
 
-  // ✅ SET ROLE (THIS IS THE KEY FIX)
-  localStorage.setItem("eligiwise_role", role);
+    <label>Password</label><br>
+    <input type="password" id="pass" style="width:100%;padding:8px;"><br><br>
 
-  if(role === "ADMIN"){
-    window.location.href = "admin.html";
-  }
-  else if(role === "DSA"){
-    window.location.href = "index.html";
-  }
-}
-</script>
+    <button onclick="login()" style="width:100%;padding:10px;background:#0A4EA3;color:white;border:none;">
+      Login
+    </button>
+  </div>
+
+  <script>
+    function login(){
+      const role = document.getElementById("role").value;
+      const pass = document.getElementById("pass").value;
+
+      if(!role || !pass){
+        alert("Fill all fields");
+        return;
+      }
+
+      if(pass !== "1234"){
+        alert("Wrong password");
+        return;
+      }
+
+      localStorage.setItem("eligiwise_role", role);
+
+      if(role === "ADMIN"){
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
+</body>
+</html>
