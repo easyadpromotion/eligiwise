@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script>
+if (localStorage.getItem("eligiwise_role") !== "DSA") {
+  alert("Please login as DSA");
+  window.location.href = "login.html";
+}
+</script>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -128,3 +135,4 @@ function checkEligibility(){
 
 </body>
 </html>
+
