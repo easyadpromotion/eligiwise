@@ -25,7 +25,7 @@ th,td{padding:6px;text-align:left}
 </style>
 
 <script>
-// allow only DSA
+// only DSA can open
 if(localStorage.getItem("role")!=="DSA"){
   alert("Please login as DSA");
   location.href="login.html";
@@ -161,41 +161,25 @@ if(localStorage.getItem("role")!=="DSA"){
 </div>
 
 <script>
-<script>
 function toggleGST(){
   const gstSelect = document.getElementById("gst");
   const gstTurn = document.getElementById("gstTurnover");
   if (!gstSelect || !gstTurn) return;
-  if (gstSelect.value === "Yes") {
-    gstTurn.classList.remove("hidden");
-  } else {
-    gstTurn.classList.add("hidden");
-    gstTurn.value = "";
-  }
+  gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
 }
 
 function toggleITR(){
   const itrSelect = document.getElementById("itr");
   const itrTurn = document.getElementById("itrTurnover");
   if (!itrSelect || !itrTurn) return;
-  if (itrSelect.value === "Yes") {
-    itrTurn.classList.remove("hidden");
-  } else {
-    itrTurn.classList.add("hidden");
-    itrTurn.value = "";
-  }
+  itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
 }
 
 function toggleCo(){
   const coSelect = document.getElementById("coapp");
   const coAge = document.getElementById("coAge");
   if (!coSelect || !coAge) return;
-  if (coSelect.value === "Yes") {
-    coAge.classList.remove("hidden");
-  } else {
-    coAge.classList.add("hidden");
-    coAge.value = "";
-  }
+  coAge.classList.toggle("hidden", coSelect.value !== "Yes");
 }
 
 function addField(btn){
@@ -220,7 +204,7 @@ function checkEligibility() {
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; // from admin.html[web:23][web:37]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; // from admin[web:23][web:37]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -263,8 +247,5 @@ function checkEligibility() {
 }
 </script>
 
-</script>
-
 </body>
 </html>
-
