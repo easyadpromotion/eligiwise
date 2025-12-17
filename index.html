@@ -162,7 +162,43 @@ function addExtra(){
 function checkEligibility(){
   result.innerHTML="Eligibility logic will be applied here";
 }
+  <script>
+function checkEligibility() {
+
+  const abb = Number(document.getElementById("abb")?.value || 0);
+  const gst = document.getElementById("gst")?.value || "No";
+  const itr = document.getElementById("itr")?.value || "No";
+
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
+
+  const table = document.getElementById("eligibleBanks");
+  table.innerHTML = "";
+
+  if (policies.length === 0) {
+    table.innerHTML = "<tr><td>No policies found</td></tr>";
+    return;
+  }
+
+  const eligible = policies.filter(p =>
+    abb >= p.abbMin &&
+    abb <= p.abbMax &&
+    (p.gstRequired === "No" || p.gstRequired === gst) &&
+    (p.itrRequired === "No" || p.itrRequired === itr)
+  );
+
+  if (eligible.length === 0) {
+    table.innerHTML = "<tr><td>No eligible banks</td></tr>";
+    return;
+  }
+
+  eligible.forEach(p => {
+    table.innerHTML += `<tr><td>${p.bankName}</td></tr>`;
+  });
+}
+</script>
+
 </script>
 
 </body>
 </html>
+
