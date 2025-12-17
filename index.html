@@ -129,6 +129,14 @@ function toggleCo(){
 // --- eligibility ---
 <script>
 function checkEligibility() {
+  const abb = Number(document.getElementById("abb").value || 0);
+  const gst = document.getElementById("gst").value || "No";
+  const itr = document.getElementById("itr").value || "No";
+
+  const cibil = Number(document.getElementById("cibilScore").value || 0);
+  const existingEmi = Number(document.getElementById("emiObligation").value || 0);
+  const income = Number(document.getElementById("netMonthlyIncome").value || 0);
+
   const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
 
   const tbody = document.querySelector("#eligibleBanks tbody");
@@ -137,13 +145,43 @@ function checkEligibility() {
   resultP.textContent = "";
 
   if (!policies.length) {
-    resultP.textContent = "No policies found.";
+    resultP.textContent = "No policies found. Please ask admin to create policies.";
     return;
   }
 
-  policies.forEach(p => {
+  const eligible = policies.filter(p => {
+    const abbMin = Number(p.abbMin || 0);
+    const abbMax = Number(p.abbMax || 0);
+    const cibilMin = Number(p.cibilMin || 0);
+    const maxEmiRatio = Number(p.maxEmiRatio || 0); // percentage
+
+    // 1. ABB range
+    if (!(abb >= abbMin && abb <= abbMax)) return false;
+
+    // 2. GST / ITR requirement
+    if (p.gstRequired === "Yes" && gst !== "Yes") return false;
+    if (p.itrRequired === "Yes" && itr !== "Yes") return false;
+
+    // 3. CIBIL minimum (if defined)
+    if (cibilMin && cibil && cibil < cibilMin) return false;
+
+    // 4. EMI to income ratio (if defined)
+    if (maxEmiRatio && income > 0) {
+      const ratio = (existingEmi / income) * 100;
+      if (ratio > maxEmiRatio) return false;
+    }
+
+    return true;
+  });
+
+  if (!eligible.length) {
+    resultP.textContent = "No eligible banks for given inputs.";
+    return;
+  }
+
+  eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>ABB ${p.abbMin}–${p.abbMax}, GST ${p.gstRequired}, ITR ${p.itrRequired}</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -152,4 +190,5 @@ function checkEligibility() {
 </script>
 </body>
 </html>
+
 
