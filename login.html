@@ -1,109 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>ELIGIWISE – Login</title>
-
-  <style>
-    body{
-      font-family: Arial, sans-serif;
-      background:#f4f6f8;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      height:100vh;
-    }
-
-    .login-box{
-      background:#fff;
-      padding:30px;
-      width:350px;
-      border-radius:10px;
-      box-shadow:0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h2{
-      text-align:center;
-      color:#0A4EA3;
-      margin-bottom:20px;
-    }
-
-    label{
-      font-weight:bold;
-      display:block;
-      margin-top:15px;
-    }
-
-    input, select{
-      width:100%;
-      padding:8px;
-      margin-top:5px;
-    }
-
-    button{
-      margin-top:20px;
-      width:100%;
-      padding:10px;
-      background:#0A4EA3;
-      color:#fff;
-      border:none;
-      border-radius:5px;
-      cursor:pointer;
-      font-size:16px;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="login-box">
-  <h2>ELIGIWISE Login</h2>
-
-  <label>Login As</label>
-  <select id="role">
-    <option value="">Select</option>
-    <option value="Admin">Admin</option>
-    <option value="DSA">DSA</option>
-  </select>
-
-  <label>User ID</label>
-  <input type="text" id="user" placeholder="Enter User ID">
-
-  <label>Password</label>
-  <input type="password" id="pass" placeholder="Enter Password">
-
-  <!-- ✅ BUTTON ONLY CALLS login() -->
-  <button onclick="login()">Login</button>
-</div>
-
 <script>
 function login(){
 
   const role = document.getElementById("role").value;
-  const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
 
-  if(role === "" || user === "" || pass === ""){
-    alert("Please fill all fields");
+  if(!role || !pass){
+    alert("Enter role & password");
     return;
   }
 
-  /* ===== SIMPLE DEMO CREDENTIALS ===== */
-  if(role === "Admin" && user === "admin" && pass === "admin123"){
-    // ✅ KEY LINE – CORRECT PLACE
-    localStorage.setItem("eligiwise_role", "Admin");
+  // TEMP PASSWORD (can change later)
+  if(pass !== "1234"){
+    alert("Wrong password");
+    return;
+  }
+
+  // ✅ SET ROLE (THIS IS THE KEY FIX)
+  localStorage.setItem("eligiwise_role", role);
+
+  if(role === "ADMIN"){
     window.location.href = "admin.html";
   }
-  else if(role === "DSA" && user === "dsa" && pass === "dsa123"){
-    // ✅ KEY LINE – CORRECT PLACE
-    localStorage.setItem("eligiwise_role", "DSA");
+  else if(role === "DSA"){
     window.location.href = "index.html";
-  }
-  else{
-    alert("Invalid login credentials");
   }
 }
 </script>
-
-</body>
-</html>
