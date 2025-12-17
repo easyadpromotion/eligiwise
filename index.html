@@ -5,16 +5,15 @@
 <title>ELIGIWISE – Eligibility Check</title>
 
 <style>
-body{font-family:Arial;background:#eef2f7;margin:0}
+body{font-family:Arial;background:#f4f6f8;margin:0}
 .container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;
            border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
-h2{text-align:center;color:#0A4EA3;margin-top:0}
-h3{background:#0A4EA3;color:#fff;padding:8px;margin-top:20px;border-radius:4px}
+h3{background:#0A4EA3;color:#fff;padding:10px;margin-top:25px;border-radius:4px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-input,select{width:100%;padding:8px;margin-top:4px;box-sizing:border-box;
-             border-radius:4px;border:1px solid #ccc}
-button{margin-top:12px;padding:8px 14px;background:#2ea44f;color:#fff;border:none;
-       border-radius:4px;cursor:pointer}
+input,select{padding:8px;width:100%;box-sizing:border-box;border-radius:4px;
+             border:1px solid #ccc}
+button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
+       border-radius:4px;font-size:13px}
 button:hover{opacity:0.9}
 .add-btn{margin-top:10px}
 .hidden{display:none}
@@ -25,23 +24,22 @@ th,td{padding:6px;text-align:left}
 </style>
 
 <script>
-  // Only DSA can access this page
-  if(localStorage.getItem("role")!=="DSA"){
-    alert("Please login as DSA");
-    location.href="login.html";
-  }
+if(localStorage.getItem("role")!=="DSA"){
+  alert("Please login as DSA");
+  location.href="login.html";
+}
 </script>
 </head>
 
 <body>
 <div class="container">
-<h2>ELIGIWISE – Eligibility Check</h2>
 
-<!-- SECTION 1 – Example business fields (not used in rules yet) -->
+<!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
 <div class="grid">
   <input id="vintage" type="number" placeholder="Business Vintage (Years)">
   <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
+
   <select id="entityType">
     <option>Entity Type</option>
     <option>Proprietorship</option>
@@ -50,25 +48,29 @@ th,td{padding:6px;text-align:left}
     <option>Ltd</option>
     <option>LLP</option>
   </select>
+
   <select id="natureBusiness">
     <option>Nature Of Business</option>
     <option>Trading</option>
     <option>Manufacturing</option>
     <option>Service</option>
   </select>
+
   <select id="businessType">
     <option>Business Type</option>
     <option>Rented</option>
     <option>Owned</option>
     <option>Leased</option>
   </select>
+
   <input id="bizPincode" placeholder="Business Place Pincode">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-<!-- SECTION 2 – Banking & Documents (USED for rules) -->
+<!-- SECTION 2 -->
 <h3>SECTION 2 – Banking & Documents</h3>
 <div class="grid">
+
   <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
@@ -76,17 +78,17 @@ th,td{padding:6px;text-align:left}
     <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
   </select>
 
-  <!-- ABB in Lakhs – must match admin ABB Min / Max -->
+  <!-- IMPORTANT: this ABB id is used in JS -->
   <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
 
-  <select id="gst">
+  <select id="gst" onchange="toggleGST()">
     <option value="No">GST: No</option>
     <option value="Yes">GST: Yes</option>
   </select>
 
   <input id="gstTurnover" class="hidden" type="number" placeholder="GST Turnover (Lakhs)">
 
-  <select id="itr">
+  <select id="itr" onchange="toggleITR()">
     <option value="No">ITR: No</option>
     <option value="Yes">ITR: Yes</option>
   </select>
@@ -95,22 +97,24 @@ th,td{padding:6px;text-align:left}
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-<!-- SECTION 3 – Loans & Obligations (USED partly) -->
+<!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
 <div class="grid">
   <input id="cibilScore" type="number" placeholder="CIBIL Score">
   <input id="activeLoans" type="number" placeholder="No of Active Loans">
   <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
-  <input id="loan6Count" type="number" placeholder="Loans Taken Last 6 Months">
-  <input id="loan6Amt" type="number" placeholder="Loan Amount Last 6 Months">
+
+  <input id="loan6Count" type="number" placeholder="Loans Taken in Last 6 Months">
+  <input id="loan6Amt" type="number" placeholder="Loan Amount in Last 6 Months">
   <input id="enq6" type="number" placeholder="Enquiries Last 6 Months">
+
   <input id="enq3" type="number" placeholder="Enquiries Last 3 Months">
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
   <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-<!-- SECTION 4 – Applicant & Co-Applicant (USED partly) -->
+<!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
 <div class="grid">
   <input id="appAge" type="number" placeholder="Applicant Age">
@@ -132,7 +136,7 @@ th,td{padding:6px;text-align:left}
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-<!-- SECTION 5 – Additional Fields -->
+<!-- SECTION 5 -->
 <h3>SECTION 5 – Additional Fields</h3>
 <div id="extraFields"></div>
 <button onclick="addExtra()">➕ Add Custom Field</button>
@@ -174,7 +178,7 @@ function addExtra(){
   document.getElementById("extraFields").appendChild(input);
 }
 
-/* Eligibility logic that matches admin.html policy fields */
+/* Eligibility logic – aligned to admin.html policies */
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);          // ABB in lakhs
   const gst = document.getElementById("gst").value || "No";
@@ -200,24 +204,23 @@ function checkEligibility() {
     const abbMin = Number(p.abbMin || 0);
     const abbMax = Number(p.abbMax || 0);
     const cibilMin = Number(p.cibilMin || 0);
-    const maxEmiRatio = Number(p.maxEmiRatio || 0); // e.g. 50
+    const maxEmiRatio = Number(p.maxEmiRatio || 0); // percentage if set
 
-    // 1. ABB range
+    // ABB match
     if (!(abb >= abbMin && abb <= abbMax)) return false;
 
-    // 2. GST / ITR
+    // GST / ITR
     if (p.gstRequired === "Yes" && gst !== "Yes") return false;
     if (p.itrRequired === "Yes" && itr !== "Yes") return false;
 
-    // 3. CIBIL minimum
+    // CIBIL minimum if defined
     if (cibilMin && cibil && cibil < cibilMin) return false;
 
-    // 4. EMI ratio: (existing EMI / income) * 100 <= maxEmiRatio
+    // EMI % rule if defined
     if (maxEmiRatio && income > 0) {
       const ratio = (existingEmi / income) * 100;
       if (ratio > maxEmiRatio) return false;
     }
-
     return true;
   });
 
@@ -228,7 +231,7 @@ function checkEligibility() {
 
   eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>ABB, GST/ITR, CIBIL & EMI matched</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB, GST/ITR, CIBIL & EMI rules</td>`;
     tbody.appendChild(tr);
   });
 }
