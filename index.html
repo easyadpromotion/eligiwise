@@ -1,71 +1,168 @@
-SECTION 1 – Business Details
+<!DOCTYPE html>
+<html>
+<head>
+<title>ELIGIWISE – Eligibility Check</title>
 
-Business Vintage (Years)
+<style>
+body{font-family:Arial;background:#f4f6f8}
+.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px}
+h3{background:#0A4EA3;color:#fff;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+input,select{padding:8px;width:100%}
+button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer}
+.add-btn{margin-top:10px}
+.hidden{display:none}
+</style>
 
-Turnover (Lakhs)
+<script>
+if(localStorage.getItem("role")!=="DSA"){
+  alert("Please login as DSA");
+  location.href="login.html";
+}
+</script>
+</head>
 
-Entity Type
-Proprietorship / Partnership / Pvt Ltd / Ltd / LLP
+<body>
+<div class="container">
 
-Nature Of Business
-Trading / Manufacturing / Service
+<!-- SECTION 1 -->
+<h3>SECTION 1 – Business Details</h3>
+<div class="grid">
+<input placeholder="Business Vintage (Years)">
+<input placeholder="Turnover (Lakhs)">
 
-Business Type
-Rented / Owned / Leased
+<select>
+<option>Entity Type</option>
+<option>Proprietorship</option>
+<option>Partnership</option>
+<option>Pvt Ltd</option>
+<option>Ltd</option>
+<option>LLP</option>
+</select>
 
-Business Place Pincode
+<select>
+<option>Nature Of Business</option>
+<option>Trading</option>
+<option>Manufacturing</option>
+<option>Service</option>
+</select>
 
-➕ Add Field
+<select>
+<option>Business Type</option>
+<option>Rented</option>
+<option>Owned</option>
+<option>Leased</option>
+</select>
 
-SECTION 2 – Banking & Documents
+<input placeholder="Business Place Pincode">
+</div>
+<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-Bank Statement Type
-SA / CA / OD / CC / SA+CA / SA+OD / SA+CC / CA+OD / CA+CC / ALL
+<!-- SECTION 2 -->
+<h3>SECTION 2 – Banking & Documents</h3>
+<div class="grid">
 
-ABB
+<select>
+<option>Bank Statement Type</option>
+<option>SA</option><option>CA</option><option>OD</option><option>CC</option>
+<option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
+<option>CA+OD</option><option>CA+CC</option><option>ALL</option>
+</select>
 
-GST (Yes / No)
+<input placeholder="ABB">
 
-If Yes → Show GST Turnover
+<select id="gst" onchange="toggleGST()">
+<option>GST</option>
+<option>No</option>
+<option>Yes</option>
+</select>
 
-ITR (Yes / No)
+<input id="gstTurnover" class="hidden" placeholder="GST Turnover">
 
-If Yes → Show ITR Turnover
+<select id="itr" onchange="toggleITR()">
+<option>ITR</option>
+<option>No</option>
+<option>Yes</option>
+</select>
 
-➕ Add Field
+<input id="itrTurnover" class="hidden" placeholder="ITR Turnover">
 
-SECTION 3 – Loans & Obligations
+</div>
+<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-CIBIL Score
+<!-- SECTION 3 -->
+<h3>SECTION 3 – Loans & Obligations</h3>
+<div class="grid">
+<input placeholder="CIBIL Score">
+<input placeholder="No of Active Loans">
+<input placeholder="Monthly EMI Obligations">
 
-No of Active Loans
+<input placeholder="Loans Taken in Last 6 Months">
+<input placeholder="Loan Amount in Last 6 Months">
+<input placeholder="Loans Closing in Next 6 Months">
 
-Monthly EMI Obligations
+<input placeholder="EMI Reduction in Next 6 Months">
+</div>
+<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-No of Loans Taken in Last 6 Months
+<!-- SECTION 4 -->
+<h3>SECTION 4 – Applicant & Co-Applicant</h3>
+<div class="grid">
+<input placeholder="Applicant Age">
 
-Loan Amount Taken in Last 6 Months
+<select id="coapp" onchange="toggleCo()">
+<option>Co-Applicant</option>
+<option>No</option>
+<option>Yes</option>
+</select>
 
-No of Loans Closed in Next 6 Months
+<input id="coAge" class="hidden" placeholder="Co-Applicant Age">
 
-EMI Amount Reduced in Next 6 Months
+<select>
+<option>Own House</option>
+<option>Yes</option>
+<option>No</option>
+</select>
 
-➕ Add Field
+<input placeholder="Own House Pincode">
+</div>
+<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
-SECTION 4 – Applicant & Co-Applicant
+<!-- SECTION 5 -->
+<h3>SECTION 5 – Additional Fields</h3>
+<div id="extraFields"></div>
+<button onclick="addExtra()">➕ Add Custom Field</button>
 
-Applicant Age
+<br><br>
+<button onclick="checkEligibility()">Check Eligibility</button>
+<p id="result"></p>
 
-Co-Applicant (Yes / No)
+</div>
 
-If Yes → Show Co-Applicant Age
+<script>
+function toggleGST(){
+  gstTurnover.classList.toggle("hidden", gst.value!=="Yes");
+}
+function toggleITR(){
+  itrTurnover.classList.toggle("hidden", itr.value!=="Yes");
+}
+function toggleCo(){
+  coAge.classList.toggle("hidden", coapp.value!=="Yes");
+}
+function addField(btn){
+  const input=document.createElement("input");
+  input.placeholder="Custom Field";
+  btn.previousElementSibling.appendChild(input);
+}
+function addExtra(){
+  const input=document.createElement("input");
+  input.placeholder="Additional Custom Field";
+  document.getElementById("extraFields").appendChild(input);
+}
+function checkEligibility(){
+  result.innerHTML="Eligibility logic will be applied here";
+}
+</script>
 
-Own House (Yes / No)
-
-Own House Pincode
-
-➕ Add Field
-
-SECTION 5 – Additional Fields
-
-Unlimited custom fields
+</body>
+</html>
