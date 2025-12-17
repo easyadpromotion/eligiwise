@@ -158,18 +158,54 @@ function toggleCo(el){
   document.getElementById("coBlock").classList.toggle("hide", el.value==="No");
 }
 
+<script>
 function checkEligibility(){
-  const policies=JSON.parse(localStorage.getItem("eligiwise_policies"))||[];
-  const body=document.getElementById("resultBody");
-  body.innerHTML="";
-  policies.forEach(p=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${p.bankName||"Unnamed Bank"}</td>`;
-    body.appendChild(tr);
+
+  const policies = JSON.parse(
+    localStorage.getItem("eligiwise_policies")
+  ) || [];
+
+  // Customer Inputs
+  const loanAmount = Number(document.getElementById("loanAmount")?.value || 0);
+  const abb = Number(document.getElementById("abb")?.value || 0);
+  const cibil = Number(document.getElementById("cibil")?.value || 0);
+  const gst = document.getElementById("gstSelect")?.value || "No";
+  const itr = document.getElementById("itrSelect")?.value || "No";
+  const activeLoans = Number(document.getElementById("activeLoans")?.value || 0);
+
+  const tbody = document.getElementById("resultBody");
+  tbody.innerHTML = "";
+
+  let matched = 0;
+
+  policies.forEach(p => {
+
+    // BASIC RULE CHECKS
+    if (loanAmount < p.minLoan) return;
+    if (loanAmount > p.maxLoan) return;
+    if (abb < p.minABB) return;
+    if (cibil < p.minCIBIL) return;
+    if (activeLoans > p.maxActiveLoans) return;
+
+    if (p.gstRequired === "Yes" && gst !== "Yes") return;
+    if (p.itrRequired === "Yes" && itr !== "Yes") return;
+
+    // PASSED ALL RULES
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${p.bankName}</td>`;
+    tbody.appendChild(tr);
+    matched++;
   });
-  document.getElementById("resultTable").classList.remove("hide");
+
+  if (matched === 0) {
+    tbody.innerHTML = `<tr><td>No eligible banks found</td></tr>`;
+  }
+
+  document.getElementById("resultTable").style.display = "table";
 }
 </script>
 
+
 </body>
 </html>
+
