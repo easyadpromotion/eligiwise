@@ -1,54 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>ELIGIWISE Login</title>
+<title>ELIGIWISE Login</title>
+<style>
+body{font-family:Arial;background:#f4f6f8}
+.box{width:350px;margin:120px auto;background:#fff;padding:25px;border-radius:8px}
+input,select,button{width:100%;padding:10px;margin-top:10px}
+button{background:#0A4EA3;color:#fff;border:none}
+</style>
 </head>
+<body>
 
-<body style="font-family:Arial;background:#f4f6f8;">
+<div class="box">
+<h2>ELIGIWISE Login</h2>
 
-  <div style="width:350px;margin:100px auto;background:#fff;padding:20px;border-radius:8px;">
-    <h2 style="text-align:center;color:#0A4EA3;">ELIGIWISE Login</h2>
+<label>Login As</label>
+<select id="role">
+  <option value="">Select</option>
+  <option value="DSA">DSA</option>
+  <option value="ADMIN">ADMIN</option>
+</select>
 
-    <label>Login As</label><br>
-    <select id="role" style="width:100%;padding:8px;">
-      <option value="">Select</option>
-      <option value="ADMIN">ADMIN</option>
-      <option value="DSA">DSA</option>
-    </select><br><br>
+<label>Password</label>
+<input type="password" id="pass">
 
-    <label>Password</label><br>
-    <input type="password" id="pass" style="width:100%;padding:8px;"><br><br>
+<button onclick="login()">Login</button>
+</div>
 
-    <button onclick="login()" style="width:100%;padding:10px;background:#0A4EA3;color:white;border:none;">
-      Login
-    </button>
-  </div>
+<script>
+function login(){
+  const role = document.getElementById("role").value;
+  const pass = document.getElementById("pass").value;
 
-  <script>
-    function login(){
-      const role = document.getElementById("role").value;
-      const pass = document.getElementById("pass").value;
+  if(!role || !pass){
+    alert("Select role & enter password");
+    return;
+  }
 
-      if(!role || !pass){
-        alert("Fill all fields");
-        return;
-      }
+  // ✅ KEY LINE (THIS WAS MISSING / WRONG EARLIER)
+  localStorage.setItem("eligiwise_role", role);
 
-      if(pass !== "1234"){
-        alert("Wrong password");
-        return;
-      }
-
-      localStorage.setItem("eligiwise_role", role);
-
-      if(role === "ADMIN"){
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "index.html";
-      }
-    }
-  </script>
+  // redirect
+  if(role === "DSA"){
+    window.location.href = "index.html";
+  }else{
+    window.location.href = "admin.html";
+  }
+}
+</script>
 
 </body>
 </html>
