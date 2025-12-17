@@ -30,6 +30,16 @@ th{background:#0A4EA3;color:#fff}
 </head>
 
 <body>
+  <script>
+document.addEventListener("DOMContentLoaded", function(){
+  const role = localStorage.getItem("eligiwise_role");
+  if(role !== "DSA"){
+    alert("Please login as DSA");
+    window.location.href = "login.html";
+  }
+});
+</script>
+
 <div class="container">
 
 <h2>Section 1 – Business Details</h2>
@@ -135,4 +145,5 @@ function checkEligibility(){
 
 </body>
 </html>
+
 
