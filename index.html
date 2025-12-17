@@ -2,32 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE – DSA Eligibility Check</title>
+<title>ELIGIWISE – Eligibility Check</title>
 
 <style>
 body{font-family:Arial;background:#f4f6f8;margin:0}
 .header{background:#0A4EA3;color:#fff;padding:15px;font-size:20px}
-.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;border-radius:8px}
+.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;border-radius:6px}
 .section{margin-top:25px}
 .section h3{background:#0A4EA3;color:#fff;padding:10px;border-radius:4px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
 .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-label{font-weight:bold;margin-top:10px;display:block}
+label{font-weight:bold;display:block;margin-top:10px}
 input,select{width:100%;padding:8px;margin-top:5px}
 button{padding:8px 14px;border:none;border-radius:4px;cursor:pointer}
 .add{background:#28a745;color:#fff;margin-top:10px}
 .check{background:#0A4EA3;color:#fff;margin-top:20px}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th,td{border:1px solid #ccc;padding:8px;text-align:center}
-th{background:#0A4EA3;color:#fff}
 .row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:8px}
 .del{background:#dc3545;color:#fff}
+table{width:100%;border-collapse:collapse;margin-top:20px}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+th{background:#0A4EA3;color:#fff}
 </style>
 </head>
 
 <body>
 
-<div class="header">ELIGIWISE – DSA Dashboard</div>
+<div class="header">ELIGIWISE – Eligibility Check</div>
 
 <div class="container">
 
@@ -35,28 +35,32 @@ th{background:#0A4EA3;color:#fff}
 <div class="section">
 <h3>Section 1 – Business Details</h3>
 <div class="grid-3">
-<div><label>Business Vintage (Years)</label><input id="vintage"></div>
+<div><label>Business Vintage (Years)</label><input id="businessVintage"></div>
 <div><label>Turnover (Lakhs)</label><input id="turnover"></div>
 <div><label>Entity Type</label>
-<select id="entity">
-<option>Proprietorship</option><option>Partnership</option>
-<option>Pvt Ltd</option><option>Ltd</option><option>LLP</option>
+<select id="entityType">
+<option>Proprietorship</option>
+<option>Partnership</option>
+<option>Pvt Ltd</option>
+<option>Ltd</option>
+<option>LLP</option>
 </select></div>
 </div>
+<button class="add" onclick="addField('businessExtra')">+ Add Field</button>
+<div id="businessExtra"></div>
 </div>
 
 <!-- SECTION 2 -->
 <div class="section">
 <h3>Section 2 – Banking & Documents</h3>
 <div class="grid-3">
-<div><label>Bank Statement Type</label>
-<select id="banking">
-<option>SA</option><option>CA</option><option>OD</option>
-<option>CC</option><option>ALL</option>
+<div><label>Banking Type</label>
+<select id="bankingType">
+<option>SA</option><option>CA</option><option>OD</option><option>CC</option><option>ALL</option>
 </select></div>
 <div><label>ABB</label><input id="abb"></div>
 <div><label>GST</label>
-<select id="gst" onchange="toggleGST()">
+<select id="gst" onchange="toggleBlock('gstBlock',this.value)">
 <option>No</option><option>Yes</option>
 </select></div>
 </div>
@@ -66,32 +70,37 @@ th{background:#0A4EA3;color:#fff}
 </div>
 
 <label>ITR</label>
-<select id="itr" onchange="toggleITR()">
+<select id="itr" onchange="toggleBlock('itrBlock',this.value)">
 <option>No</option><option>Yes</option>
 </select>
 
 <div id="itrBlock" style="display:none">
 <label>ITR Turnover</label><input id="itrTurnover">
 </div>
+
+<button class="add" onclick="addField('bankingExtra')">+ Add Field</button>
+<div id="bankingExtra"></div>
 </div>
 
 <!-- SECTION 3 -->
 <div class="section">
 <h3>Section 3 – Loans & Obligations</h3>
 <div class="grid-3">
-<div><label>CIBIL</label><input id="cibil"></div>
+<div><label>CIBIL Score</label><input id="cibil"></div>
 <div><label>Active Loans</label><input id="activeLoans"></div>
 <div><label>Monthly EMI</label><input id="emi"></div>
 </div>
+<button class="add" onclick="addField('loanExtra')">+ Add Field</button>
+<div id="loanExtra"></div>
 </div>
 
 <!-- SECTION 4 -->
 <div class="section">
 <h3>Section 4 – Applicant & Co-Applicant</h3>
 <div class="grid-2">
-<div><label>Applicant Age</label><input id="age"></div>
+<div><label>Applicant Age</label><input id="appAge"></div>
 <div><label>Co-Applicant</label>
-<select id="coapp" onchange="toggleCo()">
+<select id="coApplicant" onchange="toggleBlock('coBlock',this.value)">
 <option>No</option><option>Yes</option>
 </select></div>
 </div>
@@ -99,67 +108,60 @@ th{background:#0A4EA3;color:#fff}
 <div id="coBlock" style="display:none">
 <label>Co-Applicant Age</label><input id="coAge">
 </div>
+
+<button class="add" onclick="addField('appExtra')">+ Add Field</button>
+<div id="appExtra"></div>
 </div>
 
 <!-- SECTION 5 -->
 <div class="section">
 <h3>Section 5 – Additional Fields</h3>
-<div id="extraFields"></div>
-<button class="add" onclick="addField()">+ Add Field</button>
+<button class="add" onclick="addField('additional')">+ Add Field</button>
+<div id="additional"></div>
 </div>
 
 <button class="check" onclick="checkEligibility()">Check Eligibility</button>
 
-<div id="eligibilityResult"></div>
+<div id="result"></div>
 
 </div>
 
 <script>
-// TOGGLES
-function toggleGST(){document.getElementById("gstBlock").style.display =
-document.getElementById("gst").value==="Yes"?"block":"none"}
-function toggleITR(){document.getElementById("itrBlock").style.display =
-document.getElementById("itr").value==="Yes"?"block":"none"}
-function toggleCo(){document.getElementById("coBlock").style.display =
-document.getElementById("coapp").value==="Yes"?"block":"none"}
-
-// ADD FIELD
-function addField(){
-  const d shown = document.createElement("div");
-  d.className="row";
-  d.innerHTML=`
-    <input placeholder="Field Name">
-    <input placeholder="Value">
-    <button class="del" onclick="this.parentNode.remove()">X</button>`;
-  document.getElementById("extraFields").appendChild(d);
+// toggle show/hide
+function toggleBlock(id,value){
+  document.getElementById(id).style.display = value==="Yes" ? "block" : "none";
 }
 
-// ELIGIBILITY LOGIC
+// add field (WORKS EVERYWHERE)
+function addField(containerId){
+  const row=document.createElement("div");
+  row.className="row";
+  row.innerHTML=`
+    <input placeholder="Field Name">
+    <input placeholder="Value">
+    <button class="del" onclick="this.parentNode.remove()">X</button>
+  `;
+  document.getElementById(containerId).appendChild(row);
+}
+
+// eligibility check (basic working)
 function checkEligibility(){
   const policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-  const result = document.getElementById("eligibilityResult");
+  const result=document.getElementById("result");
 
   if(policies.length===0){
-    result.innerHTML="<b style='color:red'>No policies found. Add in Admin.</b>";
+    result.innerHTML="<p style='color:red'><b>No bank policies found. Please add policies in Admin.</b></p>";
     return;
   }
 
-  const unique = {};
+  let html="<h3>Eligible Banks / NBFCs</h3><table><tr><th>Bank Name</th></tr>";
+  const added=new Set();
+
   policies.forEach(p=>{
-    if(p.bankName && p.bankName.trim()!==""){
-      unique[p.bankName]=p;
+    if(p.bankName && !added.has(p.bankName)){
+      added.add(p.bankName);
+      html+=`<tr><td>${p.bankName}</td></tr>`;
     }
-  });
-
-  let html=`<h3>Eligible Banks / NBFCs</h3><table>
-  <tr><th>Bank Name</th><th>Programs</th></tr>`;
-
-  Object.values(unique).forEach(p=>{
-    let prog=[];
-    if(p.abbPrograms?.length) prog.push("ABB");
-    if(p.itrPrograms?.length) prog.push("ITR");
-    if(p.gstPrograms?.length) prog.push("GST");
-    html+=`<tr><td>${p.bankName}</td><td>${prog.join(", ")}</td></tr>`;
   });
 
   html+="</table>";
