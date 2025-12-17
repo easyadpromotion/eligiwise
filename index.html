@@ -24,13 +24,6 @@ th,td{padding:6px;text-align:left}
 #result{margin-top:10px;font-weight:bold}
 </style>
 
-<script>
-// only DSA can open
-if(localStorage.getItem("role")!=="DSA"){
-  alert("Please login as DSA");
-  location.href="login.html";
-}
-</script>
 </head>
 
 <body>
@@ -67,7 +60,6 @@ if(localStorage.getItem("role")!=="DSA"){
     <option>Leased</option>
   </select>
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 2 -->
 <h3>SECTION 2 – Banking & Documents</h3>
@@ -97,7 +89,6 @@ if(localStorage.getItem("role")!=="DSA"){
 
   <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
@@ -114,7 +105,6 @@ if(localStorage.getItem("role")!=="DSA"){
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
   <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
@@ -136,7 +126,6 @@ if(localStorage.getItem("role")!=="DSA"){
 
   <input id="housePincode" placeholder="Own House Pincode">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 5 -->
 <h3>SECTION 5 – Additional Fields</h3>
@@ -180,12 +169,7 @@ function toggleCo(){
   coAge.classList.toggle("hidden", coSelect.value !== "Yes");
 }
 
-// add extra fields
-function addField(btn){
-  const input=document.createElement("input");
-  input.placeholder="Custom Field";
-  btn.previousElementSibling.appendChild(input);
-}
+// extra fields
 function addExtra(){
   const input=document.createElement("input");
   input.placeholder="Additional Custom Field";
