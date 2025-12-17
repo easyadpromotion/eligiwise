@@ -2,70 +2,52 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE – Bank / NBFC Policy Admin</title>
+<title>ELIGIWISE – DSA Eligibility Check</title>
 
 <style>
-body {
+body{
   font-family: Arial, sans-serif;
   background:#f4f6f8;
 }
 
-.container {
-  max-width:1400px;
-  margin:20px auto;
-  background:#fff;
-  padding:25px;
-  border-radius:10px;
-}
-
-h1 {
-  text-align:center;
-  color:#0A4EA3;
-}
-
-.section-title {
+.header{
   background:#0A4EA3;
   color:#fff;
-  padding:10px;
-  margin-top:30px;
-  font-weight:bold;
-  border-radius:4px;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-label {
-  font-weight:bold;
-  display:block;
-  margin-top:12px;
+.container{
+  max-width:1200px;
+  margin:20px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
 }
 
-input, select {
+h2{ color:#0A4EA3; }
+
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+label{
+  font-weight:bold;
+}
+
+input,select{
   width:100%;
   padding:8px;
   margin-top:5px;
 }
 
-.grid-3 {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:15px;
-}
-
-.grid-2 {
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:15px;
-}
-
-.program-row {
-  display:grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap:10px;
-  margin-top:8px;
-}
-
-button {
+button{
   margin-top:15px;
-  padding:10px 15px;
+  padding:10px 16px;
   background:#0A4EA3;
   color:#fff;
   border:none;
@@ -73,230 +55,157 @@ button {
   cursor:pointer;
 }
 
-button.add { background:#27ae60; }
-button.del { background:#c0392b; }
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+
+th{
+  background:#0A4EA3;
+  color:#fff;
+}
+
+.notfound{
+  text-align:center;
+  color:red;
+  font-weight:bold;
+}
 </style>
 </head>
 
 <body>
+
+<div class="header">
+  <h2>ELIGIWISE – DSA Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
 <div class="container">
 
-<h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
-
-<label>Bank / NBFC Name</label>
-<input id="bankName" placeholder="Ex: HDFC, Tata Capital">
-
-<!-- ================= SECTION A ================= -->
-<div class="section-title">SECTION A – BASIC PRODUCT DETAILS</div>
+<h2>Quick Eligibility Check</h2>
 
 <div class="grid-3">
   <div>
-    <label>Product Type</label>
-    <select id="productType">
-      <option>Small Ticket</option>
-      <option>Big Ticket</option>
-    </select>
+    <label>Required Loan Amount (Lakhs)</label>
+    <input type="number" id="loanAmount">
   </div>
 
   <div>
-    <label>Loan Type</label>
-    <select id="loanType">
-      <option>Term Loan</option>
+    <label>Average Bank Balance (ABB)</label>
+    <input type="number" id="abb">
+  </div>
+
+  <div>
+    <label>CIBIL Score</label>
+    <input type="number" id="cibil">
+  </div>
+
+  <div>
+    <label>Banking Type</label>
+    <select id="bankingType">
+      <option>All</option>
+      <option>SA</option>
+      <option>CA</option>
       <option>OD</option>
     </select>
   </div>
-</div>
 
-<div class="grid-3">
-  <div><label>Loan Amount Min (Lakhs)</label><input type="number"></div>
-  <div><label>Loan Amount Max (Lakhs)</label><input type="number"></div>
-  <div><label>Tenure Min</label><input type="number"></div>
-  <div><label>Tenure Max</label><input type="number"></div>
-  <div><label>ROI Min (%)</label><input type="number"></div>
-  <div><label>ROI Max (%)</label><input type="number"></div>
-  <div><label>PF Min (%)</label><input type="number"></div>
-  <div><label>PF Max (%)</label><input type="number"></div>
-</div>
-
-<!-- ================= SECTION B ================= -->
-<div class="section-title">SECTION B – APPLICANT & CO-APPLICANT</div>
-
-<div class="grid-3">
-  <div><label>Applicant Age Min</label><input type="number"></div>
-  <div><label>Applicant Age Max</label><input type="number"></div>
   <div>
-    <label>Co-Applicant Mandatory</label>
-    <select>
+    <label>GST Available</label>
+    <select id="gst">
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+  </div>
+
+  <div>
+    <label>ITR Available</label>
+    <select id="itr">
       <option>No</option>
       <option>Yes</option>
     </select>
   </div>
 </div>
 
-<div class="grid-2">
-  <div>
-    <label>Own House</label>
-    <select>
-      <option>Yes</option>
-      <option>No</option>
-    </select>
-  </div>
-  <div>
-    <label>Own House Geo Limit</label>
-    <select>
-      <option>Local</option>
-      <option>Anywhere India</option>
-    </select>
-  </div>
-</div>
+<button onclick="checkEligibility()">Check Eligibility</button>
 
-<!-- ================= SECTION C ================= -->
-<div class="section-title">SECTION C – BUSINESS & BANKING</div>
-
-<label>Banking Type</label>
-<select>
-  <option>All</option>
-  <option>CA</option>
-  <option>SA</option>
-  <option>OD</option>
-  <option>CA+OD</option>
-  <option>SA+CA</option>
-</select>
-
-<div class="grid-2">
-  <div>
-    <label>ITR Required</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>GST Required</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-</div>
-
-<label>Bank / NBFC Geo Limit (KM)</label>
-<input type="number">
-
-<!-- ================= SECTION D ================= -->
-<div class="section-title">SECTION D – CREDIT & OBLIGATIONS</div>
-
-<div class="grid-2">
-  <div><label>CIBIL Min</label><input type="number"></div>
-  <div><label>CIBIL Max</label><input type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Active Loans Min</label><input type="number"></div>
-  <div><label>Active Loans Max</label><input type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Loans in Last 6 Months (Count)</label><input type="number"></div>
-  <div><label>Loan Amount Last 6 Months</label><input type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Loans in Last 3 Months (Count)</label><input type="number"></div>
-  <div><label>Loan Amount Last 3 Months</label><input type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Enquiries Last 6 Months</label><input type="number"></div>
-  <div><label>Enquiries Last 3 Months</label><input type="number"></div>
-</div>
-
-<!-- ================= SECTION E ================= -->
-<div class="section-title">SECTION E – PROGRAMS</div>
-
-<label>ABB Programs (Min – Max)</label>
-<div id="abbPrograms"></div>
-<button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
-
-<label>ITR Programs (Min – Max)</label>
-<div id="itrPrograms"></div>
-<button class="add" onclick="addProgram('itrPrograms')">+ Add ITR Program</button>
-
-<label>GST Programs (Min – Max)</label>
-<div id="gstPrograms"></div>
-<button class="add" onclick="addProgram('gstPrograms')">+ Add GST Program</button>
-
-<label>Income / DSCR Programs (Min – Max)</label>
-<div id="incomePrograms"></div>
-<button class="add" onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
-
-<!-- ================= SECTION F ================= -->
-<div class="section-title">SECTION F – CUSTOM / FUTURE PARAMETERS</div>
-
-<div id="customFields"></div>
-<button class="add" onclick="addCustom()">+ Add Custom Field</button>
-
-<br><br>
-<button onclick="savePolicy()">💾 Save Policy</button>
+<div id="result"></div>
 
 </div>
 
 <script>
-function addProgram(id) {
-  const container = document.getElementById(id);
-  const row = document.createElement("div");
-  row.className = "program-row";
-  row.innerHTML = `
-    <input placeholder="Min">
-    <input placeholder="Max">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
+// 🔐 LOGIN CHECK
+if(localStorage.getItem("eligiwise_role")!=="DSA"){
+  alert("Please login as DSA");
+  window.location.href="login.html";
+}
+
+// 🚪 LOGOUT
+function logout(){
+  localStorage.removeItem("eligiwise_role");
+  window.location.href="login.html";
+}
+
+// ✅ ELIGIBILITY LOGIC
+function checkEligibility(){
+  const loan = Number(document.getElementById("loanAmount").value);
+  const abb = Number(document.getElementById("abb").value);
+  const cibil = Number(document.getElementById("cibil").value);
+  const gst = document.getElementById("gst").value;
+  const itr = document.getElementById("itr").value;
+
+  const policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+
+  let eligible = [];
+
+  policies.forEach(p=>{
+    if(cibil < p.cibilMin) return;
+    if(loan > p.loanMax) return;
+
+    // ABB Program Check
+    let abbOk = false;
+    p.abbPrograms?.forEach(r=>{
+      if(abb >= r.min && abb <= r.max) abbOk = true;
+    });
+    if(!abbOk) return;
+
+    // GST / ITR Check
+    if(p.gstRequired==="Yes" && gst==="No") return;
+    if(p.itrRequired==="Yes" && itr==="No") return;
+
+    eligible.push(p.bankName);
+  });
+
+  renderResult(eligible);
+}
+
+// 📊 RESULT DISPLAY
+function renderResult(list){
+  const div = document.getElementById("result");
+
+  if(list.length===0){
+    div.innerHTML = `<p class="notfound">No Eligible Banks Found</p>`;
+    return;
+  }
+
+  let html = `
+  <table>
+    <tr><th>Eligible Bank / NBFC</th></tr>
   `;
-  container.appendChild(row);
-}
 
-function addCustom() {
-  const container = document.getElementById("customFields");
-  const row = document.createElement("div");
-  row.className = "program-row";
-  row.innerHTML = `
-    <input placeholder="Field Name">
-    <input placeholder="Value">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
-  `;
-  container.appendChild(row);
-}
+  list.forEach(b=>{
+    html+=`<tr><td>${b}</td></tr>`;
+  });
 
-function savePolicy() {
-  const policy = {
-    bankName: document.getElementById("bankName").value,
-    abb: readPrograms("abbPrograms"),
-    itr: readPrograms("itrPrograms"),
-    gst: readPrograms("gstPrograms"),
-    income: readPrograms("incomePrograms"),
-    custom: readCustomFields()
-  };
-
-  let data = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-  data.push(policy);
-  localStorage.setItem("eligiwise_policies", JSON.stringify(data));
-
-  alert("✅ Policy Saved Successfully");
-}
-
-function readPrograms(id) {
-  const container = document.getElementById(id);
-  return [...container.children].map(r => ({
-    min: r.children[0].value,
-    max: r.children[1].value
-  }));
-}
-
-function readCustomFields() {
-  const container = document.getElementById("customFields");
-  return [...container.children].map(r => ({
-    name: r.children[0].value,
-    value: r.children[1].value
-  }));
+  html+="</table>";
+  div.innerHTML = html;
 }
 </script>
 
