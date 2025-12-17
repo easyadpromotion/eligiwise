@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Eligibility Check</title>
-  <style>
-    body{font-family:Arial;background:#f4f6f8}
-    .container{max-width:900px;margin:20px auto;background:#fff;padding:20px}
-    h3{background:#0A4EA3;color:#fff;padding:8px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    button{padding:8px;background:#0A4EA3;color:#fff;border:none}
-  </style>
+<meta charset="UTF-8">
+<title>Eligibility Check</title>
+<style>
+body{font-family:Arial;background:#f4f6f8}
+.container{max-width:1000px;margin:20px auto;background:#fff;padding:20px}
+h3{background:#0A4EA3;color:#fff;padding:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{padding:8px;background:#0A4EA3;color:#fff;border:none}
+.add{background:#28a745}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+td,th{border:1px solid #ccc;padding:6px}
+</style>
 </head>
 <body>
 
+<script>
+/* 🔐 ROLE CHECK */
+const role = localStorage.getItem("eligiwise_role");
+if(role !== "DSA"){
+  alert("Please login as DSA");
+  window.location.href = "login.html";
+}
+</script>
+
 <div class="container">
 
-<h3>Section 2 – Banking & Documents</h3>
+<h3>Section 1 – Business Details</h3>
+<div class="row">
+  <input placeholder="Business Vintage (Years)">
+  <input placeholder="Turnover (Lakhs)">
+</div>
 
+<h3>Section 2 – Banking & Documents</h3>
 <label>GST</label>
 <select id="gst" onchange="toggleGST()">
   <option>No</option>
@@ -23,8 +41,7 @@
 </select>
 
 <div id="gstBox" style="display:none">
-  <label>GST Turnover</label>
-  <input type="number">
+  <input placeholder="GST Turnover">
 </div>
 
 <label>ITR</label>
@@ -34,55 +51,65 @@
 </select>
 
 <div id="itrBox" style="display:none">
-  <label>ITR Turnover</label>
-  <input type="number">
+  <input placeholder="ITR Turnover">
+</div>
+
+<h3>Section 3 – Loans & Obligations</h3>
+<div class="row">
+  <input placeholder="CIBIL">
+  <input placeholder="Active Loans">
 </div>
 
 <h3>Section 4 – Applicant & Co-Applicant</h3>
-
 <label>Co-Applicant</label>
-<select id="coapp" onchange="toggleCoApp()">
+<select id="coapp" onchange="toggleCo()">
   <option>No</option>
   <option>Yes</option>
 </select>
 
 <div id="coBox" style="display:none">
-  <label>Co-Applicant Age</label>
-  <input type="number">
+  <input placeholder="Co-Applicant Age">
 </div>
 
-<br><br>
+<h3>Section 5 – Additional Fields</h3>
+<button class="add" onclick="addField()">+ Add Field</button>
+<div id="extra"></div>
+
+<br>
 <button onclick="checkEligibility()">Check Eligibility</button>
 
-<div id="result"></div>
+<table id="result" style="display:none">
+<thead>
+<tr><th>Eligible Banks / NBFCs</th></tr>
+</thead>
+<tbody id="bankList"></tbody>
+</table>
 
 </div>
 
 <script>
-// 🔐 ROLE CHECK (FIXED)
-document.addEventListener("DOMContentLoaded", function(){
-  const role = localStorage.getItem("eligiwise_role");
-  if(role !== "DSA"){
-    alert("Please login as DSA");
-    window.location.replace("login.html");
-  }
-});
-
-// CONDITIONALS
 function toggleGST(){
   gstBox.style.display = gst.value==="Yes"?"block":"none";
 }
 function toggleITR(){
   itrBox.style.display = itr.value==="Yes"?"block":"none";
 }
-function toggleCoApp(){
+function toggleCo(){
   coBox.style.display = coapp.value==="Yes"?"block":"none";
 }
 
-// ELIGIBILITY (DEMO)
+function addField(){
+  const d = document.createElement("div");
+  d.innerHTML = `<input placeholder="Field Name"> <input placeholder="Value">`;
+  document.getElementById("extra").appendChild(d);
+}
+
 function checkEligibility(){
-  document.getElementById("result").innerHTML =
-    "<h3>Eligible Banks</h3><p>PIRAMAL CAPITAL</p>";
+  document.getElementById("bankList").innerHTML = `
+    <tr><td>PIRAMAL CAPITAL</td></tr>
+    <tr><td>HDFC BANK</td></tr>
+  `;
+  document.getElementById("result").style.display="table";
 }
 </script>
 
