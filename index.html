@@ -1,117 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Eligibility Check</title>
-<style>
-body{font-family:Arial;background:#f4f6f8}
-.container{max-width:1000px;margin:20px auto;background:#fff;padding:20px}
-h3{background:#0A4EA3;color:#fff;padding:8px}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-button{padding:8px;background:#0A4EA3;color:#fff;border:none}
-.add{background:#28a745}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-td,th{border:1px solid #ccc;padding:6px}
-</style>
-</head>
-<body>
+SECTION 1 – Business Details
 
-<script>
-/* 🔐 ROLE CHECK */
-const role = localStorage.getItem("eligiwise_role");
-if(role !== "DSA"){
-  alert("Please login as DSA");
-  window.location.href = "login.html";
-}
-</script>
+Business Vintage (Years)
 
-<div class="container">
+Turnover (Lakhs)
 
-<h3>Section 1 – Business Details</h3>
-<div class="row">
-  <input placeholder="Business Vintage (Years)">
-  <input placeholder="Turnover (Lakhs)">
-</div>
+Entity Type
+Proprietorship / Partnership / Pvt Ltd / Ltd / LLP
 
-<h3>Section 2 – Banking & Documents</h3>
-<label>GST</label>
-<select id="gst" onchange="toggleGST()">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+Nature Of Business
+Trading / Manufacturing / Service
 
-<div id="gstBox" style="display:none">
-  <input placeholder="GST Turnover">
-</div>
+Business Type
+Rented / Owned / Leased
 
-<label>ITR</label>
-<select id="itr" onchange="toggleITR()">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+Business Place Pincode
 
-<div id="itrBox" style="display:none">
-  <input placeholder="ITR Turnover">
-</div>
+➕ Add Field
 
-<h3>Section 3 – Loans & Obligations</h3>
-<div class="row">
-  <input placeholder="CIBIL">
-  <input placeholder="Active Loans">
-</div>
+SECTION 2 – Banking & Documents
 
-<h3>Section 4 – Applicant & Co-Applicant</h3>
-<label>Co-Applicant</label>
-<select id="coapp" onchange="toggleCo()">
-  <option>No</option>
-  <option>Yes</option>
-</select>
+Bank Statement Type
+SA / CA / OD / CC / SA+CA / SA+OD / SA+CC / CA+OD / CA+CC / ALL
 
-<div id="coBox" style="display:none">
-  <input placeholder="Co-Applicant Age">
-</div>
+ABB
 
-<h3>Section 5 – Additional Fields</h3>
-<button class="add" onclick="addField()">+ Add Field</button>
-<div id="extra"></div>
+GST (Yes / No)
 
-<br>
-<button onclick="checkEligibility()">Check Eligibility</button>
+If Yes → Show GST Turnover
 
-<table id="result" style="display:none">
-<thead>
-<tr><th>Eligible Banks / NBFCs</th></tr>
-</thead>
-<tbody id="bankList"></tbody>
-</table>
+ITR (Yes / No)
 
-</div>
+If Yes → Show ITR Turnover
 
-<script>
-function toggleGST(){
-  gstBox.style.display = gst.value==="Yes"?"block":"none";
-}
-function toggleITR(){
-  itrBox.style.display = itr.value==="Yes"?"block":"none";
-}
-function toggleCo(){
-  coBox.style.display = coapp.value==="Yes"?"block":"none";
-}
+➕ Add Field
 
-function addField(){
-  const d = document.createElement("div");
-  d.innerHTML = `<input placeholder="Field Name"> <input placeholder="Value">`;
-  document.getElementById("extra").appendChild(d);
-}
+SECTION 3 – Loans & Obligations
 
-function checkEligibility(){
-  document.getElementById("bankList").innerHTML = `
-    <tr><td>PIRAMAL CAPITAL</td></tr>
-    <tr><td>HDFC BANK</td></tr>
-  `;
-  document.getElementById("result").style.display="table";
-}
-</script>
+CIBIL Score
 
-</body>
-</html>
+No of Active Loans
+
+Monthly EMI Obligations
+
+No of Loans Taken in Last 6 Months
+
+Loan Amount Taken in Last 6 Months
+
+No of Loans Closed in Next 6 Months
+
+EMI Amount Reduced in Next 6 Months
+
+➕ Add Field
+
+SECTION 4 – Applicant & Co-Applicant
+
+Applicant Age
+
+Co-Applicant (Yes / No)
+
+If Yes → Show Co-Applicant Age
+
+Own House (Yes / No)
+
+Own House Pincode
+
+➕ Add Field
+
+SECTION 5 – Additional Fields
+
+Unlimited custom fields
