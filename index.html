@@ -106,8 +106,8 @@ button{
   <div><label>Business Pincode</label><input></div>
 </div>
 
-<div id="businessExtra"></div>
-<button onclick="addField(this)">+ Add Field</button>
+<div id="section1Extra"></div>
+<button onclick="addField('section1Extra')">+ Add Field</button>
 
 
 <!-- ================= SECTION 2 ================= -->
@@ -154,8 +154,9 @@ button{
   </div>
 </div>
 
-<div id="bankExtra"></div>
-<button onclick="addField(this)">+ Add Field</button>
+<div id="section2Extra"></div>
+<button onclick="addField('section2Extra')">+ Add Field</button>
+
 
 
 <!-- ================= SECTION 3 ================= -->
@@ -177,8 +178,8 @@ button{
   <div><label>EMI Reduction (Next 6 Months)</label><input></div>
 </div>
 
-<div id="loanExtra"></div>
-<button onclick="addField(this)">+ Add Field</button>
+<div id="section3Extra"></div>
+<button onclick="addField('section3Extra')">+ Add Field</button>
 
 <!-- ================= SECTION 4 ================= -->
 <div class="section">Section 4 – Applicant & Co-Applicant</div>
@@ -209,15 +210,16 @@ button{
   <div><label>Own House Pincode</label><input></div>
 </div>
 
-<div id="appExtra"></div>
-<button onclick="addField(this)">+ Add Field</button>
+<div id="section4Extra"></div>
+<button onclick="addField('section4Extra')">+ Add Field</button>
+
 
 
 <!-- ================= SECTION 5 ================= -->
 <div class="section">Section 5 – Additional Fields</div>
 
-<div id="additional"></div>
-<button onclick="addField(this)">+ Add Field</button>
+<div id="section5Extra"></div>
+<button onclick="addField('section5Extra')">+ Add Field</button>
 
 
 <br>
@@ -377,11 +379,61 @@ function checkEligibility(){
 
 </body>
 </html>
+<script>
+/* ADD FIELD FUNCTION – WORKS FOR ALL SECTIONS */
+function addField(targetId){
+  const row = document.createElement("div");
+  row.style.display = "grid";
+  row.style.gridTemplateColumns = "1fr 1fr auto";
+  row.style.gap = "10px";
+  row.style.marginTop = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value">
+    <button onclick="this.parentNode.remove()">X</button>
+  `;
+
+  document.getElementById(targetId).appendChild(row);
+}
+
+/* ELIGIBILITY CHECK – BASIC WORKING */
+function checkEligibility(){
+<div id="eligibilityResult" style="margin-top:20px;"></div>
+
+  const policies =
+    JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+
+  const resultDiv = document.getElementById("eligibilityResult");
+
+  if(policies.length === 0){
+    resultDiv.innerHTML =
+      "<b style='color:red'>No bank policies found. Please add from Admin.</b>";
+    return;
+  }
+
+  let html = `
+    <h3>Eligible Banks / NBFCs</h3>
+    <table border="1" width="100%" cellpadding="8">
+      <tr>
+        <th>Bank / NBFC Name</th>
+      </tr>
+  `;
+
+  policies.forEach(p=>{
+    html += `<tr><td>${p.bankName}</td></tr>`;
+  });
+
+  html += "</table>";
+  resultDiv.innerHTML = html;
+}
+</script>
 
 </body>
 </html>
 <!-- Dynamic Fields Container -->
 <div id="dynamicFields" style="margin-top:10px;"></div>
+
 
 
 
