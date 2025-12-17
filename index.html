@@ -5,271 +5,165 @@
 <title>ELIGIWISE – DSA Eligibility Check</title>
 
 <style>
-body{
-  font-family: Arial, sans-serif;
-  background:#f4f6f8;
-}
-.container{
-  max-width:1400px;
-  margin:20px auto;
-  background:#fff;
-  padding:25px;
-  border-radius:10px;
-}
-h1{
-  background:#0A4EA3;
-  color:#fff;
-  padding:15px;
-  border-radius:6px;
-}
-.section{
-  background:#0A4EA3;
-  color:#fff;
-  padding:10px;
-  margin-top:30px;
-  border-radius:4px;
-  font-weight:bold;
-}
-label{
-  font-weight:bold;
-  display:block;
-  margin-top:10px;
-}
-input, select{
-  width:100%;
-  padding:8px;
-  margin-top:5px;
-}
-.grid-3{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
-.grid-2{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-}
-.extra-row{
-  display:grid;
-  grid-template-columns:1fr 1fr auto;
-  gap:10px;
-  margin-top:8px;
-}
-button{
-  margin-top:15px;
-  padding:10px 15px;
-  background:#0A4EA3;
-  color:#fff;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-}
-.add-btn{background:#27ae60;}
-.del-btn{background:#c0392b;}
-.result{
-  margin-top:30px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-th,td{
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-}
-th{
-  background:#0A4EA3;
-  color:#fff;
-}
+body{font-family:Arial;background:#f4f6f8;margin:0}
+.header{background:#0A4EA3;color:#fff;padding:15px;font-size:20px}
+.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;border-radius:8px}
+.section{margin-top:25px}
+.section h3{background:#0A4EA3;color:#fff;padding:10px;border-radius:4px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+label{font-weight:bold;margin-top:10px;display:block}
+input,select{width:100%;padding:8px;margin-top:5px}
+button{padding:8px 14px;border:none;border-radius:4px;cursor:pointer}
+.add{background:#28a745;color:#fff;margin-top:10px}
+.check{background:#0A4EA3;color:#fff;margin-top:20px}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th,td{border:1px solid #ccc;padding:8px;text-align:center}
+th{background:#0A4EA3;color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin-top:8px}
+.del{background:#dc3545;color:#fff}
 </style>
 </head>
 
 <body>
+
+<div class="header">ELIGIWISE – DSA Dashboard</div>
+
 <div class="container">
 
-<h1>ELIGIWISE – DSA Eligibility Check</h1>
-
-<!-- ================= SECTION 1 ================= -->
-<div class="section">Section 1 – Business Details</div>
-
+<!-- SECTION 1 -->
+<div class="section">
+<h3>Section 1 – Business Details</h3>
 <div class="grid-3">
-  <div><label>Business Vintage (Years)</label><input type="number" id="vintage"></div>
-  <div><label>Turnover (Lakhs)</label><input type="number" id="turnover"></div>
-  <div>
-    <label>Entity Type</label>
-    <select id="entity">
-      <option>Proprietorship</option>
-      <option>Partnership</option>
-      <option>Pvt Ltd</option>
-      <option>Ltd</option>
-      <option>LLP</option>
-    </select>
-  </div>
+<div><label>Business Vintage (Years)</label><input id="vintage"></div>
+<div><label>Turnover (Lakhs)</label><input id="turnover"></div>
+<div><label>Entity Type</label>
+<select id="entity">
+<option>Proprietorship</option><option>Partnership</option>
+<option>Pvt Ltd</option><option>Ltd</option><option>LLP</option>
+</select></div>
+</div>
 </div>
 
+<!-- SECTION 2 -->
+<div class="section">
+<h3>Section 2 – Banking & Documents</h3>
 <div class="grid-3">
-  <div>
-    <label>Nature of Business</label>
-    <select>
-      <option>Trading</option>
-      <option>Manufacturing</option>
-      <option>Service</option>
-    </select>
-  </div>
-  <div>
-    <label>Business Place Type</label>
-    <select>
-      <option>Owned</option>
-      <option>Rented</option>
-      <option>Leased</option>
-    </select>
-  </div>
-  <div><label>Business Pincode</label><input type="number"></div>
+<div><label>Bank Statement Type</label>
+<select id="banking">
+<option>SA</option><option>CA</option><option>OD</option>
+<option>CC</option><option>ALL</option>
+</select></div>
+<div><label>ABB</label><input id="abb"></div>
+<div><label>GST</label>
+<select id="gst" onchange="toggleGST()">
+<option>No</option><option>Yes</option>
+</select></div>
 </div>
 
-<div id="sec1Extra"></div>
-<button class="add-btn" onclick="addField('sec1Extra')">+ Add Field</button>
+<div id="gstBlock" style="display:none">
+<label>GST Turnover</label><input id="gstTurnover">
+</div>
 
-<!-- ================= SECTION 2 ================= -->
-<div class="section">Section 2 – Banking & Documents</div>
+<label>ITR</label>
+<select id="itr" onchange="toggleITR()">
+<option>No</option><option>Yes</option>
+</select>
 
+<div id="itrBlock" style="display:none">
+<label>ITR Turnover</label><input id="itrTurnover">
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<h3>Section 3 – Loans & Obligations</h3>
 <div class="grid-3">
-  <div>
-    <label>Bank Statement Type</label>
-    <select>
-      <option>ALL</option>
-      <option>SA</option>
-      <option>CA</option>
-      <option>OD</option>
-      <option>CC</option>
-      <option>SA+CA</option>
-      <option>SA+OD</option>
-      <option>CA+OD</option>
-    </select>
-  </div>
-  <div><label>Average Bank Balance (ABB)</label><input type="number" id="abb"></div>
-  <div>
-    <label>GST Available</label>
-    <select id="gst">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
+<div><label>CIBIL</label><input id="cibil"></div>
+<div><label>Active Loans</label><input id="activeLoans"></div>
+<div><label>Monthly EMI</label><input id="emi"></div>
+</div>
 </div>
 
+<!-- SECTION 4 -->
+<div class="section">
+<h3>Section 4 – Applicant & Co-Applicant</h3>
 <div class="grid-2">
-  <div><label>GST Turnover</label><input type="number"></div>
-  <div>
-    <label>ITR Available</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
+<div><label>Applicant Age</label><input id="age"></div>
+<div><label>Co-Applicant</label>
+<select id="coapp" onchange="toggleCo()">
+<option>No</option><option>Yes</option>
+</select></div>
 </div>
 
-<div class="grid-2">
-  <div><label>ITR Turnover</label><input type="number"></div>
+<div id="coBlock" style="display:none">
+<label>Co-Applicant Age</label><input id="coAge">
+</div>
 </div>
 
-<div id="sec2Extra"></div>
-<button class="add-btn" onclick="addField('sec2Extra')">+ Add Field</button>
-
-<!-- ================= SECTION 3 ================= -->
-<div class="section">Section 3 – Loans & Obligations</div>
-
-<div class="grid-3">
-  <div><label>CIBIL Score</label><input type="number" id="cibil"></div>
-  <div><label>Active Loans</label><input type="number"></div>
-  <div><label>Monthly EMI</label><input type="number"></div>
+<!-- SECTION 5 -->
+<div class="section">
+<h3>Section 5 – Additional Fields</h3>
+<div id="extraFields"></div>
+<button class="add" onclick="addField()">+ Add Field</button>
 </div>
 
-<div class="grid-3">
-  <div><label>Loans Taken (Last 6 Months)</label><input type="number"></div>
-  <div><label>Loan Amount (Last 6 Months)</label><input type="number"></div>
-  <div><label>Loans Closing (Next 6 Months)</label><input type="number"></div>
-</div>
+<button class="check" onclick="checkEligibility()">Check Eligibility</button>
 
-<div class="grid-2">
-  <div><label>EMI Reduction (Next 6 Months)</label><input type="number"></div>
-</div>
-
-<div id="sec3Extra"></div>
-<button class="add-btn" onclick="addField('sec3Extra')">+ Add Field</button>
-
-<!-- ================= SECTION 4 ================= -->
-<div class="section">Section 4 – Applicant & Co-Applicant</div>
-
-<div class="grid-2">
-  <div><label>Applicant Age</label><input type="number" id="age"></div>
-  <div>
-    <label>Co-Applicant</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-</div>
-
-<div class="grid-2">
-  <div>
-    <label>Own House</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div><label>Own House Pincode</label><input type="number"></div>
-</div>
-
-<div id="sec4Extra"></div>
-<button class="add-btn" onclick="addField('sec4Extra')">+ Add Field</button>
-
-<!-- ================= SECTION 5 ================= -->
-<div class="section">Section 5 – Additional Fields</div>
-<div id="sec5Extra"></div>
-<button class="add-btn" onclick="addField('sec5Extra')">+ Add Field</button>
-
-<br><br>
-<button onclick="checkEligibility()">Check Eligibility</button>
-
-<div id="eligibilityResult" class="result"></div>
+<div id="eligibilityResult"></div>
 
 </div>
 
 <script>
-/* ---------- ADD FIELD ---------- */
-function addField(target){
-  const box = document.getElementById(target);
-  const row = document.createElement("div");
-  row.className="extra-row";
-  row.innerHTML = `
+// TOGGLES
+function toggleGST(){document.getElementById("gstBlock").style.display =
+document.getElementById("gst").value==="Yes"?"block":"none"}
+function toggleITR(){document.getElementById("itrBlock").style.display =
+document.getElementById("itr").value==="Yes"?"block":"none"}
+function toggleCo(){document.getElementById("coBlock").style.display =
+document.getElementById("coapp").value==="Yes"?"block":"none"}
+
+// ADD FIELD
+function addField(){
+  const d shown = document.createElement("div");
+  d.className="row";
+  d.innerHTML=`
     <input placeholder="Field Name">
     <input placeholder="Value">
-    <button class="del-btn" onclick="this.parentNode.remove()">X</button>
-  `;
-  box.appendChild(row);
+    <button class="del" onclick="this.parentNode.remove()">X</button>`;
+  document.getElementById("extraFields").appendChild(d);
 }
 
-/* ---------- CHECK ELIGIBILITY ---------- */
+// ELIGIBILITY LOGIC
 function checkEligibility(){
-  const result = document.getElementById("eligibilityResult");
   const policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+  const result = document.getElementById("eligibilityResult");
 
   if(policies.length===0){
-    result.innerHTML="<b style='color:red'>No bank policies found. Please add policies in Admin.</b>";
+    result.innerHTML="<b style='color:red'>No policies found. Add in Admin.</b>";
     return;
   }
 
-  let html = "<h3>Eligible Banks / NBFCs</h3><table><tr><th>Bank Name</th></tr>";
+  const unique = {};
   policies.forEach(p=>{
-    html += `<tr><td>${p.bankName || "Unnamed Bank"}</td></tr>`;
+    if(p.bankName && p.bankName.trim()!==""){
+      unique[p.bankName]=p;
+    }
   });
-  html += "</table>";
 
-  result.innerHTML = html;
+  let html=`<h3>Eligible Banks / NBFCs</h3><table>
+  <tr><th>Bank Name</th><th>Programs</th></tr>`;
+
+  Object.values(unique).forEach(p=>{
+    let prog=[];
+    if(p.abbPrograms?.length) prog.push("ABB");
+    if(p.itrPrograms?.length) prog.push("ITR");
+    if(p.gstPrograms?.length) prog.push("GST");
+    html+=`<tr><td>${p.bankName}</td><td>${prog.join(", ")}</td></tr>`;
+  });
+
+  html+="</table>";
+  result.innerHTML=html;
 }
 </script>
 
