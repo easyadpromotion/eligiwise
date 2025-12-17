@@ -79,20 +79,21 @@ th,td{padding:6px;text-align:left}
   <!-- ABB in Lakhs – must match admin ABB Min / Max -->
   <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
 
-  <select id="gst">
-    <option value="No">GST: No</option>
-    <option value="Yes">GST: Yes</option>
+  <select id="gst" onchange="toggleGST()">
+    <option>No</option>
+    <option>Yes</option>
   </select>
 
-  <input id="gstTurnover" class="hidden" type="number" placeholder="GST Turnover (Lakhs)">
+  <input id="gstTurnover" class="hidden" placeholder="GST Turnover" type="number">
 
-  <select id="itr">
-    <option value="No">ITR: No</option>
-    <option value="Yes">ITR: Yes</option>
+  <select id="itr" onchange="toggleITR()">
+    <option>No</option>
+    <option>Yes</option>
   </select>
 
-  <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
+  <input id="itrTurnover" class="hidden" placeholder="ITR Turnover" type="number">
 </div>
+  
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 3 – Loans & Obligations (USED partly) -->
@@ -120,7 +121,8 @@ th,td{padding:6px;text-align:left}
     <option>Yes</option>
   </select>
 
-  <input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
+  <input id="coAge" class="hidden" placeholder="Co-Applicant Age" type="number">
+
 
   <select id="ownHouse">
     <option>Own House</option>
@@ -236,3 +238,4 @@ function checkEligibility() {
 
 </body>
 </html>
+
