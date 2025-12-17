@@ -5,21 +5,26 @@
   <title>ELIGIWISE – Eligibility Check</title>
 
   <style>
-    body{font-family:Arial;background:#f4f6f8}
-    .container{max-width:1200px;margin:20px auto;background:#fff;padding:20px}
-    h3{background:#0A4EA3;color:#fff;padding:10px}
+    body{font-family:Arial;background:#eef2f7;margin:0}
+    .container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;
+               border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
+    h2{text-align:center;color:#0A4EA3;margin-top:0}
+    h3{background:#0A4EA3;color:#fff;padding:10px;margin-top:25px;border-radius:4px}
     .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    input,select{padding:8px;width:100%}
-    button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer}
+    input,select{padding:8px;width:100%;border-radius:4px;border:1px solid #ccc;
+                 box-sizing:border-box}
+    button{padding:9px 14px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
+           border-radius:4px;font-size:13px}
+    button:hover{opacity:0.9}
     .add-btn{margin-top:10px}
     .hidden{display:none}
-    table{width:100%;border-collapse:collapse;margin-top:20px}
-    table,th,td{border:1px solid #ccc}
+    table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13px}
+    table,th,td{border:1px solid #d0d7de}
     th,td{padding:8px;text-align:left}
+    #result{margin-top:15px;font-weight:bold}
   </style>
 
   <script>
-    // role guard for DSA
     if(localStorage.getItem("role")!=="DSA"){
       alert("Please login as DSA");
       location.href="login.html";
@@ -29,14 +34,15 @@
 
 <body>
 <div class="container">
+<h2>ELIGIWISE – Eligibility Check</h2>
 
 <!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
 <div class="grid">
-  <input placeholder="Business Vintage (Years)">
-  <input placeholder="Turnover (Lakhs)">
+  <input id="vintage" placeholder="Business Vintage (Years)" type="number">
+  <input id="turnover" placeholder="Turnover (Lakhs)" type="number">
 
-  <select>
+  <select id="entityType">
     <option>Entity Type</option>
     <option>Proprietorship</option>
     <option>Partnership</option>
@@ -45,21 +51,21 @@
     <option>LLP</option>
   </select>
 
-  <select>
+  <select id="natureBusiness">
     <option>Nature Of Business</option>
     <option>Trading</option>
     <option>Manufacturing</option>
     <option>Service</option>
   </select>
 
-  <select>
+  <select id="businessType">
     <option>Business Type</option>
     <option>Rented</option>
     <option>Owned</option>
     <option>Leased</option>
   </select>
 
-  <input placeholder="Business Place Pincode">
+  <input id="bizPincode" placeholder="Business Place Pincode">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
@@ -67,70 +73,67 @@
 <h3>SECTION 2 – Banking & Documents</h3>
 <div class="grid">
 
-  <select>
+  <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
     <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
     <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
   </select>
 
-  <!-- ABB used in eligibility -->
-  <input id="abb" placeholder="ABB">
+  <input id="abb" placeholder="Average Bank Balance (ABB)" type="number">
 
   <select id="gst" onchange="toggleGST()">
-    <option>GST</option>
     <option>No</option>
     <option>Yes</option>
   </select>
 
-  <input id="gstTurnover" class="hidden" placeholder="GST Turnover">
+  <input id="gstTurnover" class="hidden" placeholder="GST Turnover" type="number">
 
   <select id="itr" onchange="toggleITR()">
-    <option>ITR</option>
     <option>No</option>
     <option>Yes</option>
   </select>
 
-  <input id="itrTurnover" class="hidden" placeholder="ITR Turnover">
-
+  <input id="itrTurnover" class="hidden" placeholder="ITR Turnover" type="number">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
 <div class="grid">
-  <input placeholder="CIBIL Score">
-  <input placeholder="No of Active Loans">
-  <input placeholder="Monthly EMI Obligations">
+  <input id="cibilScore" placeholder="CIBIL Score" type="number">
+  <input id="activeLoans" placeholder="No of Active Loans" type="number">
+  <input id="emiObligation" placeholder="Monthly EMI Obligations" type="number">
 
-  <input placeholder="Loans Taken in Last 6 Months">
-  <input placeholder="Loan Amount in Last 6 Months">
-  <input placeholder="Loans Closing in Next 6 Months">
+  <input id="loan6Count" placeholder="Loans Taken in Last 6 Months" type="number">
+  <input id="loan6Amt" placeholder="Loan Amount in Last 6 Months" type="number">
+  <input id="enq6" placeholder="Enquiries in Last 6 Months" type="number">
 
-  <input placeholder="EMI Reduction in Next 6 Months">
+  <input id="enq3" placeholder="Enquiries in Last 3 Months" type="number">
+  <input id="netMonthlyIncome" placeholder="Net Monthly Income (₹)" type="number">
+  <input id="newEmi" placeholder="Proposed New EMI (₹)" type="number">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
 <div class="grid">
-  <input placeholder="Applicant Age">
+  <input id="appAge" placeholder="Applicant Age" type="number">
 
   <select id="coapp" onchange="toggleCo()">
-    <option>Co-Applicant</option>
-    <option>No</option>
+    <option>No Co-Applicant</option>
     <option>Yes</option>
   </select>
 
-  <input id="coAge" class="hidden" placeholder="Co-Applicant Age">
+  <input id="coAge" class="hidden" placeholder="Co-Applicant Age" type="number">
 
-  <select>
+  <select id="ownHouse">
     <option>Own House</option>
     <option>Yes</option>
     <option>No</option>
   </select>
 
-  <input placeholder="Own House Pincode">
+  <input id="housePincode" placeholder="Own House Pincode">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
@@ -147,6 +150,7 @@
   <thead>
     <tr>
       <th>Eligible Bank / NBFC</th>
+      <th>Comments</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -175,11 +179,19 @@ function addExtra(){
   document.getElementById("extraFields").appendChild(input);
 }
 
-// single, final checkEligibility
 function checkEligibility() {
-  const abb = Number(document.getElementById("abb")?.value || 0);
-  const gst = document.getElementById("gst")?.value || "No";
-  const itr = document.getElementById("itr")?.value || "No";
+  const abb = Number(abbInput.value || 0);
+  const gstVal = gst.value || "No";
+  const itrVal = itr.value || "No";
+  const cibil = Number(cibilScore.value || 0);
+  const appAgeVal = Number(appAge.value || 0);
+  const activeLoansVal = Number(activeLoans.value || 0);
+  const loan6CountVal = Number(loan6Count.value || 0);
+  const loan6AmtVal = Number(loan6Amt.value || 0);
+  const enq6Val = Number(enq6.value || 0);
+  const enq3Val = Number(enq3.value || 0);
+  const income = Number(netMonthlyIncome.value || 0);
+  const newEmiVal = Number(newEmi.value || 0);
 
   const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
 
@@ -188,29 +200,59 @@ function checkEligibility() {
   tbody.innerHTML = "";
   resultP.textContent = "";
 
-  if (policies.length === 0) {
+  if (!policies.length){
     resultP.textContent = "No policies found. Please ask admin to create policies.";
     return;
   }
 
-  const eligible = policies.filter(p =>
-    abb >= Number(p.abbMin) &&
-    abb <= Number(p.abbMax) &&
-    (p.gstRequired === "No" || p.gstRequired === gst) &&
-    (p.itrRequired === "No" || p.itrRequired === itr)
-  );
+  const eligible = policies.filter(p => {
 
-  if (eligible.length === 0) {
+    // 1. ABB range
+    if (!(abb >= p.abbMin && abb <= p.abbMax)) return false;
+
+    // 2. GST / ITR requirement
+    if (p.gstRequired === "Yes" && gstVal !== "Yes") return false;
+    if (p.itrRequired === "Yes" && itrVal !== "Yes") return false;
+
+    // 3. CIBIL range
+    if (p.cibilMin && cibil < p.cibilMin) return false;
+    if (p.cibilMax && cibil > p.cibilMax) return false;
+
+    // 4. Age
+    if (p.appAgeMin && appAgeVal < p.appAgeMin) return false;
+    if (p.appAgeMax && appAgeVal > p.appAgeMax) return false;
+
+    // 5. Active loans, enquiries, recent loans
+    if (p.activeLoansMax && activeLoansVal > p.activeLoansMax) return false;
+    if (p.loan6Max && loan6CountVal > p.loan6Max) return false;
+    if (p.loan6AmtMax && loan6AmtVal > p.loan6AmtMax) return false;
+    if (p.enq6Max && enq6Val > p.enq6Max) return false;
+    if (p.enq3Max && enq3Val > p.enq3Max) return false;
+
+    // 6. EMI to income ratio rule (EMI / income <= maxEmiRatio)[web:61][web:69]
+    if (p.maxEmiRatio && income > 0 && newEmiVal > 0){
+      const totalEmi = newEmiVal + Number(emiObligation.value || 0);
+      const ratio = (totalEmi / income) * 100;
+      if (ratio > p.maxEmiRatio) return false;
+    }
+
+    return true;
+  });
+
+  if (!eligible.length){
     resultP.textContent = "No eligible banks for given inputs.";
     return;
   }
 
   eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / CIBIL / EMI rules</td>`;
     tbody.appendChild(tr);
   });
 }
+
+// cache some elements to avoid shadowing
+const abbInput = document.getElementById("abb");
 </script>
 
 </body>
