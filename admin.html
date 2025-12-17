@@ -140,6 +140,15 @@ th{
 
 </div>
 <script>
+  const role = localStorage.getItem("eligiwise_role");
+
+  if (role !== "ADMIN") {
+    alert("Please login as ADMIN");
+    window.location.href = "login.html";
+  }
+</script>
+
+  <script>
 if(localStorage.getItem("eligiwise_role") !== "ADMIN"){
   alert("Please login as ADMIN");
   window.location.href = "login.html";
@@ -217,4 +226,5 @@ function renderResult(list){
 
 </body>
 </html>
+
 
