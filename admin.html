@@ -1,22 +1,36 @@
+
 <!DOCTYPE html>
-<html>
+
+
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin</title>
-</head>
-<body>
+<title>ELIGIWISE – DSA Eligibility Check</title>
 
-<script>
-const role = localStorage.getItem("eligiwise_role");
-if(role !== "ADMIN"){
-  alert("Please login as ADMIN");
-  window.location.href = "login.html";
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#f4f6f8;
 }
-</script>
 
-<h2>Admin – Bank Policy Setup</h2>
-<p>Policy configuration page (UI ready)</p>
+.header{
+  background:#0A4EA3;
+  color:#fff;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-</body>
-</html>
+.container{
+  max-width:1200px;
+  margin:20px auto;
+  background:#fff;
+  padding:20px;
+  border-radius:8px;
+}
 
+h2{ color:#0A4EA3; }
+
+.grid-3{
+  display:grid;
