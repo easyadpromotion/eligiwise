@@ -60,7 +60,6 @@ th,td{padding:6px;text-align:left}
     <option>Leased</option>
   </select>
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 2 -->
 <h3>SECTION 2 – Banking & Documents</h3>
@@ -88,7 +87,6 @@ th,td{padding:6px;text-align:left}
 
   <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
@@ -105,7 +103,6 @@ th,td{padding:6px;text-align:left}
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
   <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
@@ -127,7 +124,6 @@ th,td{padding:6px;text-align:left}
 
   <input id="housePincode" placeholder="Own House Pincode">
 </div>
-<button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 5 -->
 <h3>SECTION 5 – Additional Fields</h3>
@@ -150,7 +146,86 @@ th,td{padding:6px;text-align:left}
 
 </div>
 
-<!-- load all JS from separate file -->
-<script src="eligibility.js"></script>
+<script>
+// show / hide extra fields
+function toggleGST(){
+  const gstSelect = document.getElementById("gst");
+  const gstTurn = document.getElementById("gstTurnover");
+  if (!gstSelect || !gstTurn) return;
+  gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
+}
+function toggleITR(){
+  const itrSelect = document.getElementById("itr");
+  const itrTurn = document.getElementById("itrTurnover");
+  if (!itrSelect || !itrTurn) return;
+  itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
+}
+function toggleCo(){
+  const coSelect = document.getElementById("coapp");
+  const coAge = document.getElementById("coAge");
+  if (!coSelect || !coAge) return;
+  coAge.classList.toggle("hidden", coSelect.value !== "Yes");
+}
+
+// add extra fields
+function addExtra(){
+  const input=document.createElement("input");
+  input.placeholder="Additional Custom Field";
+  document.getElementById("extraFields").appendChild(input);
+}
+
+// main eligibility
+function checkEligibility() {
+  const abb = Number(document.getElementById("abb").value || 0);
+  const gst = document.getElementById("gst").value || "No";
+  const itr = document.getElementById("itr").value || "No";
+
+  const cibil = Number(document.getElementById("cibilScore").value || 0);
+  const existingEmi = Number(document.getElementById("emiObligation").value || 0);
+  const income = Number(document.getElementById("netMonthlyIncome").value || 0);
+
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html stores here */[web:23][web:37]
+
+  const tbody = document.querySelector("#eligibleBanks tbody");
+  const resultP = document.getElementById("result");
+  tbody.innerHTML = "";
+  resultP.textContent = "";
+
+  if (!policies.length) {
+    resultP.textContent = "No policies found. Please ask admin to create policies.";
+    return;
+  }
+
+  const eligible = policies.filter(p => {
+    const abbMin = Number(p.abbMin || 0);
+    const abbMax = Number(p.abbMax || 0);
+    const cibilMin = Number(p.cibilMin || 0);
+    const maxEmiRatio = Number(p.maxEmiRatio || 0); // %
+
+    if (!(abb >= abbMin && abb <= abbMax)) return false;
+    if (p.gstRequired === "Yes" && gst !== "Yes") return false;
+    if (p.itrRequired === "Yes" && itr !== "Yes") return false;
+    if (cibilMin && cibil && cibil < cibilMin) return false;
+
+    if (maxEmiRatio && income > 0) {
+      const ratio = (existingEmi / income) * 100;
+      if (ratio > maxEmiRatio) return false;
+    }
+    return true;
+  });
+
+  if (!eligible.length) {
+    resultP.textContent = "No eligible banks for given inputs.";
+    return;
+  }
+
+  eligible.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
+    tbody.appendChild(tr);
+  });
+}
+</script>
+
 </body>
 </html>
