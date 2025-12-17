@@ -9,7 +9,6 @@ body {
   font-family: Arial, sans-serif;
   background:#f4f6f8;
 }
-
 .container {
   max-width:1400px;
   margin:20px auto;
@@ -17,12 +16,10 @@ body {
   padding:25px;
   border-radius:10px;
 }
-
 h1 {
   text-align:center;
   color:#0A4EA3;
 }
-
 .section-title {
   background:#0A4EA3;
   color:#fff;
@@ -31,38 +28,32 @@ h1 {
   font-weight:bold;
   border-radius:4px;
 }
-
 label {
   font-weight:bold;
   display:block;
   margin-top:12px;
 }
-
 input, select {
   width:100%;
   padding:8px;
   margin-top:5px;
 }
-
 .grid-3 {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap:15px;
 }
-
 .grid-2 {
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   gap:15px;
 }
-
 .program-row {
   display:grid;
   grid-template-columns: 1fr 1fr auto;
   gap:10px;
   margin-top:8px;
 }
-
 button {
   margin-top:15px;
   padding:10px 15px;
@@ -72,10 +63,29 @@ button {
   border-radius:5px;
   cursor:pointer;
 }
-
 button.add { background:#27ae60; }
 button.del { background:#c0392b; }
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+}
+table, th, td {
+  border:1px solid #ccc;
+}
+th, td {
+  padding:8px;
+  text-align:left;
+}
 </style>
+
+<script>
+  // simple role guard
+  if (localStorage.getItem("role") !== "ADMIN") {
+    alert("Please login as ADMIN");
+    location.href = "login.html";
+  }
+</script>
 </head>
 
 <body>
@@ -154,7 +164,7 @@ button.del { background:#c0392b; }
 <div class="section-title">SECTION C – BUSINESS & BANKING</div>
 
 <label>Banking Type</label>
-<select>
+<select id="bankingType">
   <option>All</option>
   <option>CA</option>
   <option>SA</option>
@@ -166,14 +176,14 @@ button.del { background:#c0392b; }
 <div class="grid-2">
   <div>
     <label>ITR Required</label>
-    <select>
+    <select id="itrRequired">
       <option>No</option>
       <option>Yes</option>
     </select>
   </div>
   <div>
     <label>GST Required</label>
-    <select>
+    <select id="gstRequired">
       <option>No</option>
       <option>Yes</option>
     </select>
@@ -215,7 +225,14 @@ button.del { background:#c0392b; }
 <div class="section-title">SECTION E – PROGRAMS</div>
 
 <label>ABB Programs (Min – Max)</label>
-<div id="abbPrograms"></div>
+<div id="abbPrograms">
+  <!-- main ABB program used for eligibility -->
+  <div class="program-row">
+    <input id="abbMin" placeholder="Min">
+    <input id="abbMax" placeholder="Max">
+    <button class="del" onclick="this.parentNode.remove()">X</button>
+  </div>
+</div>
 <button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
 
 <label>ITR Programs (Min – Max)</label>
@@ -238,6 +255,20 @@ button.del { background:#c0392b; }
 
 <br><br>
 <button onclick="savePolicy()">💾 Save Policy</button>
+
+<h2>Saved Policies</h2>
+<table id="policyTable">
+  <thead>
+    <tr>
+      <th>Bank</th>
+      <th>ABB Min</th>
+      <th>ABB Max</th>
+      <th>GST Required</th>
+      <th>ITR Required</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 </div>
 
@@ -266,44 +297,49 @@ function addCustom() {
   container.appendChild(row);
 }
 
-<script>
 function savePolicy() {
   const policy = {
-    bankName: document.getElementById("bankName").value || "Unnamed Bank",
-    abbMin: document.getElementById("abbMin")?.value || 0,
-    abbMax: document.getElementById("abbMax")?.value || 0,
+    bankName   : document.getElementById("bankName").value || "Unnamed Bank",
+    abbMin     : Number(document.getElementById("abbMin")?.value || 0),
+    abbMax     : Number(document.getElementById("abbMax")?.value || 0),
     gstRequired: document.getElementById("gstRequired")?.value || "No",
     itrRequired: document.getElementById("itrRequired")?.value || "No"
   };
 
   let policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
   policies.push(policy);
+  localStorage.setItem("eligiwisepolicies", JSON.stringify(policies)); /* stores policies persistently in browser */[web:21][web:22]
 
-  localStorage.setItem("eligiwisepolicies", JSON.stringify(policies));
-
-  alert("Policy saved successfully");
+  alert("Policy Saved Successfully");
+  renderPolicies();
 }
+
+function renderPolicies() {
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
+  const tbody = document.querySelector("#policyTable tbody");
+  tbody.innerHTML = "";
+
+  if (policies.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td colspan='5'>No policies saved</td>";
+    tbody.appendChild(tr);
+    return;
+  }
+
+  policies.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.bankName}</td>
+      <td>${p.abbMin}</td>
+      <td>${p.abbMax}</td>
+      <td>${p.gstRequired}</td>
+      <td>${p.itrRequired}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", renderPolicies);
 </script>
-
-}
-
-function readPrograms(id) {
-  const container = document.getElementById(id);
-  return [...container.children].map(r => ({
-    min: r.children[0].value,
-    max: r.children[1].value
-  }));
-}
-
-function readCustomFields() {
-  const container = document.getElementById("customFields");
-  return [...container.children].map(r => ({
-    name: r.children[0].value,
-    value: r.children[1].value
-  }));
-}
-</script>
-
 </body>
 </html>
-
