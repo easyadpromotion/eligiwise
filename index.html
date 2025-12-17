@@ -161,6 +161,7 @@ if(localStorage.getItem("role")!=="DSA"){
 </div>
 
 <script>
+<script>
 function toggleGST(){
   const gstSelect = document.getElementById("gst");
   const gstTurn = document.getElementById("gstTurnover");
@@ -209,7 +210,7 @@ function addExtra(){
   document.getElementById("extraFields").appendChild(input);
 }
 
-/* Eligibility logic – aligned to admin.html policies */
+/* Eligibility logic */
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);
   const gst = document.getElementById("gst").value || "No";
@@ -219,7 +220,7 @@ function checkEligibility() {
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* same key as admin */[web:21][web:23]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; // from admin.html[web:23][web:37]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -256,11 +257,14 @@ function checkEligibility() {
 
   eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI rules</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
     tbody.appendChild(tr);
   });
 }
 </script>
 
+</script>
+
 </body>
 </html>
+
