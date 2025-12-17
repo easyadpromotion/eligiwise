@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ELIGIWISE – Eligibility Check</title>
+  <meta charset="UTF-8">
+  <title>ELIGIWISE – Eligibility Check</title>
 
-<style>
-body{font-family:Arial;background:#f4f6f8}
-.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px}
-h3{background:#0A4EA3;color:#fff;padding:10px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-input,select{padding:8px;width:100%}
-button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer}
-.add-btn{margin-top:10px}
-.hidden{display:none}
-</style>
+  <style>
+    body{font-family:Arial;background:#f4f6f8}
+    .container{max-width:1200px;margin:20px auto;background:#fff;padding:20px}
+    h3{background:#0A4EA3;color:#fff;padding:10px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    input,select{padding:8px;width:100%}
+    button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer}
+    .add-btn{margin-top:10px}
+    .hidden{display:none}
+    table{width:100%;border-collapse:collapse;margin-top:20px}
+    table,th,td{border:1px solid #ccc}
+    th,td{padding:8px;text-align:left}
+  </style>
 
-<script>
-if(localStorage.getItem("role")!=="DSA"){
-  alert("Please login as DSA");
-  location.href="login.html";
-}
-</script>
+  <script>
+    // role guard for DSA
+    if(localStorage.getItem("role")!=="DSA"){
+      alert("Please login as DSA");
+      location.href="login.html";
+    }
+  </script>
 </head>
 
 <body>
@@ -28,33 +33,33 @@ if(localStorage.getItem("role")!=="DSA"){
 <!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
 <div class="grid">
-<input placeholder="Business Vintage (Years)">
-<input placeholder="Turnover (Lakhs)">
+  <input placeholder="Business Vintage (Years)">
+  <input placeholder="Turnover (Lakhs)">
 
-<select>
-<option>Entity Type</option>
-<option>Proprietorship</option>
-<option>Partnership</option>
-<option>Pvt Ltd</option>
-<option>Ltd</option>
-<option>LLP</option>
-</select>
+  <select>
+    <option>Entity Type</option>
+    <option>Proprietorship</option>
+    <option>Partnership</option>
+    <option>Pvt Ltd</option>
+    <option>Ltd</option>
+    <option>LLP</option>
+  </select>
 
-<select>
-<option>Nature Of Business</option>
-<option>Trading</option>
-<option>Manufacturing</option>
-<option>Service</option>
-</select>
+  <select>
+    <option>Nature Of Business</option>
+    <option>Trading</option>
+    <option>Manufacturing</option>
+    <option>Service</option>
+  </select>
 
-<select>
-<option>Business Type</option>
-<option>Rented</option>
-<option>Owned</option>
-<option>Leased</option>
-</select>
+  <select>
+    <option>Business Type</option>
+    <option>Rented</option>
+    <option>Owned</option>
+    <option>Leased</option>
+  </select>
 
-<input placeholder="Business Place Pincode">
+  <input placeholder="Business Place Pincode">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
@@ -62,30 +67,31 @@ if(localStorage.getItem("role")!=="DSA"){
 <h3>SECTION 2 – Banking & Documents</h3>
 <div class="grid">
 
-<select>
-<option>Bank Statement Type</option>
-<option>SA</option><option>CA</option><option>OD</option><option>CC</option>
-<option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
-<option>CA+OD</option><option>CA+CC</option><option>ALL</option>
-</select>
+  <select>
+    <option>Bank Statement Type</option>
+    <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
+    <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
+    <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
+  </select>
 
-<input placeholder="ABB">
+  <!-- ABB used in eligibility -->
+  <input id="abb" placeholder="ABB">
 
-<select id="gst" onchange="toggleGST()">
-<option>GST</option>
-<option>No</option>
-<option>Yes</option>
-</select>
+  <select id="gst" onchange="toggleGST()">
+    <option>GST</option>
+    <option>No</option>
+    <option>Yes</option>
+  </select>
 
-<input id="gstTurnover" class="hidden" placeholder="GST Turnover">
+  <input id="gstTurnover" class="hidden" placeholder="GST Turnover">
 
-<select id="itr" onchange="toggleITR()">
-<option>ITR</option>
-<option>No</option>
-<option>Yes</option>
-</select>
+  <select id="itr" onchange="toggleITR()">
+    <option>ITR</option>
+    <option>No</option>
+    <option>Yes</option>
+  </select>
 
-<input id="itrTurnover" class="hidden" placeholder="ITR Turnover">
+  <input id="itrTurnover" class="hidden" placeholder="ITR Turnover">
 
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
@@ -93,38 +99,38 @@ if(localStorage.getItem("role")!=="DSA"){
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
 <div class="grid">
-<input placeholder="CIBIL Score">
-<input placeholder="No of Active Loans">
-<input placeholder="Monthly EMI Obligations">
+  <input placeholder="CIBIL Score">
+  <input placeholder="No of Active Loans">
+  <input placeholder="Monthly EMI Obligations">
 
-<input placeholder="Loans Taken in Last 6 Months">
-<input placeholder="Loan Amount in Last 6 Months">
-<input placeholder="Loans Closing in Next 6 Months">
+  <input placeholder="Loans Taken in Last 6 Months">
+  <input placeholder="Loan Amount in Last 6 Months">
+  <input placeholder="Loans Closing in Next 6 Months">
 
-<input placeholder="EMI Reduction in Next 6 Months">
+  <input placeholder="EMI Reduction in Next 6 Months">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
 <div class="grid">
-<input placeholder="Applicant Age">
+  <input placeholder="Applicant Age">
 
-<select id="coapp" onchange="toggleCo()">
-<option>Co-Applicant</option>
-<option>No</option>
-<option>Yes</option>
-</select>
+  <select id="coapp" onchange="toggleCo()">
+    <option>Co-Applicant</option>
+    <option>No</option>
+    <option>Yes</option>
+  </select>
 
-<input id="coAge" class="hidden" placeholder="Co-Applicant Age">
+  <input id="coAge" class="hidden" placeholder="Co-Applicant Age">
 
-<select>
-<option>Own House</option>
-<option>Yes</option>
-<option>No</option>
-</select>
+  <select>
+    <option>Own House</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
 
-<input placeholder="Own House Pincode">
+  <input placeholder="Own House Pincode">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
@@ -136,6 +142,15 @@ if(localStorage.getItem("role")!=="DSA"){
 <br><br>
 <button onclick="checkEligibility()">Check Eligibility</button>
 <p id="result"></p>
+
+<table id="eligibleBanks">
+  <thead>
+    <tr>
+      <th>Eligible Bank / NBFC</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 </div>
 
@@ -159,47 +174,44 @@ function addExtra(){
   input.placeholder="Additional Custom Field";
   document.getElementById("extraFields").appendChild(input);
 }
-function checkEligibility(){
-  result.innerHTML="Eligibility logic will be applied here";
-}
-  
 
-</script>
-<script>
+// single, final checkEligibility
 function checkEligibility() {
-
   const abb = Number(document.getElementById("abb")?.value || 0);
   const gst = document.getElementById("gst")?.value || "No";
   const itr = document.getElementById("itr")?.value || "No";
 
   const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
 
-  const table = document.getElementById("eligibleBanks");
-  table.innerHTML = "";
+  const tbody = document.querySelector("#eligibleBanks tbody");
+  const resultP = document.getElementById("result");
+  tbody.innerHTML = "";
+  resultP.textContent = "";
 
   if (policies.length === 0) {
-    table.innerHTML = "<tr><td>No policies found</td></tr>";
+    resultP.textContent = "No policies found. Please ask admin to create policies.";
     return;
   }
 
   const eligible = policies.filter(p =>
-    abb >= p.abbMin &&
-    abb <= p.abbMax &&
+    abb >= Number(p.abbMin) &&
+    abb <= Number(p.abbMax) &&
     (p.gstRequired === "No" || p.gstRequired === gst) &&
     (p.itrRequired === "No" || p.itrRequired === itr)
   );
 
   if (eligible.length === 0) {
-    table.innerHTML = "<tr><td>No eligible banks</td></tr>";
+    resultP.textContent = "No eligible banks for given inputs.";
     return;
   }
 
   eligible.forEach(p => {
-    table.innerHTML += `<tr><td>${p.bankName}</td></tr>`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${p.bankName}</td>`;
+    tbody.appendChild(tr);
   });
 }
 </script>
+
 </body>
 </html>
-
-
