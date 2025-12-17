@@ -8,6 +8,7 @@
 body{font-family:Arial;background:#f4f6f8;margin:0}
 .container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;
            border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
+h2{text-align:center;color:#0A4EA3;margin-top:0}
 h3{background:#0A4EA3;color:#fff;padding:10px;margin-top:25px;border-radius:4px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 input,select{padding:8px;width:100%;box-sizing:border-box;border-radius:4px;
@@ -33,6 +34,7 @@ if(localStorage.getItem("role")!=="DSA"){
 
 <body>
 <div class="container">
+<h2>ELIGIWISE – Eligibility Check</h2>
 
 <!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
@@ -78,24 +80,22 @@ if(localStorage.getItem("role")!=="DSA"){
     <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
   </select>
 
-  <!-- IMPORTANT: this ABB id is used in JS -->
+  <!-- ABB in lakhs; must match ABB Min/Max from admin -->
   <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
 
-  <!-- GST select + input -->
-<select id="gst" onchange="toggleGST()">
-  <option value="No">GST: No</option>
-  <option value="Yes">GST: Yes</option>
-</select>
+  <select id="gst" onchange="toggleGST()">
+    <option value="No">GST: No</option>
+    <option value="Yes">GST: Yes</option>
+  </select>
 
-<input id="gstTurnover" class="hidden" type="number" placeholder="GST Turnover (Lakhs)">
+  <input id="gstTurnover" class="hidden" type="number" placeholder="GST Turnover (Lakhs)">
 
-<!-- ITR select + input -->
-<select id="itr" onchange="toggleITR()">
-  <option value="No">ITR: No</option>
-  <option value="Yes">ITR: Yes</option>
-</select>
+  <select id="itr" onchange="toggleITR()">
+    <option value="No">ITR: No</option>
+    <option value="Yes">ITR: Yes</option>
+  </select>
 
-<input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
+  <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
 </div>
 <button class="add-btn" onclick="addField(this)">➕ Add Field</button>
 
@@ -122,12 +122,11 @@ if(localStorage.getItem("role")!=="DSA"){
   <input id="appAge" type="number" placeholder="Applicant Age">
 
   <select id="coapp" onchange="toggleCo()">
-  <option value="No">Co-Applicant: No</option>
-  <option value="Yes">Co-Applicant: Yes</option>
-</select>
+    <option value="No">Co-Applicant: No</option>
+    <option value="Yes">Co-Applicant: Yes</option>
+  </select>
 
-<input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
-
+  <input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
 
   <select id="ownHouse">
     <option>Own House</option>
@@ -161,27 +160,40 @@ if(localStorage.getItem("role")!=="DSA"){
 </div>
 
 <script>
-           <script>
-// Safe versions using getElementById
 function toggleGST(){
   const gstSelect = document.getElementById("gst");
   const gstTurn = document.getElementById("gstTurnover");
   if (!gstSelect || !gstTurn) return;
-  gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
+  if (gstSelect.value === "Yes") {
+    gstTurn.classList.remove("hidden");
+  } else {
+    gstTurn.classList.add("hidden");
+    gstTurn.value = "";
+  }
 }
 
 function toggleITR(){
   const itrSelect = document.getElementById("itr");
   const itrTurn = document.getElementById("itrTurnover");
   if (!itrSelect || !itrTurn) return;
-  itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
+  if (itrSelect.value === "Yes") {
+    itrTurn.classList.remove("hidden");
+  } else {
+    itrTurn.classList.add("hidden");
+    itrTurn.value = "";
+  }
 }
 
 function toggleCo(){
-  const coapp = document.getElementById("coapp");
+  const coSelect = document.getElementById("coapp");
   const coAge = document.getElementById("coAge");
-  if (!coapp || !coAge) return;
-  coAge.classList.toggle("hidden", coapp.value !== "Yes");
+  if (!coSelect || !coAge) return;
+  if (coSelect.value === "Yes") {
+    coAge.classList.remove("hidden");
+  } else {
+    coAge.classList.add("hidden");
+    coAge.value = "";
+  }
 }
 
 function addField(btn){
@@ -196,17 +208,17 @@ function addExtra(){
   document.getElementById("extraFields").appendChild(input);
 }
 
-/* Eligibility logic */
+/* Eligibility logic linked with admin.html policies */
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);
-  const gst = (document.getElementById("gst").value || "No");
-  const itr = (document.getElementById("itr").value || "No");
+  const gst = document.getElementById("gst").value || "No";
+  const itr = document.getElementById("itr").value || "No";
 
   const cibil = Number(document.getElementById("cibilScore").value || 0);
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* read same key as admin */[web:21][web:23]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* same storage as admin */[web:21][web:23]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -243,15 +255,11 @@ function checkEligibility() {
 
   eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI rules</td>`;
     tbody.appendChild(tr);
   });
 }
 </script>
 
-</script>
-
 </body>
 </html>
-
-
