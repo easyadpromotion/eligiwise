@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ELIGIWISE – Eligibility Check</title>
+<title>ELIGIWISE – DSA Eligibility Check</title>
 
 <style>
 body{
@@ -17,14 +17,16 @@ body{
   border-radius:10px;
 }
 h1{
-  text-align:center;
-  color:#0A4EA3;
+  background:#0A4EA3;
+  color:#fff;
+  padding:15px;
+  border-radius:6px;
 }
 .section{
   background:#0A4EA3;
   color:#fff;
   padding:10px;
-  margin-top:25px;
+  margin-top:30px;
   border-radius:4px;
   font-weight:bold;
 }
@@ -48,38 +50,56 @@ input, select{
   grid-template-columns:repeat(2,1fr);
   gap:15px;
 }
-.dynamic-row{
+.extra-row{
   display:grid;
   grid-template-columns:1fr 1fr auto;
   gap:10px;
-  margin-top:10px;
+  margin-top:8px;
 }
 button{
-  padding:8px 14px;
+  margin-top:15px;
+  padding:10px 15px;
+  background:#0A4EA3;
+  color:#fff;
   border:none;
-  border-radius:4px;
+  border-radius:5px;
   cursor:pointer;
 }
-.add{ background:#27ae60; color:#fff; }
-.del{ background:#c0392b; color:#fff; }
-.primary{ background:#0A4EA3; color:#fff; margin-top:20px; }
+.add-btn{background:#27ae60;}
+.del-btn{background:#c0392b;}
+.result{
+  margin-top:30px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
+th{
+  background:#0A4EA3;
+  color:#fff;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-<h1>ELIGIWISE – Eligibility Check</h1>
+<h1>ELIGIWISE – DSA Eligibility Check</h1>
 
 <!-- ================= SECTION 1 ================= -->
 <div class="section">Section 1 – Business Details</div>
 
 <div class="grid-3">
-  <div><label>Business Vintage (Years)</label><input type="number"></div>
-  <div><label>Turnover (Lakhs)</label><input type="number"></div>
+  <div><label>Business Vintage (Years)</label><input type="number" id="vintage"></div>
+  <div><label>Turnover (Lakhs)</label><input type="number" id="turnover"></div>
   <div>
     <label>Entity Type</label>
-    <select>
+    <select id="entity">
       <option>Proprietorship</option>
       <option>Partnership</option>
       <option>Pvt Ltd</option>
@@ -87,6 +107,9 @@ button{
       <option>LLP</option>
     </select>
   </div>
+</div>
+
+<div class="grid-3">
   <div>
     <label>Nature of Business</label>
     <select>
@@ -96,19 +119,18 @@ button{
     </select>
   </div>
   <div>
-    <label>Business Type</label>
+    <label>Business Place Type</label>
     <select>
-      <option>Rented</option>
       <option>Owned</option>
+      <option>Rented</option>
       <option>Leased</option>
     </select>
   </div>
-  <div><label>Business Pincode</label><input></div>
+  <div><label>Business Pincode</label><input type="number"></div>
 </div>
 
-<div id="section1Extra"></div>
-<button onclick="addField('section1Extra')">+ Add Field</button>
-
+<div id="sec1Extra"></div>
+<button class="add-btn" onclick="addField('sec1Extra')">+ Add Field</button>
 
 <!-- ================= SECTION 2 ================= -->
 <div class="section">Section 2 – Banking & Documents</div>
@@ -117,85 +139,77 @@ button{
   <div>
     <label>Bank Statement Type</label>
     <select>
-      <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
-      <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
-      <option>CA+OD</option><option>CA+CC</option>
       <option>ALL</option>
+      <option>SA</option>
+      <option>CA</option>
+      <option>OD</option>
+      <option>CC</option>
+      <option>SA+CA</option>
+      <option>SA+OD</option>
+      <option>CA+OD</option>
     </select>
   </div>
-  <div><label>ABB</label><input type="number"></div>
-</div>
-
-<div class="grid-2">
+  <div><label>Average Bank Balance (ABB)</label><input type="number" id="abb"></div>
   <div>
     <label>GST Available</label>
-    <select onchange="toggleField(this,'gstTurnover')">
+    <select id="gst">
       <option>No</option>
       <option>Yes</option>
     </select>
-  </div>
-  <div id="gstTurnover" style="display:none;">
-    <label>GST Turnover</label>
-    <input type="number">
   </div>
 </div>
 
 <div class="grid-2">
+  <div><label>GST Turnover</label><input type="number"></div>
   <div>
     <label>ITR Available</label>
-    <select onchange="toggleField(this,'itrTurnover')">
+    <select>
       <option>No</option>
       <option>Yes</option>
     </select>
   </div>
-  <div id="itrTurnover" style="display:none;">
-    <label>ITR Turnover</label>
-    <input type="number">
-  </div>
 </div>
 
-<div id="section2Extra"></div>
-<button onclick="addField('section2Extra')">+ Add Field</button>
+<div class="grid-2">
+  <div><label>ITR Turnover</label><input type="number"></div>
+</div>
 
-
+<div id="sec2Extra"></div>
+<button class="add-btn" onclick="addField('sec2Extra')">+ Add Field</button>
 
 <!-- ================= SECTION 3 ================= -->
 <div class="section">Section 3 – Loans & Obligations</div>
 
 <div class="grid-3">
-  <div><label>CIBIL Score</label><input></div>
-  <div><label>No of Active Loans</label><input></div>
-  <div><label>Monthly EMI Obligations</label><input></div>
+  <div><label>CIBIL Score</label><input type="number" id="cibil"></div>
+  <div><label>Active Loans</label><input type="number"></div>
+  <div><label>Monthly EMI</label><input type="number"></div>
 </div>
 
 <div class="grid-3">
-  <div><label>Loans Taken (Last 6 Months)</label><input></div>
-  <div><label>Loan Amount (Last 6 Months)</label><input></div>
-  <div><label>Loans Closing (Next 6 Months)</label><input></div>
+  <div><label>Loans Taken (Last 6 Months)</label><input type="number"></div>
+  <div><label>Loan Amount (Last 6 Months)</label><input type="number"></div>
+  <div><label>Loans Closing (Next 6 Months)</label><input type="number"></div>
 </div>
 
 <div class="grid-2">
-  <div><label>EMI Reduction (Next 6 Months)</label><input></div>
+  <div><label>EMI Reduction (Next 6 Months)</label><input type="number"></div>
 </div>
 
-<div id="section3Extra"></div>
-<button onclick="addField('section3Extra')">+ Add Field</button>
+<div id="sec3Extra"></div>
+<button class="add-btn" onclick="addField('sec3Extra')">+ Add Field</button>
 
 <!-- ================= SECTION 4 ================= -->
 <div class="section">Section 4 – Applicant & Co-Applicant</div>
 
-<div class="grid-3">
-  <div><label>Applicant Age</label><input></div>
+<div class="grid-2">
+  <div><label>Applicant Age</label><input type="number" id="age"></div>
   <div>
     <label>Co-Applicant</label>
-    <select onchange="toggleField(this,'coAge')">
+    <select>
       <option>No</option>
       <option>Yes</option>
     </select>
-  </div>
-  <div id="coAge" style="display:none;">
-    <label>Co-Applicant Age</label>
-    <input>
   </div>
 </div>
 
@@ -203,237 +217,61 @@ button{
   <div>
     <label>Own House</label>
     <select>
-      <option>Yes</option>
       <option>No</option>
+      <option>Yes</option>
     </select>
   </div>
-  <div><label>Own House Pincode</label><input></div>
+  <div><label>Own House Pincode</label><input type="number"></div>
 </div>
 
-<div id="section4Extra"></div>
-<button onclick="addField('section4Extra')">+ Add Field</button>
-
-
+<div id="sec4Extra"></div>
+<button class="add-btn" onclick="addField('sec4Extra')">+ Add Field</button>
 
 <!-- ================= SECTION 5 ================= -->
 <div class="section">Section 5 – Additional Fields</div>
+<div id="sec5Extra"></div>
+<button class="add-btn" onclick="addField('sec5Extra')">+ Add Field</button>
 
-<div id="section5Extra"></div>
-<button onclick="addField('section5Extra')">+ Add Field</button>
+<br><br>
+<button onclick="checkEligibility()">Check Eligibility</button>
 
-
-<br>
-<button class="primary">Check Eligibility</button>
+<div id="eligibilityResult" class="result"></div>
 
 </div>
 
 <script>
-function addField(id){
-  const row=document.createElement("div");
-  row.className="dynamic-row";
-  row.innerHTML=`
-    <input placeholder="Field Name">
-    <input placeholder="Value">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
-  `;
-  document.getElementById(id).appendChild(row);
-}
-
-function toggleField(sel,id){
-  document.getElementById(id).style.display =
-    sel.value==="Yes" ? "block" : "none";
-}
-  <script>
-function <button onclick="checkEligibility()">Check Eligibility</button>
-{
-
-  const loanAmount = Number(document.getElementById("loanAmount").value);
-  const abb = Number(document.getElementById("abb").value);
-  const cibil = Number(document.getElementById("cibil").value);
-  const gst = document.getElementById("gst").value;
-  const itr = document.getElementById("itr").value;
-  const bankingType = document.getElementById("bankingType").value;
-
-  const policies =
-    JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
-
-  if(policies.length === 0){
-    alert("No Bank Policies Found. Please add from Admin Panel.");
-    return;
-  }
-
-  let results = [];
-
-  policies.forEach(p => {
-
-    let reasons = [];
-
-    if(loanAmount < Number(p.loanMin))
-      reasons.push("Loan amount below minimum requirement");
-
-    if(loanAmount > Number(p.loanMax))
-      reasons.push("Loan amount exceeds maximum limit");
-
-    if(abb < Number(p.abbMin || 0))
-      reasons.push("ABB is less than required");
-
-    if(cibil < Number(p.cibilMin || 0))
-      reasons.push("CIBIL score is less than required");
-
-    if(p.gstRequired === "Yes" && gst === "No")
-      reasons.push("GST is mandatory");
-
-    if(p.itrRequired === "Yes" && itr === "No")
-      reasons.push("ITR is mandatory");
-
-    if(p.bankingType !== "All" && p.bankingType !== bankingType)
-      reasons.push("Banking type not supported");
-
-    results.push({
-      bank: p.bankName,
-      eligible: reasons.length === 0,
-      reasons: reasons
-    });
-  });
-
-  showResult(results);
-}
-
-function showResult(results){
-
-  const div = document.getElementById("result");
-  div.innerHTML = "";
-
-  results.forEach(r => {
-
-    if(r.eligible){
-      div.innerHTML += `
-        <div style="border:1px solid green;padding:10px;margin:10px">
-          <b>${r.bank}</b><br>
-          <span style="color:green">✅ Eligible</span>
-        </div>
-      `;
-    } else {
-      div.innerHTML += `
-        <div style="border:1px solid red;padding:10px;margin:10px">
-          <b>${r.bank}</b><br>
-          <span style="color:red">❌ Not Eligible</span>
-          <ul>
-            ${r.reasons.map(x => `<li>${x}</li>`).join("")}
-          </ul>
-        </div>
-      `;
-    }
-
-  });
-}
-</script>
-
-</script>
-<script>
-function addField(btn){
-  const wrapper = document.createElement("div");
-  wrapper.style.display = "grid";
-  wrapper.style.gridTemplateColumns = "1fr 1fr auto";
-  wrapper.style.gap = "10px";
-  wrapper.style.marginTop = "8px";
-
-  wrapper.innerHTML = `
-    <input placeholder="Field Name">
-    <input placeholder="Value">
-    <button style="background:#c0392b;color:#fff;border:none;padding:6px 10px"
-      onclick="this.parentElement.remove()">X</button>
-  `;
-
-  btn.parentElement.appendChild(wrapper);
-}
-</script>
-<script>
-function checkEligibility(){
-
-  const policies =
-    JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-
-  if(policies.length === 0){
-    document.getElementById("eligibilityResult").innerHTML =
-      "<b style='color:red'>No bank policies found. Please add in Admin.</b>";
-    return;
-  }
-
-  let html = `
-    <table border="1" width="100%" cellpadding="8">
-      <tr>
-        <th>Eligible Bank / NBFC</th>
-      </tr>
-  `;
-
-  policies.forEach(p=>{
-    html += `<tr><td>${p.bankName}</td></tr>`;
-  });
-
-  html += "</table>";
-
-  document.getElementById("eligibilityResult").innerHTML = html;
-}
-</script>
-
-</body>
-</html>
-<script>
-/* ADD FIELD FUNCTION – WORKS FOR ALL SECTIONS */
-function addField(targetId){
+/* ---------- ADD FIELD ---------- */
+function addField(target){
+  const box = document.getElementById(target);
   const row = document.createElement("div");
-  row.style.display = "grid";
-  row.style.gridTemplateColumns = "1fr 1fr auto";
-  row.style.gap = "10px";
-  row.style.marginTop = "8px";
-
+  row.className="extra-row";
   row.innerHTML = `
     <input placeholder="Field Name">
     <input placeholder="Value">
-    <button onclick="this.parentNode.remove()">X</button>
+    <button class="del-btn" onclick="this.parentNode.remove()">X</button>
   `;
-
-  document.getElementById(targetId).appendChild(row);
+  box.appendChild(row);
 }
 
-/* ELIGIBILITY CHECK – BASIC WORKING */
+/* ---------- CHECK ELIGIBILITY ---------- */
 function checkEligibility(){
-<div id="eligibilityResult" style="margin-top:20px;"></div>
+  const result = document.getElementById("eligibilityResult");
+  const policies = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
 
-  const policies =
-    JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-
-  const resultDiv = document.getElementById("eligibilityResult");
-
-  if(policies.length === 0){
-    resultDiv.innerHTML =
-      "<b style='color:red'>No bank policies found. Please add from Admin.</b>";
+  if(policies.length===0){
+    result.innerHTML="<b style='color:red'>No bank policies found. Please add policies in Admin.</b>";
     return;
   }
 
-  let html = `
-    <h3>Eligible Banks / NBFCs</h3>
-    <table border="1" width="100%" cellpadding="8">
-      <tr>
-        <th>Bank / NBFC Name</th>
-      </tr>
-  `;
-
+  let html = "<h3>Eligible Banks / NBFCs</h3><table><tr><th>Bank Name</th></tr>";
   policies.forEach(p=>{
-    html += `<tr><td>${p.bankName}</td></tr>`;
+    html += `<tr><td>${p.bankName || "Unnamed Bank"}</td></tr>`;
   });
-
   html += "</table>";
-  resultDiv.innerHTML = html;
+
+  result.innerHTML = html;
 }
 </script>
 
 </body>
 </html>
-<!-- Dynamic Fields Container -->
-<div id="dynamicFields" style="margin-top:10px;"></div>
-
-
-
-
