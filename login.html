@@ -1,50 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ELIGIWISE Login</title>
-<style>
-body{font-family:Arial;background:#f4f6f8}
-.box{width:350px;margin:120px auto;background:#fff;padding:25px;border-radius:8px}
-input,select,button{width:100%;padding:10px;margin-top:10px}
-button{background:#0A4EA3;color:#fff;border:none}
-</style>
+  <title>ELIGIWISE Login</title>
+  <style>
+    body{font-family:Arial;background:#f4f6f8}
+    .box{width:350px;margin:100px auto;background:#fff;padding:20px;border-radius:8px}
+    button{width:100%;padding:10px;background:#0A4EA3;color:#fff;border:none}
+  </style>
 </head>
 <body>
 
 <div class="box">
-<h2>ELIGIWISE Login</h2>
+  <h2>ELIGIWISE Login</h2>
 
-<label>Login As</label>
-<select id="role">
-  <option value="">Select</option>
-  <option value="DSA">DSA</option>
-  <option value="ADMIN">ADMIN</option>
-</select>
+  <label>Login As</label>
+  <select id="role">
+    <option value="">Select</option>
+    <option value="DSA">DSA</option>
+    <option value="ADMIN">ADMIN</option>
+  </select><br><br>
 
-<label>Password</label>
-<input type="password" id="pass">
+  <label>Password</label>
+  <input type="password" id="password"><br><br>
 
-<button onclick="login()">Login</button>
+  <button onclick="login()">Login</button>
 </div>
 
 <script>
 function login(){
   const role = document.getElementById("role").value;
-  const pass = document.getElementById("pass").value;
+  const pwd  = document.getElementById("password").value;
 
-  if(!role || !pass){
+  if(!role || !pwd){
     alert("Select role & enter password");
     return;
   }
 
-  // ✅ KEY LINE (THIS WAS MISSING / WRONG EARLIER)
+  if(pwd !== "1234"){
+    alert("Wrong password");
+    return;
+  }
+
+  localStorage.clear();
   localStorage.setItem("eligiwise_role", role);
 
-  // redirect
   if(role === "DSA"){
-    window.location.href = "index.html";
+    window.location.replace("index.html");
   }else{
-    window.location.href = "admin.html";
+    window.location.replace("admin.html");
   }
 }
 </script>
