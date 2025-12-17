@@ -4,47 +4,50 @@
   <meta charset="UTF-8">
   <title>ELIGIWISE Login</title>
   <style>
-    body {font-family: Arial; background:#f4f6f8;}
-    .box {width:350px; margin:100px auto; background:#fff; padding:20px; border-radius:8px;}
-    input, select, button {width:100%; padding:10px; margin-top:10px;}
-    button {background:#0A4EA3; color:#fff; border:none; cursor:pointer;}
+    body{font-family:Arial;background:#eef2f7;margin:0}
+    .box{width:360px;margin:80px auto;background:#fff;padding:25px;border-radius:10px;
+         box-shadow:0 4px 10px rgba(0,0,0,0.1)}
+    h2{text-align:center;color:#0A4EA3;margin-top:0}
+    input,select,button{width:100%;padding:10px;margin-top:10px;border-radius:4px;
+                        border:1px solid #ccc;box-sizing:border-box}
+    button{background:#0A4EA3;color:#fff;border:none;cursor:pointer;font-weight:bold}
+    button:hover{background:#083a7a}
   </style>
 </head>
-
 <body>
-  <div class="box">
-    <h2>ELIGIWISE Login</h2>
+<div class="box">
+  <h2>ELIGIWISE Login</h2>
 
-    <select id="role">
-      <option value="">Login As</option>
-      <option value="DSA">DSA</option>
-      <option value="ADMIN">ADMIN</option>
-    </select>
+  <select id="role">
+    <option value="">Login As</option>
+    <option value="DSA">DSA</option>
+    <option value="ADMIN">ADMIN</option>
+  </select>
 
-    <input type="password" id="pwd" placeholder="Password">
+  <input type="password" id="pwd" placeholder="Password">
 
-    <button onclick="login()">Login</button>
-  </div>
+  <button onclick="login()">Login</button>
+</div>
 
-  <script>
-    function login(){
-      const role = document.getElementById("role").value;
-      const pwd  = document.getElementById("pwd").value;
+<script>
+function login(){
+  const role = document.getElementById("role").value;
+  const pwd  = document.getElementById("pwd").value;
 
-      if(!role || !pwd){
-        alert("Enter role and password");
-        return;
-      }
+  if(!role || !pwd){
+    alert("Enter role and password");
+    return;
+  }
 
-      // In future you can add real password validation here
-      localStorage.setItem("role", role);   // persist role in browser storage[web:21][web:23]
+  // TODO: real password check later
+  localStorage.setItem("role", role);   // persist role[web:21][web:23]
 
-      if(role === "DSA"){
-        location.href = "index.html";
-      } else {
-        location.href = "admin.html";
-      }
-    }
-  </script>
+  if(role === "DSA"){
+    location.href = "index.html";
+  } else {
+    location.href = "admin.html";
+  }
+}
+</script>
 </body>
 </html>
