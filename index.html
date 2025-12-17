@@ -158,37 +158,52 @@ if(localStorage.getItem("role")!=="DSA"){
 </div>
 
 <script>
+           <script>
+// Safe versions using getElementById
 function toggleGST(){
-  gstTurnover.classList.toggle("hidden", gst.value!=="Yes");
+  const gstSelect = document.getElementById("gst");
+  const gstTurn = document.getElementById("gstTurnover");
+  if (!gstSelect || !gstTurn) return;
+  gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
 }
+
 function toggleITR(){
-  itrTurnover.classList.toggle("hidden", itr.value!=="Yes");
+  const itrSelect = document.getElementById("itr");
+  const itrTurn = document.getElementById("itrTurnover");
+  if (!itrSelect || !itrTurn) return;
+  itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
 }
+
 function toggleCo(){
-  coAge.classList.toggle("hidden", coapp.value!=="Yes");
+  const coapp = document.getElementById("coapp");
+  const coAge = document.getElementById("coAge");
+  if (!coapp || !coAge) return;
+  coAge.classList.toggle("hidden", coapp.value !== "Yes");
 }
+
 function addField(btn){
   const input=document.createElement("input");
   input.placeholder="Custom Field";
   btn.previousElementSibling.appendChild(input);
 }
+
 function addExtra(){
   const input=document.createElement("input");
   input.placeholder="Additional Custom Field";
   document.getElementById("extraFields").appendChild(input);
 }
 
-/* Eligibility logic – aligned to admin.html policies */
+/* Eligibility logic */
 function checkEligibility() {
-  const abb = Number(document.getElementById("abb").value || 0);          // ABB in lakhs
-  const gst = document.getElementById("gst").value || "No";
-  const itr = document.getElementById("itr").value || "No";
+  const abb = Number(document.getElementById("abb").value || 0);
+  const gst = (document.getElementById("gst").value || "No");
+  const itr = (document.getElementById("itr").value || "No");
 
   const cibil = Number(document.getElementById("cibilScore").value || 0);
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* same key as admin */[web:21][web:23]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* read same key as admin */[web:21][web:23]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -204,19 +219,13 @@ function checkEligibility() {
     const abbMin = Number(p.abbMin || 0);
     const abbMax = Number(p.abbMax || 0);
     const cibilMin = Number(p.cibilMin || 0);
-    const maxEmiRatio = Number(p.maxEmiRatio || 0); // percentage if set
+    const maxEmiRatio = Number(p.maxEmiRatio || 0);
 
-    // ABB match
     if (!(abb >= abbMin && abb <= abbMax)) return false;
-
-    // GST / ITR
     if (p.gstRequired === "Yes" && gst !== "Yes") return false;
     if (p.itrRequired === "Yes" && itr !== "Yes") return false;
-
-    // CIBIL minimum if defined
     if (cibilMin && cibil && cibil < cibilMin) return false;
 
-    // EMI % rule if defined
     if (maxEmiRatio && income > 0) {
       const ratio = (existingEmi / income) * 100;
       if (ratio > maxEmiRatio) return false;
@@ -231,11 +240,14 @@ function checkEligibility() {
 
   eligible.forEach(p => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB, GST/ITR, CIBIL & EMI rules</td>`;
+    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
     tbody.appendChild(tr);
   });
 }
 </script>
 
+</script>
+
 </body>
 </html>
+
