@@ -266,21 +266,25 @@ function addCustom() {
   container.appendChild(row);
 }
 
+<script>
 function savePolicy() {
   const policy = {
-    bankName: document.getElementById("bankName").value,
-    abb: readPrograms("abbPrograms"),
-    itr: readPrograms("itrPrograms"),
-    gst: readPrograms("gstPrograms"),
-    income: readPrograms("incomePrograms"),
-    custom: readCustomFields()
+    bankName: document.getElementById("bankName").value || "Unnamed Bank",
+    abbMin: document.getElementById("abbMin")?.value || 0,
+    abbMax: document.getElementById("abbMax")?.value || 0,
+    gstRequired: document.getElementById("gstRequired")?.value || "No",
+    itrRequired: document.getElementById("itrRequired")?.value || "No"
   };
 
-  let data = JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
-  data.push(policy);
-  localStorage.setItem("eligiwise_policies", JSON.stringify(data));
+  let policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
+  policies.push(policy);
 
-  alert("✅ Policy Saved Successfully");
+  localStorage.setItem("eligiwisepolicies", JSON.stringify(policies));
+
+  alert("Policy saved successfully");
+}
+</script>
+
 }
 
 function readPrograms(id) {
@@ -302,3 +306,4 @@ function readCustomFields() {
 
 </body>
 </html>
+
