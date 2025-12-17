@@ -6,7 +6,7 @@
 
 <style>
 body{font-family:Arial,sans-serif;background:#eef2f7;margin:0}
-.container{max-width:1400px;margin:20px auto;background:#fff;padding:25px;
+.container{max-width:1200px;margin:20px auto;background:#fff;padding:25px;
           border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
 h1{text-align:center;color:#0A4EA3;margin-top:0}
 .section-title{background:#0A4EA3;color:#fff;padding:10px;margin-top:30px;
@@ -22,17 +22,14 @@ button{margin-top:15px;padding:9px 14px;background:#0A4EA3;color:#fff;border:non
 button.add{background:#27ae60}
 button.del{background:#c0392b}
 button.secondary{background:#7f8c8d}
-button:hover{opacity:0.9}
 table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13px}
 table,th,td{border:1px solid #d0d7de}
 th,td{padding:8px;text-align:left}
 .actions button{margin-right:5px}
-.header-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.badge{display:inline-block;padding:2px 6px;border-radius:3px;background:#e1ecf4;color:#0366d6;
-       font-size:11px}
 </style>
 
 <script>
+// simple protection: only ADMIN can open
 if (localStorage.getItem("role") !== "ADMIN") {
   alert("Please login as ADMIN");
   location.href = "login.html";
@@ -43,92 +40,13 @@ if (localStorage.getItem("role") !== "ADMIN") {
 <body>
 <div class="container">
 
-<div class="header-toolbar">
-  <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
-  <div>
-    <button class="secondary" onclick="logout()">Logout</button>
-  </div>
-</div>
+<h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
 
 <label>Bank / NBFC Name</label>
 <input id="bankName" placeholder="Ex: HDFC, Tata Capital">
 
-<!-- ========== SECTION A – BASIC PRODUCT DETAILS ========== -->
-<div class="section-title">SECTION A – BASIC PRODUCT DETAILS <span class="badge">Product</span></div>
-
-<div class="grid-3">
-  <div>
-    <label>Product Type</label>
-    <select id="productType">
-      <option>Small Ticket</option>
-      <option>Big Ticket</option>
-    </select>
-  </div>
-
-  <div>
-    <label>Loan Type</label>
-    <select id="loanType">
-      <option>Term Loan</option>
-      <option>OD</option>
-    </select>
-  </div>
-
-  <div>
-    <label>Category</label>
-    <select id="category">
-      <option>Business Loan</option>
-      <option>Working Capital</option>
-      <option>Machinery</option>
-    </select>
-  </div>
-</div>
-
-<div class="grid-3">
-  <div><label>Loan Amount Min (Lakhs)</label><input id="loanMin" type="number"></div>
-  <div><label>Loan Amount Max (Lakhs)</label><input id="loanMax" type="number"></div>
-  <div><label>Tenure Min (Months)</label><input id="tenureMin" type="number"></div>
-  <div><label>Tenure Max (Months)</label><input id="tenureMax" type="number"></div>
-  <div><label>ROI Min (%)</label><input id="roiMin" type="number" step="0.1"></div>
-  <div><label>ROI Max (%)</label><input id="roiMax" type="number" step="0.1"></div>
-  <div><label>PF Min (%)</label><input id="pfMin" type="number" step="0.1"></div>
-  <div><label>PF Max (%)</label><input id="pfMax" type="number" step="0.1"></div>
-  <div><label>Processing Time (Days)</label><input id="tat" type="number"></div>
-</div>
-
-<!-- ========== SECTION B – APPLICANT & CO-APPLICANT ========== -->
-<div class="section-title">SECTION B – APPLICANT & CO-APPLICANT <span class="badge">Profile</span></div>
-
-<div class="grid-3">
-  <div><label>Applicant Age Min</label><input id="appAgeMin" type="number"></div>
-  <div><label>Applicant Age Max</label><input id="appAgeMax" type="number"></div>
-  <div>
-    <label>Co-Applicant Mandatory</label>
-    <select id="coMandatory">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-</div>
-
-<div class="grid-2">
-  <div>
-    <label>Own House Required</label>
-    <select id="ownHouseReq">
-      <option>No</option>
-      <option>Yes</option>
-    </select>
-  </div>
-  <div>
-    <label>Own House Geo Limit</label>
-    <select id="ownHouseGeo">
-      <option>Local</option>
-      <option>Anywhere India</option>
-    </select>
-  </div>
-</div>
-
-<!-- ========== SECTION C – BUSINESS & BANKING ========== -->
-<div class="section-title">SECTION C – BUSINESS & BANKING <span class="badge">Banking</span></div>
+<!-- SECTION C + E only for ABB / GST / ITR to keep it simple -->
+<div class="section-title">SECTION C – BUSINESS & BANKING</div>
 
 <div class="grid-3">
   <div>
@@ -142,17 +60,6 @@ if (localStorage.getItem("role") !== "ADMIN") {
       <option>SA+CA</option>
     </select>
   </div>
-  <div>
-    <label>Business Vintage Min (Years)</label>
-    <input id="vintageMin" type="number">
-  </div>
-  <div>
-    <label>Turnover Min (Lakhs)</label>
-    <input id="turnoverMin" type="number">
-  </div>
-</div>
-
-<div class="grid-2">
   <div>
     <label>ITR Required</label>
     <select id="itrRequired">
@@ -169,61 +76,22 @@ if (localStorage.getItem("role") !== "ADMIN") {
   </div>
 </div>
 
-<label>Bank / NBFC Geo Limit (KM)</label>
-<input id="geoLimit" type="number">
-
-<!-- ========== SECTION D – CREDIT & OBLIGATIONS ========== -->
-<div class="section-title">SECTION D – CREDIT & OBLIGATIONS <span class="badge">Credit</span></div>
-
-<div class="grid-2">
-  <div><label>CIBIL Min</label><input id="cibilMin" type="number"></div>
-  <div><label>CIBIL Max</label><input id="cibilMax" type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Active Loans Max</label><input id="activeLoansMax" type="number"></div>
-  <div><label>Max EMI-to-Income %</label><input id="maxEmiRatio" type="number" value="50"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Loans in Last 6 Months (Max Count)</label><input id="loan6Max" type="number"></div>
-  <div><label>Loan Amount Last 6 Months (Max)</label><input id="loan6AmtMax" type="number"></div>
-</div>
-
-<div class="grid-2">
-  <div><label>Enquiries Last 6 Months (Max)</label><input id="enq6Max" type="number"></div>
-  <div><label>Enquiries Last 3 Months (Max)</label><input id="enq3Max" type="number"></div>
-</div>
-
-<!-- ========== SECTION E – PROGRAMS ========== -->
-<div class="section-title">SECTION E – PROGRAMS <span class="badge">ABB / Income</span></div>
+<div class="section-title">SECTION E – ABB PROGRAM</div>
 
 <label>ABB Programs (Min – Max)</label>
 <div id="abbPrograms">
   <div class="program-row">
-    <input id="abbMin" placeholder="Min">
-    <input id="abbMax" placeholder="Max">
+    <input id="abbMin" type="number" placeholder="ABB Min">
+    <input id="abbMax" type="number" placeholder="ABB Max">
     <button class="del" onclick="this.parentNode.remove()">X</button>
   </div>
 </div>
-<button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program</button>
-
-<label>Income / DSCR Programs (Min – Max)</label>
-<div id="incomePrograms"></div>
-<button class="add" onclick="addProgram('incomePrograms')">+ Add Income / DSCR Program</button>
-
-<!-- ========== SECTION F – CUSTOM / FUTURE PARAMETERS ========== -->
-<div class="section-title">SECTION F – CUSTOM / FUTURE PARAMETERS</div>
-<div id="customFields"></div>
-<button class="add" onclick="addCustom()">+ Add Custom Field</button>
+<button class="add" onclick="addProgram('abbPrograms')">+ Add ABB Program (extra, not used yet)</button>
 
 <br><br>
-<button onclick="savePolicy()">💾 Save / Update Policy</button>
-<button class="secondary" onclick="clearForm()">Clear Form</button>
+<button onclick="savePolicy()">💾 Save Policy</button>
 
 <h2>Saved Policies</h2>
-<button class="secondary" onclick="exportPolicies()">⬇ Export to Excel (CSV)</button>
-
 <table id="policyTable">
   <thead>
     <tr>
@@ -231,11 +99,8 @@ if (localStorage.getItem("role") !== "ADMIN") {
       <th>Bank</th>
       <th>ABB Min</th>
       <th>ABB Max</th>
-      <th>GST</th>
-      <th>ITR</th>
-      <th>CIBIL Min</th>
-      <th>Max EMI %</th>
-      <th>Actions</th>
+      <th>GST Required</th>
+      <th>ITR Required</th>
     </tr>
   </thead>
   <tbody></tbody>
@@ -244,115 +109,55 @@ if (localStorage.getItem("role") !== "ADMIN") {
 </div>
 
 <script>
-let editIndex = null; // null = new policy, number = editing
-
-function logout(){
-  localStorage.removeItem("role");
-  location.href = "login.html";
-}
-
-function addProgram(id) {
+// ---------- helper functions ----------
+function addProgram(id){
   const container = document.getElementById(id);
   const row = document.createElement("div");
   row.className = "program-row";
   row.innerHTML = `
-    <input placeholder="Min">
-    <input placeholder="Max">
-    <button class="del" onclick="this.parentNode.remove()">X</button>
-  `;
-  container.appendChild(row);
-}
-
-function addCustom() {
-  const container = document.getElementById("customFields");
-  const row = document.createElement("div");
-  row.className = "program-row";
-  row.innerHTML = `
-    <input placeholder="Field Name">
-    <input placeholder="Value">
+    <input type="number" placeholder="Min">
+    <input type="number" placeholder="Max">
     <button class="del" onclick="this.parentNode.remove()">X</button>
   `;
   container.appendChild(row);
 }
 
 function getPolicies(){
-  return JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
+  return JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; // read from localStorage[web:21][web:23]
 }
 
 function setPolicies(arr){
-  localStorage.setItem("eligiwisepolicies", JSON.stringify(arr));
+  localStorage.setItem("eligiwisepolicies", JSON.stringify(arr));    // write to localStorage[web:21][web:23]
 }
 
-function savePolicy() {
+// ---------- SAVE ----------
+function savePolicy(){
+  const bankName = document.getElementById("bankName").value.trim();
+  if (!bankName){
+    alert("Please enter Bank / NBFC Name");
+    return;
+  }
+
   const policy = {
-    bankName   : document.getElementById("bankName").value || "Unnamed Bank",
-    productType: document.getElementById("productType").value,
-    loanType   : document.getElementById("loanType").value,
-    category   : document.getElementById("category").value,
-    loanMin    : Number(loanMin.value || 0),
-    loanMax    : Number(loanMax.value || 0),
-    tenureMin  : Number(tenureMin.value || 0),
-    tenureMax  : Number(tenureMax.value || 0),
-    roiMin     : Number(roiMin.value || 0),
-    roiMax     : Number(roiMax.value || 0),
-    pfMin      : Number(pfMin.value || 0),
-    pfMax      : Number(pfMax.value || 0),
-    tat        : Number(tat.value || 0),
-
-    appAgeMin  : Number(appAgeMin.value || 0),
-    appAgeMax  : Number(appAgeMax.value || 0),
-    coMandatory: coMandatory.value,
-    ownHouseReq: ownHouseReq.value,
-    ownHouseGeo: ownHouseGeo.value,
-
-    bankingType: bankingType.value,
-    vintageMin : Number(vintageMin.value || 0),
-    turnoverMin: Number(turnoverMin.value || 0),
-    itrRequired: itrRequired.value,
-    gstRequired: gstRequired.value,
-    geoLimit   : Number(geoLimit.value || 0),
-
-    cibilMin   : Number(cibilMin.value || 0),
-    cibilMax   : Number(cibilMax.value || 0),
-    activeLoansMax: Number(activeLoansMax.value || 0),
-    maxEmiRatio: Number(maxEmiRatio.value || 0),
-    loan6Max   : Number(loan6Max.value || 0),
-    loan6AmtMax: Number(loan6AmtMax.value || 0),
-    enq6Max    : Number(enq6Max.value || 0),
-    enq3Max    : Number(enq3Max.value || 0),
-
-    abbMin     : Number(abbMin.value || 0),
-    abbMax     : Number(abbMax.value || 0),
-    // you can later add arrays of programs/custom fields
+    bankName   : bankName,
+    abbMin     : Number(document.getElementById("abbMin").value || 0),
+    abbMax     : Number(document.getElementById("abbMax").value || 0),
+    gstRequired: document.getElementById("gstRequired").value || "No",
+    itrRequired: document.getElementById("itrRequired").value || "No"
   };
 
-  let policies = getPolicies();
-  if (editIndex === null) {
-    policies.push(policy);
-  } else {
-    policies[editIndex] = policy;
-  }
-  setPolicies(policies);  // persist in localStorage[web:21][web:22]
+  const policies = getPolicies();
+  policies.push(policy);
+  setPolicies(policies);
 
-  alert(editIndex === null ? "Policy Saved Successfully" : "Policy Updated Successfully");
-  clearForm();
-  renderPolicies();
+  alert("Policy Saved Successfully");
+  renderPolicies();  // refresh table
+  document.getElementById("bankName").value = "";
+  document.getElementById("abbMin").value = "";
+  document.getElementById("abbMax").value = "";
 }
 
-function clearForm(){
-  document.querySelectorAll("input").forEach(i => i.value = "");
-  document.getElementById("productType").value = "Small Ticket";
-  document.getElementById("loanType").value = "Term Loan";
-  document.getElementById("category").value = "Business Loan";
-  document.getElementById("coMandatory").value = "No";
-  document.getElementById("ownHouseReq").value = "No";
-  document.getElementById("ownHouseGeo").value = "Local";
-  document.getElementById("bankingType").value = "All";
-  document.getElementById("itrRequired").value = "No";
-  document.getElementById("gstRequired").value = "No";
-  editIndex = null;
-}
-
+// ---------- RENDER TABLE ----------
 function renderPolicies(){
   const policies = getPolicies();
   const tbody = document.querySelector("#policyTable tbody");
@@ -360,7 +165,7 @@ function renderPolicies(){
 
   if (!policies.length){
     const tr = document.createElement("tr");
-    tr.innerHTML = "<td colspan='9'>No policies saved</td>";
+    tr.innerHTML = "<td colspan='6'>No policies saved</td>";
     tbody.appendChild(tr);
     return;
   }
@@ -368,106 +173,18 @@ function renderPolicies(){
   policies.forEach((p, idx) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${idx+1}</td>
+      <td>${idx + 1}</td>
       <td>${p.bankName}</td>
       <td>${p.abbMin}</td>
       <td>${p.abbMax}</td>
       <td>${p.gstRequired}</td>
       <td>${p.itrRequired}</td>
-      <td>${p.cibilMin}</td>
-      <td>${p.maxEmiRatio}</td>
-      <td class="actions">
-        <button onclick="editPolicy(${idx})">Edit</button>
-        <button class="del" onclick="deletePolicy(${idx})">Delete</button>
-      </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-function editPolicy(index){
-  const p = getPolicies()[index];
-  editIndex = index;
-
-  bankName.value = p.bankName;
-  productType.value = p.productType;
-  loanType.value = p.loanType;
-  category.value = p.category;
-
-  loanMin.value = p.loanMin;
-  loanMax.value = p.loanMax;
-  tenureMin.value = p.tenureMin;
-  tenureMax.value = p.tenureMax;
-  roiMin.value = p.roiMin;
-  roiMax.value = p.roiMax;
-  pfMin.value = p.pfMin;
-  pfMax.value = p.pfMax;
-  tat.value = p.tat;
-
-  appAgeMin.value = p.appAgeMin;
-  appAgeMax.value = p.appAgeMax;
-  coMandatory.value = p.coMandatory;
-  ownHouseReq.value = p.ownHouseReq;
-  ownHouseGeo.value = p.ownHouseGeo;
-
-  bankingType.value = p.bankingType;
-  vintageMin.value = p.vintageMin;
-  turnoverMin.value = p.turnoverMin;
-  itrRequired.value = p.itrRequired;
-  gstRequired.value = p.gstRequired;
-  geoLimit.value = p.geoLimit;
-
-  cibilMin.value = p.cibilMin;
-  cibilMax.value = p.cibilMax;
-  activeLoansMax.value = p.activeLoansMax;
-  maxEmiRatio.value = p.maxEmiRatio;
-  loan6Max.value = p.loan6Max;
-  loan6AmtMax.value = p.loan6AmtMax;
-  enq6Max.value = p.enq6Max;
-  enq3Max.value = p.enq3Max;
-
-  abbMin.value = p.abbMin;
-  abbMax.value = p.abbMax;
-
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function deletePolicy(index){
-  if(!confirm("Delete this policy?")) return;
-  let policies = getPolicies();
-  policies.splice(index,1);
-  setPolicies(policies);
-  renderPolicies();
-}
-
-// simple CSV export of policies table[web:59]
-function exportPolicies(){
-  const policies = getPolicies();
-  if(!policies.length){
-    alert("No policies to export");
-    return;
-  }
-  const header = [
-    "Bank","ABB Min","ABB Max","GST","ITR","CIBIL Min",
-    "Max EMI %","Product Type","Loan Type"
-  ];
-  const rows = policies.map(p => [
-    p.bankName,p.abbMin,p.abbMax,p.gstRequired,p.itrRequired,
-    p.cibilMin,p.maxEmiRatio,p.productType,p.loanType
-  ]);
-
-  let csv = header.join(",") + "\n";
-  rows.forEach(r => {csv += r.join(",") + "\n";});
-
-  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "eligiwise_policies.csv";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
+// load existing data when page opens
 document.addEventListener("DOMContentLoaded", renderPolicies);
 </script>
 </body>
