@@ -107,7 +107,8 @@ button{
 </div>
 
 <div id="businessExtra"></div>
-<button class="add" onclick="addField('businessExtra')">+ Add Field</button>
+<button onclick="addField(this)">+ Add Field</button>
+
 
 <!-- ================= SECTION 2 ================= -->
 <div class="section">Section 2 – Banking & Documents</div>
@@ -154,7 +155,8 @@ button{
 </div>
 
 <div id="bankExtra"></div>
-<button class="add" onclick="addField('bankExtra')">+ Add Field</button>
+<button onclick="addField(this)">+ Add Field</button>
+
 
 <!-- ================= SECTION 3 ================= -->
 <div class="section">Section 3 – Loans & Obligations</div>
@@ -176,7 +178,7 @@ button{
 </div>
 
 <div id="loanExtra"></div>
-<button class="add" onclick="addField('loanExtra')">+ Add Field</button>
+<button onclick="addField(this)">+ Add Field</button>
 
 <!-- ================= SECTION 4 ================= -->
 <div class="section">Section 4 – Applicant & Co-Applicant</div>
@@ -208,13 +210,15 @@ button{
 </div>
 
 <div id="appExtra"></div>
-<button class="add" onclick="addField('appExtra')">+ Add Field</button>
+<button onclick="addField(this)">+ Add Field</button>
+
 
 <!-- ================= SECTION 5 ================= -->
 <div class="section">Section 5 – Additional Fields</div>
 
 <div id="additional"></div>
-<button class="add" onclick="addField('additional')">+ Add Field</button>
+<button onclick="addField(this)">+ Add Field</button>
+
 
 <br>
 <button class="primary">Check Eligibility</button>
@@ -238,7 +242,8 @@ function toggleField(sel,id){
     sel.value==="Yes" ? "block" : "none";
 }
   <script>
-function checkEligibility(){
+function <button onclick="checkEligibility()">Check Eligibility</button>
+{
 
   const loanAmount = Number(document.getElementById("loanAmount").value);
   const abb = Number(document.getElementById("abb").value);
@@ -323,8 +328,60 @@ function showResult(results){
 </script>
 
 </script>
+<script>
+function addField(btn){
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "grid";
+  wrapper.style.gridTemplateColumns = "1fr 1fr auto";
+  wrapper.style.gap = "10px";
+  wrapper.style.marginTop = "8px";
+
+  wrapper.innerHTML = `
+    <input placeholder="Field Name">
+    <input placeholder="Value">
+    <button style="background:#c0392b;color:#fff;border:none;padding:6px 10px"
+      onclick="this.parentElement.remove()">X</button>
+  `;
+
+  btn.parentElement.appendChild(wrapper);
+}
+</script>
+<script>
+function checkEligibility(){
+
+  const policies =
+    JSON.parse(localStorage.getItem("eligiwise_policies")) || [];
+
+  if(policies.length === 0){
+    document.getElementById("eligibilityResult").innerHTML =
+      "<b style='color:red'>No bank policies found. Please add in Admin.</b>";
+    return;
+  }
+
+  let html = `
+    <table border="1" width="100%" cellpadding="8">
+      <tr>
+        <th>Eligible Bank / NBFC</th>
+      </tr>
+  `;
+
+  policies.forEach(p=>{
+    html += `<tr><td>${p.bankName}</td></tr>`;
+  });
+
+  html += "</table>";
+
+  document.getElementById("eligibilityResult").innerHTML = html;
+}
+</script>
 
 </body>
 </html>
+
+</body>
+</html>
+<!-- Dynamic Fields Container -->
+<div id="dynamicFields" style="margin-top:10px;"></div>
+
 
 
