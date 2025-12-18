@@ -1,254 +1,334 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>ELIGIWISE – Eligibility Check</title>
+  <meta charset="UTF-8">
+  <title>ELIGIWISE -- Eligibility Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px 25px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #0a4ea3;
+      margin-bottom: 20px;
+    }
+    h2 {
+      background: #0a4ea3;
+      color: #fff;
+      padding: 8px 10px;
+      margin: 25px 0 10px;
+      font-size: 16px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    input, select {
+      width: 100%;
+      padding: 7px;
+      margin-top: 4px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px 20px;
+    }
+    button {
+      margin-top: 18px;
+      padding: 10px 18px;
+      background: #0a4ea3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #083b7a;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #0a4ea3;
+      color: #fff;
+    }
+    .eligible {
+      color: green;
+      font-weight: bold;
+    }
+    .noteligible {
+      color: red;
+      font-weight: bold;
+    }
+    #summary {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    #downloads {
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
 
-<style>
-body{font-family:Arial;background:#f4f6f8;margin:0}
-.container{max-width:1200px;margin:20px auto;background:#fff;padding:20px;
-           border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.08)}
-h2{text-align:center;color:#0A4EA3;margin-top:0}
-h3{background:#0A4EA3;color:#fff;padding:10px;margin-top:25px;border-radius:4px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-input,select{padding:8px;width:100%;box-sizing:border-box;border-radius:4px;
-             border:1px solid #ccc}
-button{padding:6px 10px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
-       border-radius:4px;font-size:12px}
-button:hover{opacity:0.9}
-.hidden{display:none}
-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
-table,th,td{border:1px solid #ccc}
-th,td{padding:6px;text-align:left}
-#result{margin-top:10px;font-weight:bold}
-.custom-pair{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-top:8px}
-.section-extra{margin-top:8px}
-.remove-btn{background:#d73a49}
-</style>
+  <!-- jsPDF + autotable (from CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <!-- SheetJS (for Excel) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
-<div class="container">
-<h2>ELIGIWISE – Eligibility Check</h2>
+  <div class="container">
+    <h1>ELIGIWISE – Eligibility Check</h1>
 
-<!-- SECTION 1 -->
-<h3>SECTION 1 – Business Details</h3>
-<div class="grid">
-  <input id="vintage" type="number" placeholder="Business Vintage (Years)">
-  <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
-  <input id="bizPincode" placeholder="Business Place Pincode">
+    <!-- SECTION A – BASIC PROFILE -->
+    <h2>SECTION A – BASIC PROFILE</h2>
+    <div class="grid">
+      <div>
+        <label>Business Vintage (Years)</label>
+        <input type="number" id="vintage" placeholder="Ex: 3">
+      </div>
+      <div>
+        <label>Turnover (Lakhs)</label>
+        <input type="number" id="turnover" placeholder="Ex: 120">
+      </div>
+      <div>
+        <label>Required Loan Amount (Lakhs)</label>
+        <input type="number" id="requiredLoan" placeholder="Ex: 25">
+      </div>
+      <div>
+        <label>CIBIL Score</label>
+        <input type="number" id="cibil" placeholder="Ex: 720">
+      </div>
+      <div>
+        <label>Own House</label>
+        <select id="ownHouse">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
 
-  <select id="entityType">
-    <option>Entity Type</option>
-    <option>Proprietorship</option>
-    <option>Partnership</option>
-    <option>Pvt Ltd</option>
-    <option>Ltd</option>
-    <option>LLP</option>
-  </select>
+    <!-- SECTION B – BANKING -->
+    <h2>SECTION B – BANKING</h2>
+    <div class="grid">
+      <div>
+        <label>Banking Type</label>
+        <select id="bankingType">
+          <option value="All">All Accounts Accepted</option>
+          <option value="Current">Current Account</option>
+          <option value="Savings">Savings Account</option>
+        </select>
+      </div>
+      <div>
+        <label>Average Bank Balance – ABB (Lakhs)</label>
+        <input type="number" step="0.01" id="abb" placeholder="Ex: 0.75">
+      </div>
+    </div>
 
-  <select id="natureBusiness">
-    <option>Nature Of Business</option>
-    <option>Trading</option>
-    <option>Manufacturing</option>
-    <option>Service</option>
-  </select>
+    <!-- SECTION C – COMPLIANCE -->
+    <h2>SECTION C – COMPLIANCE</h2>
+    <div class="grid">
+      <div>
+        <label>GST Available</label>
+        <select id="gst">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div>
+        <label>ITR Available</label>
+        <select id="itr">
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
 
-  <select id="businessType">
-    <option>Business Type</option>
-    <option>Rented</option>
-    <option>Owned</option>
-    <option>Leased</option>
-  </select>
-</div>
-<div id="sec1-extra" class="section-extra"></div>
-<button onclick="addCustomPair('sec1-extra')">➕ Add Custom Field</button>
+    <button type="button" onclick="checkEligibility()">🔍 Check Eligibility</button>
 
-<!-- SECTION 2 -->
-<h3>SECTION 2 – Banking & Documents</h3>
-<div class="grid">
-  <select id="bankingTypeCust">
-    <option>Bank Statement Type</option>
-    <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
-    <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
-    <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
-  </select>
+    <!-- SUMMARY -->
+    <div id="summary"></div>
 
-  <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
+    <!-- RESULT TABLE -->
+    <table id="resultTable" style="display:none;">
+      <thead>
+        <tr>
+          <th>Bank / NBFC</th>
+          <th>Status</th>
+          <th>Max Loan (Lakhs)</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody id="resultBody"></tbody>
+    </table>
 
-  <select id="gst" onchange="toggleGST()">
-    <option value="No">GST: No</option>
-    <option value="Yes">GST: Yes</option>
-  </select>
+    <!-- DOWNLOAD BUTTONS -->
+    <div id="downloads">
+      <button type="button" onclick="downloadExcel()">⬇ Download Excel</button>
+      <button type="button" onclick="downloadPDF()">⬇ Download PDF</button>
+    </div>
+  </div>
 
-  <input id="gstTurnover" class="hidden" type="number" placeholder="GST Turnover (Lakhs)">
-
-  <select id="itr" onchange="toggleITR()">
-    <option value="No">ITR: No</option>
-    <option value="Yes">ITR: Yes</option>
-  </select>
-
-  <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
-</div>
-<div id="sec2-extra" class="section-extra"></div>
-<button onclick="addCustomPair('sec2-extra')">➕ Add Custom Field</button>
-
-<!-- SECTION 3 -->
-<h3>SECTION 3 – Loans & Obligations</h3>
-<div class="grid">
-  <input id="cibilScore" type="number" placeholder="CIBIL Score">
-  <input id="activeLoans" type="number" placeholder="No of Active Loans">
-  <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
-
-  <input id="loan6Count" type="number" placeholder="Loans Taken in Last 6 Months">
-  <input id="loan6Amt" type="number" placeholder="Loan Amount in Last 6 Months">
-  <input id="enq6" type="number" placeholder="Enquiries Last 6 Months">
-
-  <input id="enq3" type="number" placeholder="Enquiries Last 3 Months">
-  <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
-  <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
-</div>
-<div id="sec3-extra" class="section-extra"></div>
-<button onclick="addCustomPair('sec3-extra')">➕ Add Custom Field</button>
-
-<!-- SECTION 4 -->
-<h3>SECTION 4 – Applicant & Co-Applicant</h3>
-<div class="grid">
-  <input id="appAge" type="number" placeholder="Applicant Age">
-
-  <select id="coapp" onchange="toggleCo()">
-    <option value="No">Co-Applicant: No</option>
-    <option value="Yes">Co-Applicant: Yes</option>
-  </select>
-
-  <input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
-
-  <select id="ownHouse">
-    <option>Own House</option>
-    <option>Yes</option>
-    <option>No</option>
-  </select>
-
-  <input id="housePincode" placeholder="Own House Pincode">
-</div>
-<div id="sec4-extra" class="section-extra"></div>
-<button onclick="addCustomPair('sec4-extra')">➕ Add Custom Field</button>
-
-<!-- SECTION 5 -->
-<h3>SECTION 5 – Additional Fields</h3>
-<div id="extraFields" class="section-extra"></div>
-<button onclick="addCustomPair('extraFields')">➕ Add Custom Field</button>
-
-<br><br>
-<button onclick="checkEligibility()">Check Eligibility</button>
-<p id="result"></p>
-
-<table id="eligibleBanks">
-  <thead>
-    <tr><th>Eligible Bank / NBFC</th><th>Comments</th></tr>
-  </thead>
-  <tbody></tbody>
-</table>
-
-</div>
-
-<script>
-function toggleGST(){
-  const s = document.getElementById("gst");
-  const f = document.getElementById("gstTurnover");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-function toggleITR(){
-  const s = document.getElementById("itr");
-  const f = document.getElementById("itrTurnover");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-function toggleCo(){
-  const s = document.getElementById("coapp");
-  const f = document.getElementById("coAge");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-
-// add FieldName + FieldValue + remove button into given container
-function addCustomPair(containerId){
-  const wrapper = document.createElement("div");
-  wrapper.className = "custom-pair";
-
-  const nameInput = document.createElement("input");
-  nameInput.placeholder = "Field Name";
-
-  const valueInput = document.createElement("input");
-  valueInput.placeholder = "Field Value";
-
-  const removeBtn = document.createElement("button");
-  removeBtn.type = "button";
-  removeBtn.className = "remove-btn";
-  removeBtn.textContent = "✕";
-  removeBtn.onclick = () => wrapper.remove();
-
-  wrapper.appendChild(nameInput);
-  wrapper.appendChild(valueInput);
-  wrapper.appendChild(removeBtn);
-
-  const container = document.getElementById(containerId);
-  if (container) container.appendChild(wrapper);
-}
-
-// eligibility using policies from localStorage["eligiwisepolicies"]
-function checkEligibility() {
-  const abb = Number(document.getElementById("abb").value || 0);
-  const gst = document.getElementById("gst").value || "No";
-  const itr = document.getElementById("itr").value || "No";
-
-  const cibil = Number(document.getElementById("cibilScore").value || 0);
-  const existingEmi = Number(document.getElementById("emiObligation").value || 0);
-  const income = Number(document.getElementById("netMonthlyIncome").value || 0);
-
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
-
-  const tbody = document.querySelector("#eligibleBanks tbody");
-  const resultP = document.getElementById("result");
-  tbody.innerHTML = "";
-  resultP.textContent = "";
-
-  if (!policies.length) {
-    resultP.textContent = "No policies found. Please ask admin to create policies.";
-    return;
-  }
-
-  const eligible = policies.filter(p => {
-    const abbMin = Number(p.abbMin || 0);
-    const abbMax = Number(p.abbMax || 0);
-    const cibilMin = Number(p.cibilMin || 0);
-    const maxEmiRatio = Number(p.maxEmiRatio || 0);
-
-    if (!(abb >= abbMin && abb <= abbMax)) return false;
-    if (p.gstRequired === "Yes" && gst !== "Yes") return false;
-    if (p.itrRequired === "Yes" && itr !== "Yes") return false;
-    if (cibilMin && cibil && cibil < cibilMin) return false;
-
-    if (maxEmiRatio && income > 0) {
-      const ratio = (existingEmi / income) * 100;
-      if (ratio > maxEmiRatio) return false;
+  <script>
+    function getPolicies() {
+      try {
+        const data = localStorage.getItem("eligiwisePolicies");
+        if (!data) return [];
+        return JSON.parse(data);
+      } catch (e) {
+        alert("Error reading bank policies. Please re-save from Admin.");
+        return [];
+      }
     }
-    return true;
-  });
 
-  if (!eligible.length) {
-    resultP.textContent = "No eligible banks for given inputs.";
-    return;
-  }
+    function checkEligibility() {
+      const policies = getPolicies();
+      if (!policies || policies.length === 0) {
+        alert("No Bank Policies Found. Please add from Admin Panel.");
+        return;
+      }
 
-  eligible.forEach(p => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
-    tbody.appendChild(tr);
-  });
-}
-</script>
+      const input = {
+        vintage: Number(document.getElementById("vintage").value || 0),
+        turnover: Number(document.getElementById("turnover").value || 0),
+        requiredLoan: Number(document.getElementById("requiredLoan").value || 0),
+        abb: Number(document.getElementById("abb").value || 0),
+        cibil: Number(document.getElementById("cibil").value || 0),
+        bankingType: document.getElementById("bankingType").value,
+        ownHouse: document.getElementById("ownHouse").value,
+        gst: document.getElementById("gst").value,
+        itr: document.getElementById("itr").value
+      };
 
+      const tbody = document.getElementById("resultBody");
+      const table = document.getElementById("resultTable");
+      const summary = document.getElementById("summary");
+      const downloads = document.getElementById("downloads");
+
+      tbody.innerHTML = "";
+      let eligibleCount = 0;
+      let notEligibleCount = 0;
+
+      policies.forEach(p => {
+        let eligible = true;
+        let maxLoan = 0;
+        let reason = "Conditions not matched";
+
+        // BASE PROGRAM
+        if (p.baseProgram) {
+          const bp = p.baseProgram;
+          if (bp.vintage && input.vintage < bp.vintage) eligible = false;
+          if (bp.turnover && input.turnover < bp.turnover) eligible = false;
+          if (bp.cibil && input.cibil < bp.cibil) eligible = false;
+          if (bp.abb && input.abb < bp.abb) eligible = false;
+          if (bp.bankingType && bp.bankingType !== "All" &&
+              bp.bankingType !== input.bankingType) eligible = false;
+          if (bp.ownHouse && bp.ownHouse === "Yes" && input.ownHouse !== "Yes") eligible = false;
+          if (bp.gstRequired && bp.gstRequired === "Yes" && input.gst !== "Yes") eligible = false;
+          if (bp.itrRequired && bp.itrRequired === "Yes" && input.itr !== "Yes") eligible = false;
+
+          if (eligible) {
+            maxLoan = bp.maxLoan || 0;
+            reason = "Eligible in Base Program";
+          }
+        }
+
+        // ABB PROGRAMS
+        if (!eligible && p.abbPrograms && p.abbPrograms.length > 0) {
+          p.abbPrograms.forEach(pr => {
+            if (input.abb >= pr.min && input.abb <= pr.max) {
+              eligible = true;
+              maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
+              reason = "Eligible via ABB Program";
+            }
+          });
+        }
+
+        // ITR PROGRAMS
+        if (!eligible && p.itrPrograms && p.itrPrograms.length > 0 && input.itr === "Yes") {
+          p.itrPrograms.forEach(pr => {
+            eligible = true;
+            maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
+            reason = "Eligible via ITR Program";
+          });
+        }
+
+        // GST PROGRAMS
+        if (!eligible && p.gstPrograms && p.gstPrograms.length > 0 && input.gst === "Yes") {
+          p.gstPrograms.forEach(pr => {
+            eligible = true;
+            maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
+            reason = "Eligible via GST Program";
+          });
+        }
+
+        // Required Loan check
+        if (eligible && input.requiredLoan > 0) {
+          if (maxLoan < input.requiredLoan) {
+            eligible = false;
+            reason = `Eligible but Max Loan ${maxLoan}L < Required ${input.requiredLoan}L`;
+          }
+        }
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.bankName}</td>
+          <td class="${eligible ? 'eligible' : 'noteligible'}">
+            ${eligible ? 'Eligible' : 'Not Eligible'}
+          </td>
+          <td>${eligible ? (maxLoan || '-') : '-'}</td>
+          <td>${eligible ? 'All conditions matched' : reason}</td>
+        `;
+        tbody.appendChild(tr);
+        eligible ? eligibleCount++ : notEligibleCount++;
+      });
+
+      table.style.display = "table";
+      downloads.style.display = "block";
+      summary.innerHTML = `✅ Eligible : ${eligibleCount} &nbsp;&nbsp; ❌ Not Eligible : ${notEligibleCount}`;
+    }
+
+    function downloadExcel() {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.table_to_sheet(document.getElementById("resultTable"));
+      XLSX.utils.book_append_sheet(wb, ws, "Eligibility");
+      XLSX.writeFile(wb, "ELIGIWISE_Eligibility.xlsx");
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text("ELIGIWISE -- Eligibility Report", 14, 15);
+      doc.autoTable({ html: "#resultTable", startY: 20 });
+      doc.save("ELIGIWISE_Eligibility.pdf");
+    }
+  </script>
 </body>
 </html>
