@@ -13,15 +13,17 @@ h3{background:#0A4EA3;color:#fff;padding:10px;margin-top:25px;border-radius:4px}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 input,select{padding:8px;width:100%;box-sizing:border-box;border-radius:4px;
              border:1px solid #ccc}
-button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
-       border-radius:4px;font-size:13px}
+button{padding:6px 10px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
+       border-radius:4px;font-size:12px}
 button:hover{opacity:0.9}
 .hidden{display:none}
 table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
 table,th,td{border:1px solid #ccc}
 th,td{padding:6px;text-align:left}
 #result{margin-top:10px;font-weight:bold}
-.custom-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.custom-pair{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-top:8px}
+.section-extra{margin-top:8px}
+.remove-btn{background:#d73a49}
 </style>
 </head>
 
@@ -31,7 +33,7 @@ th,td{padding:6px;text-align:left}
 
 <!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
-<div class="grid">
+<div class="grid" id="sec1-main">
   <input id="vintage" type="number" placeholder="Business Vintage (Years)">
   <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
   <input id="bizPincode" placeholder="Business Place Pincode">
@@ -59,10 +61,12 @@ th,td{padding:6px;text-align:left}
     <option>Leased</option>
   </select>
 </div>
+<div id="sec1-extra" class="section-extra"></div>
+<button onclick="addCustomPair('sec1-extra')">➕ Add Custom Field</button>
 
 <!-- SECTION 2 -->
 <h3>SECTION 2 – Banking & Documents</h3>
-<div class="grid">
+<div class="grid" id="sec2-main">
   <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
@@ -86,10 +90,12 @@ th,td{padding:6px;text-align:left}
 
   <input id="itrTurnover" class="hidden" type="number" placeholder="ITR Turnover (Lakhs)">
 </div>
+<div id="sec2-extra" class="section-extra"></div>
+<button onclick="addCustomPair('sec2-extra')">➕ Add Custom Field</button>
 
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
-<div class="grid">
+<div class="grid" id="sec3-main">
   <input id="cibilScore" type="number" placeholder="CIBIL Score">
   <input id="activeLoans" type="number" placeholder="No of Active Loans">
   <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
@@ -102,10 +108,12 @@ th,td{padding:6px;text-align:left}
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
   <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
+<div id="sec3-extra" class="section-extra"></div>
+<button onclick="addCustomPair('sec3-extra')">➕ Add Custom Field</button>
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
-<div class="grid">
+<div class="grid" id="sec4-main">
   <input id="appAge" type="number" placeholder="Applicant Age">
 
   <select id="coapp" onchange="toggleCo()">
@@ -123,11 +131,13 @@ th,td{padding:6px;text-align:left}
 
   <input id="housePincode" placeholder="Own House Pincode">
 </div>
+<div id="sec4-extra" class="section-extra"></div>
+<button onclick="addCustomPair('sec4-extra')">➕ Add Custom Field</button>
 
 <!-- SECTION 5 -->
 <h3>SECTION 5 – Additional Fields</h3>
-<div id="extraFields"></div>
-<button onclick="addExtra()">➕ Add Custom Field</button>
+<div id="extraFields" class="section-extra"></div>
+<button onclick="addCustomPair('extraFields')">➕ Add Custom Field</button>
 
 <br><br>
 <button onclick="checkEligibility()">Check Eligibility</button>
@@ -143,9 +153,51 @@ th,td{padding:6px;text-align:left}
 </div>
 
 <script>
-function checkEligibility(){
-  alert("Check Eligibility clicked – JS is working. Eligibility logic can be added next.");
+function toggleGST(){
+  const s = document.getElementById("gst");
+  const f = document.getElementById("gstTurnover");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
 }
+function toggleITR(){
+  const s = document.getElementById("itr");
+  const f = document.getElementById("itrTurnover");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
+}
+function toggleCo(){
+  const s = document.getElementById("coapp");
+  const f = document.getElementById("coAge");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
+}
+
+// Add pair + cancel button
+function addCustomPair(containerId){
+  const wrapper = document.createElement("div");
+  wrapper.className = "custom-pair";
+
+  const nameInput = document.createElement("input");
+  nameInput.placeholder = "Field Name";
+
+  const valueInput = document.createElement("input");
+  valueInput.placeholder = "Field Value";
+
+  const removeBtn = document.createElement("button");
+  removeBtn.type = "button";
+  removeBtn.className = "remove-btn";
+  removeBtn.textContent = "✕";
+  removeBtn.onclick = () => wrapper.remove();
+
+  wrapper.appendChild(nameInput);
+  wrapper.appendChild(valueInput);
+  wrapper.appendChild(removeBtn);
+
+  const container = document.getElementById(containerId);
+  if (container) container.appendChild(wrapper);
+}
+
+// Eligibility using localStorage["eligiwisepolicies"]
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);
   const gst = document.getElementById("gst").value || "No";
@@ -155,7 +207,7 @@ function checkEligibility() {
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* loaded from admin */[web:21][web:51]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html */[web:21][web:51]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -171,7 +223,7 @@ function checkEligibility() {
     const abbMin = Number(p.abbMin || 0);
     const abbMax = Number(p.abbMax || 0);
     const cibilMin = Number(p.cibilMin || 0);
-    const maxEmiRatio = Number(p.maxEmiRatio || 0); // %
+    const maxEmiRatio = Number(p.maxEmiRatio || 0);
 
     if (!(abb >= abbMin && abb <= abbMax)) return false;
     if (p.gstRequired === "Yes" && gst !== "Yes") return false;
@@ -196,54 +248,7 @@ function checkEligibility() {
     tbody.appendChild(tr);
   });
 }
-
-           function toggleGST(){
-  const s = document.getElementById("gst");
-  const f = document.getElementById("gstTurnover");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-
-function toggleITR(){
-  const s = document.getElementById("itr");
-  const f = document.getElementById("itrTurnover");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-
-function toggleCo(){
-  const s = document.getElementById("coapp");
-  const f = document.getElementById("coAge");
-  if (!s || !f) return;
-  f.classList.toggle("hidden", s.value !== "Yes");
-}
-
-// Add pair: Field Name + Field Value
-function addExtra(){
-  const wrapper = document.createElement("div");
-  wrapper.className = "custom-pair";
-
-  const nameInput = document.createElement("input");
-  nameInput.placeholder = "Field Name";
-
-  const valueInput = document.createElement("input");
-  valueInput.placeholder = "Field Value";
-
-  wrapper.appendChild(nameInput);
-  wrapper.appendChild(valueInput);
-
-  document.getElementById("extraFields").appendChild(wrapper);
-}
-
-// simple check – just to confirm JS runs
-function checkEligibility(){
-  alert("Check Eligibility clicked – JS is working. Eligibility logic can be added next.");
-}
-
 </script>
 
 </body>
 </html>
-
-
-
