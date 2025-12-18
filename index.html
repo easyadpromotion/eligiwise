@@ -145,21 +145,21 @@ th,td{padding:6px;text-align:left}
 </table>
 
 </div>
-
 <script>
-// show / hide extra fields
 function toggleGST(){
   const gstSelect = document.getElementById("gst");
   const gstTurn = document.getElementById("gstTurnover");
   if (!gstSelect || !gstTurn) return;
   gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
 }
+
 function toggleITR(){
   const itrSelect = document.getElementById("itr");
   const itrTurn = document.getElementById("itrTurnover");
   if (!itrSelect || !itrTurn) return;
   itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
 }
+
 function toggleCo(){
   const coSelect = document.getElementById("coapp");
   const coAge = document.getElementById("coAge");
@@ -167,14 +167,12 @@ function toggleCo(){
   coAge.classList.toggle("hidden", coSelect.value !== "Yes");
 }
 
-// add extra fields
 function addExtra(){
   const input=document.createElement("input");
   input.placeholder="Additional Custom Field";
   document.getElementById("extraFields").appendChild(input);
 }
 
-// main eligibility
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);
   const gst = document.getElementById("gst").value || "No";
@@ -184,7 +182,7 @@ function checkEligibility() {
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html stores here */[web:23][web:37]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html stores here */[web:21][web:51]
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
@@ -226,6 +224,11 @@ function checkEligibility() {
   });
 }
 </script>
+</body>
+</html>
+
+</script>
 
 </body>
 </html>
+
