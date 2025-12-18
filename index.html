@@ -144,8 +144,7 @@ th,td{padding:6px;text-align:left}
   <tbody></tbody>
 </table>
 
-</div>
-<script>
+</div><script>
 function toggleGST(){
   const gstSelect = document.getElementById("gst");
   const gstTurn = document.getElementById("gstTurnover");
@@ -168,67 +167,24 @@ function toggleCo(){
 }
 
 function addExtra(){
-  const input=document.createElement("input");
-  input.placeholder="Additional Custom Field";
+  const input = document.createElement("input");
+  input.placeholder = "Additional Custom Field";
   document.getElementById("extraFields").appendChild(input);
 }
 
 function checkEligibility() {
-  const abb = Number(document.getElementById("abb").value || 0);
-  const gst = document.getElementById("gst").value || "No";
-  const itr = document.getElementById("itr").value || "No";
-
-  const cibil = Number(document.getElementById("cibilScore").value || 0);
-  const existingEmi = Number(document.getElementById("emiObligation").value || 0);
-  const income = Number(document.getElementById("netMonthlyIncome").value || 0);
-
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html stores here */[web:21][web:51]
-
-  const tbody = document.querySelector("#eligibleBanks tbody");
-  const resultP = document.getElementById("result");
-  tbody.innerHTML = "";
-  resultP.textContent = "";
-
-  if (!policies.length) {
-    resultP.textContent = "No policies found. Please ask admin to create policies.";
-    return;
-  }
-
-  const eligible = policies.filter(p => {
-    const abbMin = Number(p.abbMin || 0);
-    const abbMax = Number(p.abbMax || 0);
-    const cibilMin = Number(p.cibilMin || 0);
-    const maxEmiRatio = Number(p.maxEmiRatio || 0); // %
-
-    if (!(abb >= abbMin && abb <= abbMax)) return false;
-    if (p.gstRequired === "Yes" && gst !== "Yes") return false;
-    if (p.itrRequired === "Yes" && itr !== "Yes") return false;
-    if (cibilMin && cibil && cibil < cibilMin) return false;
-
-    if (maxEmiRatio && income > 0) {
-      const ratio = (existingEmi / income) * 100;
-      if (ratio > maxEmiRatio) return false;
-    }
-    return true;
-  });
-
-  if (!eligible.length) {
-    resultP.textContent = "No eligible banks for given inputs.";
-    return;
-  }
-
-  eligible.forEach(p => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${p.bankName}</td><td>Matched ABB / GST / ITR / CIBIL / EMI</td>`;
-    tbody.appendChild(tr);
-  });
+  alert("Check Eligibility clicked – script is now running.");
 }
 </script>
 </body>
 </html>
 
+</body>
+</html>
+
 </script>
 
 </body>
 </html>
+
 
