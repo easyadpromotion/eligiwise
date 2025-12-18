@@ -21,6 +21,7 @@ table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
 table,th,td{border:1px solid #ccc}
 th,td{padding:6px;text-align:left}
 #result{margin-top:10px;font-weight:bold}
+.custom-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
 </style>
 </head>
 
@@ -34,6 +35,29 @@ th,td{padding:6px;text-align:left}
   <input id="vintage" type="number" placeholder="Business Vintage (Years)">
   <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
   <input id="bizPincode" placeholder="Business Place Pincode">
+
+  <select id="entityType">
+    <option>Entity Type</option>
+    <option>Proprietorship</option>
+    <option>Partnership</option>
+    <option>Pvt Ltd</option>
+    <option>Ltd</option>
+    <option>LLP</option>
+  </select>
+
+  <select id="natureBusiness">
+    <option>Nature Of Business</option>
+    <option>Trading</option>
+    <option>Manufacturing</option>
+    <option>Service</option>
+  </select>
+
+  <select id="businessType">
+    <option>Business Type</option>
+    <option>Rented</option>
+    <option>Owned</option>
+    <option>Leased</option>
+  </select>
 </div>
 
 <!-- SECTION 2 -->
@@ -42,6 +66,8 @@ th,td{padding:6px;text-align:left}
   <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
+    <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
+    <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
   </select>
 
   <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
@@ -65,8 +91,16 @@ th,td{padding:6px;text-align:left}
 <h3>SECTION 3 – Loans & Obligations</h3>
 <div class="grid">
   <input id="cibilScore" type="number" placeholder="CIBIL Score">
+  <input id="activeLoans" type="number" placeholder="No of Active Loans">
   <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
+
+  <input id="loan6Count" type="number" placeholder="Loans Taken in Last 6 Months">
+  <input id="loan6Amt" type="number" placeholder="Loan Amount in Last 6 Months">
+  <input id="enq6" type="number" placeholder="Enquiries Last 6 Months">
+
+  <input id="enq3" type="number" placeholder="Enquiries Last 3 Months">
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
+  <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
 
 <!-- SECTION 4 -->
@@ -80,6 +114,14 @@ th,td{padding:6px;text-align:left}
   </select>
 
   <input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
+
+  <select id="ownHouse">
+    <option>Own House</option>
+    <option>Yes</option>
+    <option>No</option>
+  </select>
+
+  <input id="housePincode" placeholder="Own House Pincode">
 </div>
 
 <!-- SECTION 5 -->
@@ -122,14 +164,26 @@ function toggleCo(){
   f.classList.toggle("hidden", s.value !== "Yes");
 }
 
+// Add pair: Field Name + Field Value
 function addExtra(){
-  const input = document.createElement("input");
-  input.placeholder = "Additional Custom Field";
-  document.getElementById("extraFields").appendChild(input);
+  const wrapper = document.createElement("div");
+  wrapper.className = "custom-pair";
+
+  const nameInput = document.createElement("input");
+  nameInput.placeholder = "Field Name";
+
+  const valueInput = document.createElement("input");
+  valueInput.placeholder = "Field Value";
+
+  wrapper.appendChild(nameInput);
+  wrapper.appendChild(valueInput);
+
+  document.getElementById("extraFields").appendChild(wrapper);
 }
 
+// simple check – just to confirm JS runs
 function checkEligibility(){
-  alert("Check Eligibility clicked – JavaScript is working.");
+  alert("Check Eligibility clicked – JS is working. Eligibility logic can be added next.");
 }
 </script>
 
