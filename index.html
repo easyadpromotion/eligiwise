@@ -33,7 +33,7 @@ th,td{padding:6px;text-align:left}
 
 <!-- SECTION 1 -->
 <h3>SECTION 1 – Business Details</h3>
-<div class="grid" id="sec1-main">
+<div class="grid">
   <input id="vintage" type="number" placeholder="Business Vintage (Years)">
   <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
   <input id="bizPincode" placeholder="Business Place Pincode">
@@ -66,7 +66,7 @@ th,td{padding:6px;text-align:left}
 
 <!-- SECTION 2 -->
 <h3>SECTION 2 – Banking & Documents</h3>
-<div class="grid" id="sec2-main">
+<div class="grid">
   <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
@@ -95,7 +95,7 @@ th,td{padding:6px;text-align:left}
 
 <!-- SECTION 3 -->
 <h3>SECTION 3 – Loans & Obligations</h3>
-<div class="grid" id="sec3-main">
+<div class="grid">
   <input id="cibilScore" type="number" placeholder="CIBIL Score">
   <input id="activeLoans" type="number" placeholder="No of Active Loans">
   <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
@@ -113,7 +113,7 @@ th,td{padding:6px;text-align:left}
 
 <!-- SECTION 4 -->
 <h3>SECTION 4 – Applicant & Co-Applicant</h3>
-<div class="grid" id="sec4-main">
+<div class="grid">
   <input id="appAge" type="number" placeholder="Applicant Age">
 
   <select id="coapp" onchange="toggleCo()">
@@ -172,7 +172,7 @@ function toggleCo(){
   f.classList.toggle("hidden", s.value !== "Yes");
 }
 
-// Add pair + cancel button
+// add FieldName + FieldValue + remove button into given container
 function addCustomPair(containerId){
   const wrapper = document.createElement("div");
   wrapper.className = "custom-pair";
@@ -197,7 +197,7 @@ function addCustomPair(containerId){
   if (container) container.appendChild(wrapper);
 }
 
-// Eligibility using localStorage["eligiwisepolicies"]
+// eligibility using policies from localStorage["eligiwisepolicies"]
 function checkEligibility() {
   const abb = Number(document.getElementById("abb").value || 0);
   const gst = document.getElementById("gst").value || "No";
@@ -207,7 +207,7 @@ function checkEligibility() {
   const existingEmi = Number(document.getElementById("emiObligation").value || 0);
   const income = Number(document.getElementById("netMonthlyIncome").value || 0);
 
-  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || []; /* admin.html */[web:21][web:51]
+  const policies = JSON.parse(localStorage.getItem("eligiwisepolicies")) || [];
 
   const tbody = document.querySelector("#eligibleBanks tbody");
   const resultP = document.getElementById("result");
