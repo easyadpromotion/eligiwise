@@ -16,14 +16,12 @@ input,select{padding:8px;width:100%;box-sizing:border-box;border-radius:4px;
 button{padding:8px 12px;background:#2ea44f;color:#fff;border:none;cursor:pointer;
        border-radius:4px;font-size:13px}
 button:hover{opacity:0.9}
-.add-btn{margin-top:10px}
 .hidden{display:none}
 table{width:100%;border-collapse:collapse;margin-top:15px;font-size:13px}
 table,th,td{border:1px solid #ccc}
 th,td{padding:6px;text-align:left}
 #result{margin-top:10px;font-weight:bold}
 </style>
-
 </head>
 
 <body>
@@ -36,29 +34,6 @@ th,td{padding:6px;text-align:left}
   <input id="vintage" type="number" placeholder="Business Vintage (Years)">
   <input id="turnover" type="number" placeholder="Turnover (Lakhs)">
   <input id="bizPincode" placeholder="Business Place Pincode">
-
-  <select id="entityType">
-    <option>Entity Type</option>
-    <option>Proprietorship</option>
-    <option>Partnership</option>
-    <option>Pvt Ltd</option>
-    <option>Ltd</option>
-    <option>LLP</option>
-  </select>
-
-  <select id="natureBusiness">
-    <option>Nature Of Business</option>
-    <option>Trading</option>
-    <option>Manufacturing</option>
-    <option>Service</option>
-  </select>
-
-  <select id="businessType">
-    <option>Business Type</option>
-    <option>Rented</option>
-    <option>Owned</option>
-    <option>Leased</option>
-  </select>
 </div>
 
 <!-- SECTION 2 -->
@@ -67,8 +42,6 @@ th,td{padding:6px;text-align:left}
   <select id="bankingTypeCust">
     <option>Bank Statement Type</option>
     <option>SA</option><option>CA</option><option>OD</option><option>CC</option>
-    <option>SA+CA</option><option>SA+OD</option><option>SA+CC</option>
-    <option>CA+OD</option><option>CA+CC</option><option>ALL</option>
   </select>
 
   <input id="abb" type="number" step="0.01" placeholder="ABB (Lakhs)">
@@ -92,16 +65,8 @@ th,td{padding:6px;text-align:left}
 <h3>SECTION 3 – Loans & Obligations</h3>
 <div class="grid">
   <input id="cibilScore" type="number" placeholder="CIBIL Score">
-  <input id="activeLoans" type="number" placeholder="No of Active Loans">
   <input id="emiObligation" type="number" placeholder="Existing Monthly EMI (₹)">
-
-  <input id="loan6Count" type="number" placeholder="Loans Taken in Last 6 Months">
-  <input id="loan6Amt" type="number" placeholder="Loan Amount in Last 6 Months">
-  <input id="enq6" type="number" placeholder="Enquiries Last 6 Months">
-
-  <input id="enq3" type="number" placeholder="Enquiries Last 3 Months">
   <input id="netMonthlyIncome" type="number" placeholder="Net Monthly Income (₹)">
-  <input id="newEmi" type="number" placeholder="Proposed New EMI (₹)">
 </div>
 
 <!-- SECTION 4 -->
@@ -115,14 +80,6 @@ th,td{padding:6px;text-align:left}
   </select>
 
   <input id="coAge" class="hidden" type="number" placeholder="Co-Applicant Age">
-
-  <select id="ownHouse">
-    <option>Own House</option>
-    <option>Yes</option>
-    <option>No</option>
-  </select>
-
-  <input id="housePincode" placeholder="Own House Pincode">
 </div>
 
 <!-- SECTION 5 -->
@@ -136,34 +93,33 @@ th,td{padding:6px;text-align:left}
 
 <table id="eligibleBanks">
   <thead>
-    <tr>
-      <th>Eligible Bank / NBFC</th>
-      <th>Comments</th>
-    </tr>
+    <tr><th>Eligible Bank / NBFC</th><th>Comments</th></tr>
   </thead>
   <tbody></tbody>
 </table>
 
-</div><script>
+</div>
+
+<script>
 function toggleGST(){
-  const gstSelect = document.getElementById("gst");
-  const gstTurn = document.getElementById("gstTurnover");
-  if (!gstSelect || !gstTurn) return;
-  gstTurn.classList.toggle("hidden", gstSelect.value !== "Yes");
+  const s = document.getElementById("gst");
+  const f = document.getElementById("gstTurnover");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
 }
 
 function toggleITR(){
-  const itrSelect = document.getElementById("itr");
-  const itrTurn = document.getElementById("itrTurnover");
-  if (!itrSelect || !itrTurn) return;
-  itrTurn.classList.toggle("hidden", itrSelect.value !== "Yes");
+  const s = document.getElementById("itr");
+  const f = document.getElementById("itrTurnover");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
 }
 
 function toggleCo(){
-  const coSelect = document.getElementById("coapp");
-  const coAge = document.getElementById("coAge");
-  if (!coSelect || !coAge) return;
-  coAge.classList.toggle("hidden", coSelect.value !== "Yes");
+  const s = document.getElementById("coapp");
+  const f = document.getElementById("coAge");
+  if (!s || !f) return;
+  f.classList.toggle("hidden", s.value !== "Yes");
 }
 
 function addExtra(){
@@ -172,19 +128,10 @@ function addExtra(){
   document.getElementById("extraFields").appendChild(input);
 }
 
-function checkEligibility() {
-  alert("Check Eligibility clicked – script is now running.");
+function checkEligibility(){
+  alert("Check Eligibility clicked – JavaScript is working.");
 }
 </script>
-</body>
-</html>
 
 </body>
 </html>
-
-</script>
-
-</body>
-</html>
-
-
