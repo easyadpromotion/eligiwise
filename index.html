@@ -1,334 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ELIGIWISE -- Eligibility Check</title>
+  <meta charset="UTF-8" />
+  <title>ELIGIWISE | Bank / NBFC Policy Admin</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 1100px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px 25px 40px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #0a4ea3;
-      margin-bottom: 20px;
-    }
-    h2 {
-      background: #0a4ea3;
-      color: #fff;
-      padding: 8px 10px;
-      margin: 25px 0 10px;
-      font-size: 16px;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
-    }
+    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; padding:0; }
+    .container { max-width:1300px; margin:20px auto; background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.08); }
+    h1 { text-align:center; color:#0A4EA3; margin-top:0; }
+    h3 { background:#0A4EA3; color:#fff; padding:8px; margin-top:25px; font-size:15px; border-radius:4px; }
+    label { font-weight:bold; font-size:13px; }
     input, select {
-      width: 100%;
-      padding: 7px;
-      margin-top: 4px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
+      width:100%; padding:6px; margin:4px 0 10px;
+      border:1px solid #ccc; border-radius:4px; font-size:13px; box-sizing:border-box;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px 20px;
-    }
+    .row { display:grid; grid-template-columns:repeat(3,1fr); gap:15px; }
+    @media(max-width:900px){ .row{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:600px){ .row{grid-template-columns:1fr;} }
     button {
-      margin-top: 18px;
-      padding: 10px 18px;
-      background: #0a4ea3;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
+      padding:6px 10px; background:#0A4EA3; color:#fff;
+      border:none; border-radius:4px; cursor:pointer; font-size:13px;
     }
-    button:hover {
-      background: #083b7a;
+    .add-btn { font-size:12px; margin:5px 0; }
+    .program-row {
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr auto;
+      gap:10px;
+      margin-bottom:8px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-    th {
-      background: #0a4ea3;
-      color: #fff;
-    }
-    .eligible {
-      color: green;
-      font-weight: bold;
-    }
-    .noteligible {
-      color: red;
-      font-weight: bold;
-    }
-    #summary {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    #downloads {
-      margin-top: 15px;
-      display: none;
-    }
+    .remove-btn { background:#c0392b; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; font-size:13px; }
+    th, td { border:1px solid #ccc; padding:6px 8px; text-align:center; }
+    th { background:#0A4EA3; color:#fff; }
+    .edit-btn { background:#27ae60; }
   </style>
-
-  <!-- jsPDF + autotable (from CDN) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-  <!-- SheetJS (for Excel) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-
 <body>
-  <div class="container">
-    <h1>ELIGIWISE – Eligibility Check</h1>
+<div class="container">
+  <h1>ELIGIWISE – Bank / NBFC Policy Admin</h1>
 
-    <!-- SECTION A – BASIC PROFILE -->
-    <h2>SECTION A – BASIC PROFILE</h2>
-    <div class="grid">
-      <div>
-        <label>Business Vintage (Years)</label>
-        <input type="number" id="vintage" placeholder="Ex: 3">
-      </div>
-      <div>
-        <label>Turnover (Lakhs)</label>
-        <input type="number" id="turnover" placeholder="Ex: 120">
-      </div>
-      <div>
-        <label>Required Loan Amount (Lakhs)</label>
-        <input type="number" id="requiredLoan" placeholder="Ex: 25">
-      </div>
-      <div>
-        <label>CIBIL Score</label>
-        <input type="number" id="cibil" placeholder="Ex: 720">
-      </div>
-      <div>
-        <label>Own House</label>
-        <select id="ownHouse">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
+  <!-- BANK / NBFC DETAILS -->
+  <h3>Bank / NBFC Details</h3>
+  <label>Bank / NBFC Name</label>
+  <input id="bankName" placeholder="Ex: HDFC Bank, Tata Capital, Piramal">
+
+  <!-- SECTION A -->
+  <h3>SECTION A – BASIC PRODUCT DETAILS</h3>
+  <div class="row">
+    <div>
+      <label>Product Type</label>
+      <select id="productType">
+        <option>STBL</option>
+        <option>HTBL</option>
+        <option>BOTH</option>
+      </select>
     </div>
-
-    <!-- SECTION B – BANKING -->
-    <h2>SECTION B – BANKING</h2>
-    <div class="grid">
-      <div>
-        <label>Banking Type</label>
-        <select id="bankingType">
-          <option value="All">All Accounts Accepted</option>
-          <option value="Current">Current Account</option>
-          <option value="Savings">Savings Account</option>
-        </select>
-      </div>
-      <div>
-        <label>Average Bank Balance – ABB (Lakhs)</label>
-        <input type="number" step="0.01" id="abb" placeholder="Ex: 0.75">
-      </div>
+    <div>
+      <label>Loan Amount (Min–Max Lakhs)</label>
+      <input id="loanAmount" placeholder="Ex: 2–50">
     </div>
-
-    <!-- SECTION C – COMPLIANCE -->
-    <h2>SECTION C – COMPLIANCE</h2>
-    <div class="grid">
-      <div>
-        <label>GST Available</label>
-        <select id="gst">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
-      <div>
-        <label>ITR Available</label>
-        <select id="itr">
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
-      </div>
+    <div>
+      <label>Tenure (Min–Max Months)</label>
+      <input id="tenure" placeholder="Ex: 12–60">
     </div>
-
-    <button type="button" onclick="checkEligibility()">🔍 Check Eligibility</button>
-
-    <!-- SUMMARY -->
-    <div id="summary"></div>
-
-    <!-- RESULT TABLE -->
-    <table id="resultTable" style="display:none;">
-      <thead>
-        <tr>
-          <th>Bank / NBFC</th>
-          <th>Status</th>
-          <th>Max Loan (Lakhs)</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody id="resultBody"></tbody>
-    </table>
-
-    <!-- DOWNLOAD BUTTONS -->
-    <div id="downloads">
-      <button type="button" onclick="downloadExcel()">⬇ Download Excel</button>
-      <button type="button" onclick="downloadPDF()">⬇ Download PDF</button>
+  </div>
+  <div class="row">
+    <div>
+      <label>ROI (Min–Max %)</label>
+      <input id="roi" placeholder="Ex: 14–24">
+    </div>
+    <div>
+      <label>PF (Min–Max %)</label>
+      <input id="pf" placeholder="Ex: 0–3">
     </div>
   </div>
 
-  <script>
-    function getPolicies() {
-      try {
-        const data = localStorage.getItem("eligiwisePolicies");
-        if (!data) return [];
-        return JSON.parse(data);
-      } catch (e) {
-        alert("Error reading bank policies. Please re-save from Admin.");
-        return [];
-      }
-    }
+  <!-- SECTION B -->
+  <h3>SECTION B – APPLICANT & CO-APPLICANT</h3>
+  <div class="row">
+    <div>
+      <label>Applicant Age (Min–Max)</label>
+      <input id="applicantAge" placeholder="Ex: 21–60">
+    </div>
+    <div>
+      <label>Co-Applicant Mandatory</label>
+      <select id="coApplicantMandatory">
+        <option>No</option>
+        <option>Yes</option>
+      </select>
+    </div>
+    <div>
+      <label>Residence Type Required</label>
+      <select id="residenceType">
+        <option>Any</option>
+        <option>Own House</option>
+        <option>Rented</option>
+      </select>
+    </div>
+  </div>
 
-    function checkEligibility() {
-      const policies = getPolicies();
-      if (!policies || policies.length === 0) {
-        alert("No Bank Policies Found. Please add from Admin Panel.");
-        return;
-      }
+  <!-- SECTION C -->
+  <h3>SECTION C – BUSINESS & BANKING</h3>
+  <div class="row">
+    <div>
+      <label>Min Business Vintage (Years)</label>
+      <input id="minVintage" placeholder="Ex: 2">
+    </div>
+    <div>
+      <label>Min Turnover (Lakhs)</label>
+      <input id="minTurnover" placeholder="Ex: 10">
+    </div>
+    <div>
+      <label>Banking Type Allowed</label>
+      <select id="bankingTypeAllowed">
+        <option>All</option>
+        <option>Current</option>
+        <option>Savings</option>
+      </select>
+    </div>
+  </div>
 
-      const input = {
-        vintage: Number(document.getElementById("vintage").value || 0),
-        turnover: Number(document.getElementById("turnover").value || 0),
-        requiredLoan: Number(document.getElementById("requiredLoan").value || 0),
-        abb: Number(document.getElementById("abb").value || 0),
-        cibil: Number(document.getElementById("cibil").value || 0),
-        bankingType: document.getElementById("bankingType").value,
-        ownHouse: document.getElementById("ownHouse").value,
-        gst: document.getElementById("gst").value,
-        itr: document.getElementById("itr").value
+  <!-- SECTION D -->
+  <h3>SECTION D – CREDIT & OBLIGATIONS</h3>
+  <div class="row">
+    <div>
+      <label>Min CIBIL</label>
+      <input id="minCibil" placeholder="Ex: 700">
+    </div>
+    <div>
+      <label>Own House Required</label>
+      <select id="ownHouseRequired">
+        <option>No</option>
+        <option>Yes</option>
+      </select>
+    </div>
+    <div>
+      <label>Max FOIR % (optional)</label>
+      <input id="maxFoir" placeholder="Ex: 45">
+    </div>
+  </div>
+
+  <!-- SECTION E – PROGRAMS -->
+  <h3>SECTION E – PROGRAMS</h3>
+
+  <!-- Base Program -->
+  <label>Base Program (Standard Policy)</label>
+  <div class="row">
+    <div>
+      <label>Min Vintage (Years)</label>
+      <input id="bpMinVintage" placeholder="Ex: 2">
+    </div>
+    <div>
+      <label>Min Turnover (Lakhs)</label>
+      <input id="bpMinTurnover" placeholder="Ex: 10">
+    </div>
+    <div>
+      <label>Min ABB (Lakhs)</label>
+      <input id="bpMinAbb" placeholder="Ex: 0.5">
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label>Min CIBIL</label>
+      <input id="bpMinCibil" placeholder="Ex: 700">
+    </div>
+    <div>
+      <label>Banking Type</label>
+      <select id="bpBankingType">
+        <option>All</option>
+        <option>Current</option>
+        <option>Savings</option>
+      </select>
+    </div>
+    <div>
+      <label>Own House Required</label>
+      <select id="bpOwnHouseRequired">
+        <option>No</option>
+        <option>Yes</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div>
+      <label>Max Loan (Lakhs)</label>
+      <input id="bpMaxLoan" placeholder="Ex: 20">
+    </div>
+  </div>
+
+  <!-- ABB Programs -->
+  <label>ABB Programs (Min–Max ABB & Max Loan)</label>
+  <div id="abbPrograms"></div>
+  <button class="add-btn" type="button" onclick="addProgramRow('abbPrograms')">+ Add ABB Program</button>
+
+  <!-- ITR Programs -->
+  <label>ITR Programs (For ITR Available Customers)</label>
+  <div id="itrPrograms"></div>
+  <button class="add-btn" type="button" onclick="addProgramRow('itrPrograms')">+ Add ITR Program</button>
+
+  <!-- GST Programs -->
+  <label>GST Programs (For GST Available Customers)</label>
+  <div id="gstPrograms"></div>
+  <button class="add-btn" type="button" onclick="addProgramRow('gstPrograms')">+ Add GST Program</button>
+
+  <!-- SECTION F – CUSTOM FIELDS -->
+  <h3>SECTION F – CUSTOM / FUTURE PARAMETERS</h3>
+  <label>Custom Fields (for any extra conditions)</label>
+  <div id="customFields"></div>
+  <button class="add-btn" type="button" onclick="addCustomField()">+ Add Custom Field</button>
+
+  <!-- SAVE BUTTON -->
+  <div style="margin-top:20px;">
+    <button type="button" onclick="savePolicy()">💾 Save Policy</button>
+    <button type="button" class="remove-btn" onclick="resetForm()">Clear Form</button>
+  </div>
+
+  <!-- SAVED POLICIES TABLE -->
+  <h3>Saved Policies</h3>
+  <table id="policyTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Bank</th>
+        <th>Product</th>
+        <th>Min Turnover</th>
+        <th>Min CIBIL</th>
+        <th>ABB Base</th>
+        <th>GST Prog?</th>
+        <th>ITR Prog?</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+  let editIndex = null;
+
+  function addProgramRow(containerId, data = null) {
+    const container = document.getElementById(containerId);
+    const row = document.createElement("div");
+    row.className = "program-row";
+
+    row.innerHTML = `
+      <input placeholder="Min" value="${data ? (data.min || "") : ""}">
+      <input placeholder="Max" value="${data ? (data.max || "") : ""}">
+      <input placeholder="Max Loan (L)" value="${data ? (data.maxLoan || "") : ""}">
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">❌</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function addCustomField(data = null) {
+    const container = document.getElementById("customFields");
+    const row = document.createElement("div");
+    row.className = "program-row";
+    row.innerHTML = `
+      <input placeholder="Field Name" value="${data ? (data.name || "") : ""}">
+      <input placeholder="Value / Range" value="${data ? (data.value || "") : ""}">
+      <input placeholder="Remarks (optional)" value="${data ? (data.remark || "") : ""}">
+      <button type="button" class="remove-btn" onclick="this.parentElement.remove()">❌</button>
+    `;
+    container.appendChild(row);
+  }
+
+  function collectPrograms(containerId) {
+    const container = document.getElementById(containerId);
+    const rows = Array.from(container.querySelectorAll(".program-row"));
+    return rows.map(r => {
+      const inputs = r.querySelectorAll("input");
+      return {
+        min: Number(inputs[0].value) || 0,
+        max: Number(inputs[1].value) || 0,
+        maxLoan: Number(inputs[2].value) || 0
       };
+    }).filter(p => p.min || p.max || p.maxLoan);
+  }
 
-      const tbody = document.getElementById("resultBody");
-      const table = document.getElementById("resultTable");
-      const summary = document.getElementById("summary");
-      const downloads = document.getElementById("downloads");
+  function collectCustomFields() {
+    const container = document.getElementById("customFields");
+    const rows = Array.from(container.querySelectorAll(".program-row"));
+    return rows.map(r => {
+      const inputs = r.querySelectorAll("input");
+      return {
+        name: inputs[0].value.trim(),
+        value: inputs[1].value.trim(),
+        remark: inputs[2].value.trim()
+      };
+    }).filter(f => f.name || f.value || f.remark);
+  }
 
-      tbody.innerHTML = "";
-      let eligibleCount = 0;
-      let notEligibleCount = 0;
-
-      policies.forEach(p => {
-        let eligible = true;
-        let maxLoan = 0;
-        let reason = "Conditions not matched";
-
-        // BASE PROGRAM
-        if (p.baseProgram) {
-          const bp = p.baseProgram;
-          if (bp.vintage && input.vintage < bp.vintage) eligible = false;
-          if (bp.turnover && input.turnover < bp.turnover) eligible = false;
-          if (bp.cibil && input.cibil < bp.cibil) eligible = false;
-          if (bp.abb && input.abb < bp.abb) eligible = false;
-          if (bp.bankingType && bp.bankingType !== "All" &&
-              bp.bankingType !== input.bankingType) eligible = false;
-          if (bp.ownHouse && bp.ownHouse === "Yes" && input.ownHouse !== "Yes") eligible = false;
-          if (bp.gstRequired && bp.gstRequired === "Yes" && input.gst !== "Yes") eligible = false;
-          if (bp.itrRequired && bp.itrRequired === "Yes" && input.itr !== "Yes") eligible = false;
-
-          if (eligible) {
-            maxLoan = bp.maxLoan || 0;
-            reason = "Eligible in Base Program";
-          }
-        }
-
-        // ABB PROGRAMS
-        if (!eligible && p.abbPrograms && p.abbPrograms.length > 0) {
-          p.abbPrograms.forEach(pr => {
-            if (input.abb >= pr.min && input.abb <= pr.max) {
-              eligible = true;
-              maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
-              reason = "Eligible via ABB Program";
-            }
-          });
-        }
-
-        // ITR PROGRAMS
-        if (!eligible && p.itrPrograms && p.itrPrograms.length > 0 && input.itr === "Yes") {
-          p.itrPrograms.forEach(pr => {
-            eligible = true;
-            maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
-            reason = "Eligible via ITR Program";
-          });
-        }
-
-        // GST PROGRAMS
-        if (!eligible && p.gstPrograms && p.gstPrograms.length > 0 && input.gst === "Yes") {
-          p.gstPrograms.forEach(pr => {
-            eligible = true;
-            maxLoan = Math.max(maxLoan, pr.maxLoan || pr.max || 0);
-            reason = "Eligible via GST Program";
-          });
-        }
-
-        // Required Loan check
-        if (eligible && input.requiredLoan > 0) {
-          if (maxLoan < input.requiredLoan) {
-            eligible = false;
-            reason = `Eligible but Max Loan ${maxLoan}L < Required ${input.requiredLoan}L`;
-          }
-        }
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${p.bankName}</td>
-          <td class="${eligible ? 'eligible' : 'noteligible'}">
-            ${eligible ? 'Eligible' : 'Not Eligible'}
-          </td>
-          <td>${eligible ? (maxLoan || '-') : '-'}</td>
-          <td>${eligible ? 'All conditions matched' : reason}</td>
-        `;
-        tbody.appendChild(tr);
-        eligible ? eligibleCount++ : notEligibleCount++;
-      });
-
-      table.style.display = "table";
-      downloads.style.display = "block";
-      summary.innerHTML = `✅ Eligible : ${eligibleCount} &nbsp;&nbsp; ❌ Not Eligible : ${notEligibleCount}`;
+  function savePolicy() {
+    const bankName = document.getElementById("bankName").value.trim();
+    if (!bankName) {
+      alert("Bank / NBFC Name is required.");
+      return;
     }
 
-    function downloadExcel() {
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.table_to_sheet(document.getElementById("resultTable"));
-      XLSX.utils.book_append_sheet(wb, ws, "Eligibility");
-      XLSX.writeFile(wb, "ELIGIWISE_Eligibility.xlsx");
+    const policy = {
+      bankName,
+      productType: document.getElementById("productType").value,
+      loanAmount: document.getElementById("loanAmount").value,
+      tenure: document.getElementById("tenure").value,
+      roi: document.getElementById("roi").value,
+      pf: document.getElementById("pf").value,
+      applicantAge: document.getElementById("applicantAge").value,
+      coApplicantMandatory: document.getElementById("coApplicantMandatory").value,
+      residenceType: document.getElementById("residenceType").value,
+      minVintage: Number(document.getElementById("minVintage").value) || 0,
+      minTurnover: Number(document.getElementById("minTurnover").value) || 0,
+      bankingTypeAllowed: document.getElementById("bankingTypeAllowed").value,
+      minCibil: Number(document.getElementById("minCibil").value) || 0,
+      ownHouseRequired: document.getElementById("ownHouseRequired").value,
+      maxFoir: Number(document.getElementById("maxFoir").value) || 0,
+      baseProgram: {
+        minVintage: Number(document.getElementById("bpMinVintage").value) || 0,
+        minTurnover: Number(document.getElementById("bpMinTurnover").value) || 0,
+        minAbb: Number(document.getElementById("bpMinAbb").value) || 0,
+        minCibil: Number(document.getElementById("bpMinCibil").value) || 0,
+        bankingType: document.getElementById("bpBankingType").value,
+        ownHouseRequired: document.getElementById("bpOwnHouseRequired").value,
+        maxLoan: Number(document.getElementById("bpMaxLoan").value) || 0
+      },
+      abbPrograms: collectPrograms("abbPrograms"),
+      itrPrograms: collectPrograms("itrPrograms"),
+      gstPrograms: collectPrograms("gstPrograms"),
+      customFields: collectCustomFields()
+    };
+
+    let policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+    if (editIndex !== null) {
+      policies[editIndex] = policy;
+    } else {
+      policies.push(policy);
+    }
+    localStorage.setItem("eligiwisePolicies", JSON.stringify(policies));
+    alert("Policy saved successfully.");
+    resetForm();
+    loadTable();
+  }
+
+  function resetForm() {
+    editIndex = null;
+    document.querySelectorAll("input").forEach(i => i.value = "");
+    document.getElementById("productType").value = "STBL";
+    document.getElementById("coApplicantMandatory").value = "No";
+    document.getElementById("residenceType").value = "Any";
+    document.getElementById("bankingTypeAllowed").value = "All";
+    document.getElementById("ownHouseRequired").value = "No";
+    document.getElementById("bpBankingType").value = "All";
+    document.getElementById("bpOwnHouseRequired").value = "No";
+    document.getElementById("abbPrograms").innerHTML = "";
+    document.getElementById("itrPrograms").innerHTML = "";
+    document.getElementById("gstPrograms").innerHTML = "";
+    document.getElementById("customFields").innerHTML = "";
+  }
+
+  function loadTable() {
+    const tbody = document.querySelector("#policyTable tbody");
+    tbody.innerHTML = "";
+    const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+    policies.forEach((p, index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${p.bankName}</td>
+        <td>${p.productType || ""}</td>
+        <td>${p.minTurnover || ""}</td>
+        <td>${p.minCibil || ""}</td>
+        <td>${p.baseProgram ? (p.baseProgram.minAbb || "") : ""}</td>
+        <td>${p.gstPrograms && p.gstPrograms.length ? "Yes" : "No"}</td>
+        <td>${p.itrPrograms && p.itrPrograms.length ? "Yes" : "No"}</td>
+        <td><button type="button" class="edit-btn" onclick="editPolicy(${index})">Edit</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function editPolicy(index) {
+    const policies = JSON.parse(localStorage.getItem("eligiwisePolicies")) || [];
+    const p = policies[index];
+    if (!p) return;
+    editIndex = index;
+
+    document.getElementById("bankName").value = p.bankName || "";
+    document.getElementById("productType").value = p.productType || "STBL";
+    document.getElementById("loanAmount").value = p.loanAmount || "";
+    document.getElementById("tenure").value = p.tenure || "";
+    document.getElementById("roi").value = p.roi || "";
+    document.getElementById("pf").value = p.pf || "";
+    document.getElementById("applicantAge").value = p.applicantAge || "";
+    document.getElementById("coApplicantMandatory").value = p.coApplicantMandatory || "No";
+    document.getElementById("residenceType").value = p.residenceType || "Any";
+    document.getElementById("minVintage").value = p.minVintage || "";
+    document.getElementById("minTurnover").value = p.minTurnover || "";
+    document.getElementById("bankingTypeAllowed").value = p.bankingTypeAllowed || "All";
+    document.getElementById("minCibil").value = p.minCibil || "";
+    document.getElementById("ownHouseRequired").value = p.ownHouseRequired || "No";
+    document.getElementById("maxFoir").value = p.maxFoir || "";
+
+    if (p.baseProgram) {
+      document.getElementById("bpMinVintage").value = p.baseProgram.minVintage || "";
+      document.getElementById("bpMinTurnover").value = p.baseProgram.minTurnover || "";
+      document.getElementById("bpMinAbb").value = p.baseProgram.minAbb || "";
+      document.getElementById("bpMinCibil").value = p.baseProgram.minCibil || "";
+      document.getElementById("bpBankingType").value = p.baseProgram.bankingType || "All";
+      document.getElementById("bpOwnHouseRequired").value = p.baseProgram.ownHouseRequired || "No";
+      document.getElementById("bpMaxLoan").value = p.baseProgram.maxLoan || "";
     }
 
-    function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.text("ELIGIWISE -- Eligibility Report", 14, 15);
-      doc.autoTable({ html: "#resultTable", startY: 20 });
-      doc.save("ELIGIWISE_Eligibility.pdf");
-    }
-  </script>
+    document.getElementById("abbPrograms").innerHTML = "";
+    (p.abbPrograms || []).forEach(pr => addProgramRow("abbPrograms", pr));
+
+    document.getElementById("itrPrograms").innerHTML = "";
+    (p.itrPrograms || []).forEach(pr => addProgramRow("itrPrograms", pr));
+
+    document.getElementById("gstPrograms").innerHTML = "";
+    (p.gstPrograms || []).forEach(pr => addProgramRow("gstPrograms", pr));
+
+    document.getElementById("customFields").innerHTML = "";
+    (p.customFields || []).forEach(cf => addCustomField(cf));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  loadTable();
+</script>
 </body>
 </html>
